@@ -53,9 +53,11 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> 
+            .authorizeHttpRequests(auth ->
                 auth.requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/MB/**").permitAll() // Allow static resources
+                    .requestMatchers("/api/registration/submit").permitAll() // Public: khách gửi yêu cầu
+                    .requestMatchers("/api/branch/public/**").permitAll()    // Public: lấy danh sách chi nhánh
                     .anyRequest().authenticated()
             );
 

@@ -1,6 +1,7 @@
 package com.mbbank.mbbSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,12 @@ public class Customer extends User {
 
     @Column(columnDefinition = "NVARCHAR(255)")
     private String address;
+
+    /** Chi nhánh quản lý khách hàng này */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "branch_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "employees"})
+    private Branch branch;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -49,6 +56,8 @@ public class Customer extends User {
     public void setPhone(String phone) { this.phone = phone; }
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
+    public Branch getBranch() { return branch; }
+    public void setBranch(Branch branch) { this.branch = branch; }
     public List<Account> getAccounts() { return accounts; }
     public void setAccounts(List<Account> accounts) { this.accounts = accounts; }
 }

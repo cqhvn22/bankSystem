@@ -16,8 +16,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            const token = localStorage.getItem('jwtToken');
-            if (!token) {
+            const token = localStorage.getItem('token');
+            const role = localStorage.getItem('userRole');
+
+            if (!token || role !== 'ROLE_CUSTOMER') {
+                localStorage.clear();
                 window.location.href = 'login.html';
                 return;
             }

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin tài khoản - MB Bank</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .profile-card { background: white; border-radius: 24px; padding: 40px; box-shadow: var(--shadow); margin-bottom: 30px; position: relative; overflow: hidden; }
+        .profile-card::after { content: ""; position: absolute; top: 0; right: 0; width: 150px; height: 150px; background: linear-gradient(135deg, transparent, rgba(0, 71, 186, 0.05)); border-radius: 0 0 0 100%; }
+        
+        .profile-header { display: flex; align-items: center; gap: 25px; margin-bottom: 40px; }
+        .profile-avatar { width: 80px; height: 80px; background: var(--mb-blue); color: white; border-radius: 24px; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; box-shadow: 0 10px 20px rgba(0, 71, 186, 0.2); }
+        .profile-name h2 { font-size: 24px; color: var(--text-main); }
+        .profile-name p { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .info-group { display: flex; flex-direction: column; gap: 8px; }
+        .info-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 700; }
+        .info-value { font-size: 16px; font-weight: 600; color: var(--text-main); }
+
+        .account-list { margin-top: 40px; }
+        .account-card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 15px; border: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; }
+        .account-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-color: var(--mb-blue); }
+        
+        .acc-info h4 { font-size: 15px; color: var(--text-muted); margin-bottom: 5px; }
+        .acc-number { font-size: 18px; font-weight: 700; color: var(--mb-blue); letter-spacing: 0.5px; }
+        .acc-balance { text-align: right; }
+        .acc-balance h3 { font-size: 20px; color: #10b981; font-weight: 800; }
+        .acc-type { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--mb-blue); text-decoration: none; font-weight: 700; margin-bottom: 20px; transition: gap 0.2s; }
+        .back-btn:hover { gap: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <a href="dashboard.html" class="back-btn">← Quay lại trang chủ</a>
+        
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar" id="avatar">?</div>
+                <div class="profile-name">
+                    <h2 id="fullName">Đang tải...</h2>
+                    <p id="maKH">Mã KH: ...</p>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-group">
+                    <div class="info-label">Số định danh (CCCD)</div>
+                    <div class="info-value" id="cccd">...</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Số điện thoại</div>
+                    <div class="info-value" id="phone">...</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Email</div>
+                    <div class="info-value" id="email">...</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Ngày sinh</div>
+                    <div class="info-value" id="ngaySinh">...</div>
+                </div>
+                <div class="info-group" style="grid-column: span 2;">
+                    <div class="info-label">Địa chỉ liên lạc</div>
+                    <div class="info-value" id="address">...</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Chi nhánh quản lý</div>
+                    <div class="info-value" id="branchName">...</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Địa chỉ chi nhánh</div>
+                    <div class="info-value" id="branchAddress">...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-list">
+            <h3 style="margin-bottom: 20px; color: var(--text-main);">Danh sách tài khoản ngân hàng</h3>
+            <div id="accounts-container">
+                <div style="text-align: center; padding: 40px; color: #888;">Đang tải danh sách tài khoản...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        const token = localStorage.getItem('token');
+        const role = localStorage.getItem('userRole');
+
+        if (!token || role !== 'ROLE_CUSTOMER') {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        async function fetchWithAuth(url) {
+            const res = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.status === 401) logout();
+            return res.json();
+        }
+
+        async function loadData() {
+            try {
+                // Load Profile
+                const profile = await fetchWithAuth(`${API_BASE}/customer/me`);
+                document.getElementById('fullName').textContent = profile.fullName;
+                document.getElementById('maKH').textContent = `Mã KH: ${profile.maKH}`;
+                document.getElementById('cccd').textContent = profile.cccd;
+                document.getElementById('phone').textContent = profile.phone;
+                document.getElementById('email').textContent = profile.email || 'Chưa cập nhật';
+                document.getElementById('ngaySinh').textContent = profile.ngaySinh;
+                document.getElementById('address').textContent = profile.address;
+                document.getElementById('branchName').textContent = profile.branchName || 'N/A';
+                document.getElementById('branchAddress').textContent = profile.branchAddress || 'N/A';
+                document.getElementById('avatar').textContent = profile.fullName.split(' ').pop()[0].toUpperCase();
+
+                // Load Accounts
+                const accounts = await fetchWithAuth(`${API_BASE}/account/my-accounts`);
+                const container = document.getElementById('accounts-container');
+                container.innerHTML = '';
+
+                if (accounts.length === 0) {
+                    container.innerHTML = '<div class="card" style="text-align:center; padding:30px; color:#888;">Bạn chưa có tài khoản ngân hàng nào.</div>';
+                    return;
+                }
+
+                accounts.forEach(acc => {
+                    const div = document.createElement('div');
+                    div.className = 'account-card';
+                    div.innerHTML = `
+                        <div class="acc-info">
+                            <h4>Số tài khoản</h4>
+                            <div class="acc-number">${acc.accountNumber}</div>
+                        </div>
+                        <div class="acc-balance">
+                            <h3>${new Intl.NumberFormat('vi-VN').format(acc.balance)} VND</h3>
+                            <div class="acc-type">${acc.loaiTK === 'THANH_TOAN' ? 'THANH TOÁN' : 'TIẾT KIỆM'} • ${acc.status}</div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

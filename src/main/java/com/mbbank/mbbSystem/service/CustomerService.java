@@ -53,4 +53,10 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
+
+    /** Lấy danh sách khách hàng theo chi nhánh — dùng khi nhân viên chỉ xem KH của chi nhánh mình */
+    public List<Customer> getCustomersByBranch(Long branchId) {
+        return customerRepository.findByBranchId(branchId);
+    }
 }
+

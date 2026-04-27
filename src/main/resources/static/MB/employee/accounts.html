@@ -57,6 +57,7 @@
         <a href="dashboard.html" class="sidebar-item">🏠 Giao diện Giao dịch</a>
         <a href="customers.html" class="sidebar-item">👥 Quản lý khách hàng</a>
         <a href="accounts.html" class="sidebar-item active">💳 Quản lý tài khoản</a>
+        <a href="registration-requests.html" class="sidebar-item">📝 Duyệt tài khoản mới</a>
     </aside>
 
     <main class="content">
@@ -134,7 +135,7 @@
 
 <script>
 let allAccounts = [];
-const token = localStorage.getItem('jwtToken');
+const token = localStorage.getItem('token');
 
 document.addEventListener('DOMContentLoaded', async () => {
     if (!token) { window.location.href = 'login.html'; return; }

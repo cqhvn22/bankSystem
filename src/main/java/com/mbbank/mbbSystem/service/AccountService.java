@@ -58,4 +58,12 @@ public class AccountService {
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
+
+    public List<Account> getAccountsByBranch(Long branchId) {
+        return accountRepository.findByCustomerBranchId(branchId);
+    }
+
+    public Optional<Account> getAccountById(Long id) {
+        return accountRepository.findById(id);
+    }
 }

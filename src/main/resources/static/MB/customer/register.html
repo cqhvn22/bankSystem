@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MB Bank - Đăng ký tài khoản trực tuyến</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        body { background: radial-gradient(circle at top right, #f0f4ff, #ffffff); min-height: 100vh; padding: 40px 20px; display: flex; align-items: center; justify-content: center; }
+        .page-wrapper { max-width: 1000px; width: 100%; margin: 0 auto; }
+        .register-container { display: grid; grid-template-columns: 1.2fr 2fr; background: white; border-radius: 30px; overflow: hidden; box-shadow: 0 25px 60px rgba(0, 71, 186, 0.1); border: 1px solid rgba(0, 71, 186, 0.05); }
+        .register-info { background: linear-gradient(135deg, var(--mb-blue) 0%, #002D7A 100%); color: white; padding: 60px; position: relative; }
+        .register-info h1 { font-size: 38px; font-weight: 800; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1px; }
+        .register-info p { font-size: 17px; opacity: 0.9; line-height: 1.6; margin-bottom: 40px; }
+        .register-form { padding: 60px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .input-group { margin-bottom: 25px; position: relative; }
+        .input-group.full { grid-column: span 2; }
+        .input-group label { display: block; margin-bottom: 10px; font-weight: 700; color: #333; font-size: 14px; }
+        .input-group input, .input-group select { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #edf2f7; background: #f8fafc; font-size: 15px; font-weight: 500; transition: 0.3s; }
+        .input-group input:focus, .input-group select:focus { border-color: var(--mb-blue); outline: none; background: white; box-shadow: 0 10px 20px rgba(0, 71, 186, 0.05); }
+        .btn-register { width: 100%; padding: 18px; font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; }
+        .validation-hint { font-size: 11px; color: #64748b; margin-top: 5px; font-weight: 500; }
+        input:invalid { border-color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper fade-in">
+        <div class="register-container">
+            <div class="register-info">
+                <div class="logo-container" style="margin-bottom: 50px;">
+                    <div class="mb-star" style="background: white;"></div>
+                    <div class="logo-text-group"><div class="logo-main" style="color: white;">MB</div><div class="logo-sub" style="color: rgba(255,255,255,0.7);">BANK</div></div>
+                </div>
+                <h1>Mở tài khoản,<br>Mở tương lai.</h1>
+                <p>Số điện thoại chính là tên đăng nhập. Đơn giản, an toàn và bảo mật cao.</p>
+                <div style="margin-top: 60px;">
+                    <a href="login.html" style="color: white; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 10px; opacity: 0.8; transition: 0.3s;">
+                        <span>← Đã có tài khoản? Đăng nhập</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="register-form">
+                <h2 style="font-size: 24px; margin-bottom: 35px; color: #1a202c; font-weight: 800;">Đăng ký tài khoản mới</h2>
+                <form id="registrationForm" onsubmit="event.preventDefault(); submitRegistration();" class="form-grid">
+                    <div class="input-group full">
+                        <label>Họ và tên (như trên CCCD)</label>
+                        <input type="text" id="fullName" placeholder="NGUYEN VAN A" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Số điện thoại (Username)</label>
+                        <input type="tel" id="phone" placeholder="09xx xxx xxx" pattern="[0-9]{10,11}" required>
+                        <div class="validation-hint">Dùng làm tên đăng nhập hệ thống</div>
+                    </div>
+                    <div class="input-group">
+                        <label>Số CCCD</label>
+                        <input type="text" id="cccd" placeholder="12 số" pattern="[0-9]{12}" required>
+                        <div class="validation-hint">Đúng 12 chữ số theo quy định</div>
+                    </div>
+                    <div class="input-group full">
+                        <label>Địa chỉ thường trú</label>
+                        <input type="text" id="address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Chi nhánh quản lý</label>
+                        <select id="branchId" required>
+                            <option value="">Chọn chi nhánh gần nhất</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Mật khẩu đăng nhập</label>
+                        <input type="password" id="password" placeholder="Tối thiểu 8 ký tự" minlength="8" required>
+                    </div>
+                    <div class="input-group full">
+                        <button type="submit" class="btn-primary btn-register">Gửi yêu cầu đăng ký</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        
+        async function loadBranches() {
+            try {
+                const res = await fetch(`${API_BASE}/branch/public/list`);
+                const branches = await res.json();
+                const select = document.getElementById('branchId');
+                branches.forEach(b => {
+                    const opt = document.createElement('option');
+                    opt.value = b.id;
+                    opt.textContent = `${b.branchName} (${b.branchAddress})`;
+                    select.appendChild(opt);
+                });
+            } catch (err) { console.error('Lỗi tải chi nhánh', err); }
+        }
+
+        async function submitRegistration() {
+            const phoneValue = document.getElementById('phone').value;
+            const data = {
+                fullName: document.getElementById('fullName').value,
+                phone: phoneValue,
+                cccd: document.getElementById('cccd').value,
+                address: document.getElementById('address').value,
+                branchId: document.getElementById('branchId').value,
+                desiredUsername: phoneValue, // Sử dụng SĐT làm Username
+                password: document.getElementById('password').value,
+                loaiTK: 'THANH_TOAN'
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/registration/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                if (res.ok) {
+                    alert('Gửi yêu cầu thành công! Vui lòng dùng SĐT vừa đăng ký để đăng nhập sau khi được phê duyệt.');
+                    window.location.href = 'login.html';
+                } else {
+                    const err = await res.json();
+                    alert('Lỗi: ' + (err.message || 'Gửi yêu cầu thất bại'));
+                }
+            } catch (err) { alert('Không thể kết nối đến máy chủ'); }
+        }
+
+        loadBranches();
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 com\mbbank\mbbSystem\MbbSystemApplication.class
 com\mbbank\mbbSystem\dto\MessageResponse.class
+com\mbbank\mbbSystem\model\AccountRegistrationRequest.class
 com\mbbank\mbbSystem\dto\LoginRequest.class
 com\mbbank\mbbSystem\security\UserDetailsServiceImpl.class
 com\mbbank\mbbSystem\service\CustomerService.class
@@ -14,6 +15,8 @@ com\mbbank\mbbSystem\repository\BranchRepository.class
 com\mbbank\mbbSystem\dto\CustomerDto.class
 com\mbbank\mbbSystem\controller\CustomerController.class
 com\mbbank\mbbSystem\security\WebSecurityConfig.class
+com\mbbank\mbbSystem\dto\RegistrationRequestDto.class
+com\mbbank\mbbSystem\repository\AccountRegistrationRequestRepository.class
 com\mbbank\mbbSystem\service\AccountService.class
 com\mbbank\mbbSystem\controller\AuthController.class
 com\mbbank\mbbSystem\dto\EmployeeDto.class
@@ -27,6 +30,8 @@ com\mbbank\mbbSystem\model\Branch.class
 com\mbbank\mbbSystem\dto\SignupRequest.class
 com\mbbank\mbbSystem\repository\UserRepository.class
 com\mbbank\mbbSystem\controller\AccountController.class
+com\mbbank\mbbSystem\controller\RegistrationRequestController.class
+com\mbbank\mbbSystem\service\RegistrationRequestService.class
 com\mbbank\mbbSystem\security\AuthTokenFilter.class
 com\mbbank\mbbSystem\security\UserDetailsImpl.class
 com\mbbank\mbbSystem\controller\BranchController.class

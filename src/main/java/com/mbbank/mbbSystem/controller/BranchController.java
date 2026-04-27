@@ -28,6 +28,14 @@ public class BranchController {
         return ResponseEntity.ok(branchService.getAllBranches());
     }
 
+    /**
+     * Danh sách chi nhánh PUBLIC — cho trang đăng ký khách hàng (không cần JWT).
+     */
+    @GetMapping("/public/list")
+    public ResponseEntity<?> getPublicBranches() {
+        return ResponseEntity.ok(branchService.getAllBranches());
+    }
+
     /** Chi nhánh theo id */
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")

@@ -1,15 +1,87 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chào mừng đến với MB Bank</title>
+    <link rel="stylesheet" href="MB/assets/theme.css">
+    <style>
+        body {
+            background: radial-gradient(circle at top right, #f0f4ff, #ffffff);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .portal-container {
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+        }
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .portal-card {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 71, 186, 0.08);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .portal-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--mb-blue);
+            box-shadow: 0 20px 40px rgba(0, 71, 186, 0.12);
+        }
+        .portal-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .portal-card h2 {
+            color: var(--mb-blue);
+            margin-bottom: 10px;
+        }
+        .portal-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-container fade-in">
+        <div class="logo-container" style="justify-content: center; margin-bottom: 20px;">
+            <div class="mb-star"></div>
+            <div class="logo-text-group">
+                <div class="logo-main" style="font-size: 40px;">MB</div>
+                <div class="logo-sub">BANK</div>
+            </div>
+        </div>
+        <h1 style="font-size: 32px; color: #1a202c;">Hệ thống Ngân hàng điện tử</h1>
+        <p style="color: #64748b;">Vui lòng chọn cổng đăng nhập phù hợp với bạn</p>
+
+        <div class="portal-grid">
+            <a href="MB/customer/login.html" class="portal-card">
+                <span class="portal-icon">📱</span>
+                <h2>Khách hàng</h2>
+                <p>Truy cập tài khoản cá nhân, chuyển tiền và quản lý tài chính.</p>
+            </a>
+            <a href="MB/employee/login.html" class="portal-card">
+                <span class="portal-icon">🏦</span>
+                <h2>Nhân viên</h2>
+                <p>Cổng nghiệp vụ dành cho cán bộ nhân viên MB Bank.</p>
+            </a>
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <p style="font-size: 13px; color: #aaa;">© 2026 Ngân hàng Quân đội MB Bank. All rights reserved.</p>
+        </div>
+    </div>
+</body>
 </html>

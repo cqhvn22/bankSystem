@@ -54,6 +54,7 @@
   <a href="dashboard.html" class="nav-item active">🏠 Tổng quan</a>
   <a href="customers.html" class="nav-item">👥 Khách hàng</a>
   <a href="accounts.html"  class="nav-item">💳 Tài khoản</a>
+  <a href="registration-requests.html" class="nav-item">📝 Duyệt tài khoản mới</a>
   <div class="sidebar-footer">
     <button class="logout-btn" style="width:100%;justify-content:center;display:flex;gap:8px" onclick="doLogout()">🚪 Đăng xuất</button>
   </div>
@@ -133,13 +134,14 @@
 </div>
 
 <script>
-const token = localStorage.getItem('jwtToken');
+const token = localStorage.getItem('token');
 const username = localStorage.getItem('username');
 const fullName = localStorage.getItem('fullName') || username;
 const role = localStorage.getItem('userRole');
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!token || (role !== 'ROLE_EMPLOYEE' && role !== 'ROLE_SYSADMIN')) {
+    localStorage.clear();
     location.replace('login.html'); return;
   }
   document.getElementById('greeting').textContent = 'Xin chào, ' + (fullName || username) + '!';

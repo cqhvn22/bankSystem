@@ -50,11 +50,14 @@
     </div>
 
     <script>
-        // Clear old session on login page load
-        localStorage.removeItem('jwtToken');
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('username');
-        localStorage.removeItem('fullName');
+        // Auto-redirect if already logged in
+        const role = localStorage.getItem('userRole');
+        const token = localStorage.getItem('token');
+        if (token && role) {
+            if (role === 'ROLE_SYSADMIN') { window.location.replace('dashboard.html'); return; }
+            else if (role === 'ROLE_CUSTOMER') { window.location.replace('../customer/dashboard.html'); return; }
+            else if (role === 'ROLE_EMPLOYEE') { window.location.replace('../employee/dashboard.html'); return; }
+        }
 
         async function doLogin() {
             const username = document.getElementById('login-username').value.trim();
@@ -107,7 +110,7 @@
                     return;
                 }
 
-                localStorage.setItem('jwtToken', data.token);
+                localStorage.setItem('token', data.token);
                 localStorage.setItem('userRole', data.role);
                 localStorage.setItem('username', data.username);
                 localStorage.setItem('fullName', data.fullName || data.username);
