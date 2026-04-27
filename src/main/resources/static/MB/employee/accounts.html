@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Tài khoản - Nhân viên MB Bank</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background: white; border-right: 1px solid #ddd; padding: 30px 0; flex-shrink: 0; }
+        .sidebar-item { padding: 15px 30px; display: flex; align-items: center; gap: 15px; color: #666; text-decoration: none; font-weight: 500; transition: 0.2s; }
+        .sidebar-item:hover { background: #f5f7ff; color: var(--mb-blue); }
+        .sidebar-item.active { background: var(--mb-blue); color: white; }
+        .content { flex: 1; padding: 40px; background: #f8f9fc; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .logout-btn { background: none; border: 1px solid #ddd; padding: 8px 16px; border-radius: 8px; cursor: pointer; color: #666; font-size: 13px; transition: 0.2s; }
+        .logout-btn:hover { background: #fff0f0; color: var(--mb-red); border-color: var(--mb-red); }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-bar input { flex: 1; padding: 12px 16px; border-radius: 10px; border: 1px solid #ddd; font-size: 14px; outline: none; transition: 0.2s; }
+        .search-bar input:focus { border-color: var(--mb-blue); box-shadow: 0 0 0 3px rgba(0,71,186,0.08); }
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 14px 15px; text-align: left; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #eef0f4; }
+        td { padding: 14px 15px; font-size: 14px; border-bottom: 1px solid #f0f2f5; }
+        tr:hover td { background: #fafbff; }
+        .action-btn { border: none; background: none; cursor: pointer; font-weight: 600; font-size: 13px; padding: 5px 10px; border-radius: 6px; transition: 0.2s; }
+        .btn-lock { color: var(--mb-red); }
+        .btn-lock:hover { background: #fff0f0; }
+        .btn-unlock { color: #28a745; }
+        .btn-unlock:hover { background: #e6f9ee; }
+        .btn-open { color: var(--mb-blue); }
+        .btn-open:hover { background: #eef2ff; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: white; border-radius: 20px; padding: 36px; width: 480px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .modal-box h3 { margin: 0 0 24px; font-size: 20px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
+        .form-group input, .form-group select { width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid #ddd; font-size: 14px; box-sizing: border-box; outline: none; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--mb-blue); }
+        .modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+        .btn-cancel { background: #f0f2f5; color: #555; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .btn-save { background: var(--mb-blue); color: white; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: #333; color: white; padding: 14px 22px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 9999; display: none; animation: fadeDown 0.3s ease; }
+        .toast.show { display: block; }
+        .toast.success { background: #28a745; }
+        .toast.error { background: var(--mb-red); }
+    </style>
+</head>
+<body>
+<div class="admin-layout">
+    <aside class="sidebar">
+        <div class="logo-container" style="padding: 0 30px 40px;">
+            <div class="mb-star"></div>
+            <div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">EMPLOYEE</div></div>
+        </div>
+        <a href="dashboard.html" class="sidebar-item">🏠 Giao diện Giao dịch</a>
+        <a href="customers.html" class="sidebar-item">👥 Quản lý khách hàng</a>
+        <a href="accounts.html" class="sidebar-item active">💳 Quản lý tài khoản</a>
+    </aside>
+
+    <main class="content">
+        <div class="top-bar">
+            <div>
+                <h2 style="margin:0;">Quản lý Tài khoản</h2>
+                <p style="margin:4px 0 0; color:#888; font-size:14px;">Xin chào, <strong id="welcome-name">...</strong></p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button class="btn-primary btn-open" onclick="openCreateModal()">+ Mở tài khoản mới</button>
+                <button class="logout-btn" onclick="doLogout()">🚪 Đăng xuất</button>
+            </div>
+        </div>
+
+        <div class="card fade-in">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Tìm theo Số TK, Mã KH, Tên khách hàng..." oninput="filterTable()">
+                <button class="btn-primary" onclick="filterTable()">🔍 Tìm kiếm</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Số tài khoản</th>
+                        <th>Mã KH / Tên KH</th>
+                        <th>Loại TK / Ngày mở</th>
+                        <th>Số dư</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="accounts-body">
+                    <tr><td colspan="6" style="text-align:center; padding:30px; color:#888;">Đang tải dữ liệu...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<!-- Modal tạo tài khoản -->
+<div class="modal-overlay" id="create-modal">
+    <div class="modal-box">
+        <h3>📂 Mở tài khoản mới</h3>
+        <div class="form-group">
+            <label>Số tài khoản</label>
+            <input type="text" id="f-acc-number" placeholder="VD: MB0001234567">
+        </div>
+        <div class="form-group">
+            <label>Khách hàng (ID)</label>
+            <input type="number" id="f-customer-id" placeholder="ID khách hàng">
+        </div>
+        <div class="form-group">
+            <label>Loại tài khoản</label>
+            <select id="f-loai-tk">
+                <option value="THANH_TOAN">Thanh toán</option>
+                <option value="TIET_KIEM">Tiết kiệm</option>
+                <option value="DAU_TU">Đầu tư</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Số dư ban đầu (VND)</label>
+            <input type="number" id="f-balance" placeholder="0" value="0">
+        </div>
+        <div class="form-group">
+            <label>Ngày mở</label>
+            <input type="date" id="f-ngay-mo">
+        </div>
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal('create-modal')">Hủy</button>
+            <button class="btn-save" onclick="createAccount()">Tạo tài khoản</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let allAccounts = [];
+const token = localStorage.getItem('jwtToken');
+
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!token) { window.location.href = 'login.html'; return; }
+    document.getElementById('welcome-name').innerText = localStorage.getItem('fullName') || 'Nhân viên';
+    document.getElementById('f-ngay-mo').value = new Date().toISOString().slice(0, 10);
+    await loadAccounts();
+});
+
+async function loadAccounts() {
+    const tbody = document.getElementById('accounts-body');
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#888;">Đang tải...</td></tr>';
+    try {
+        const res = await fetch('/api/account/all', { headers: { 'Authorization': 'Bearer ' + token } });
+        if (res.status === 401) { doLogout(); return; }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        allAccounts = await res.json();
+        renderTable(allAccounts);
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:30px;">⚠ ${err.message}</td></tr>`;
+    }
+}
+
+function renderTable(accounts) {
+    const tbody = document.getElementById('accounts-body');
+    if (accounts.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#aaa;">Không có tài khoản nào.</td></tr>';
+        return;
+    }
+    tbody.innerHTML = accounts.map(acc => {
+        const amt = new Intl.NumberFormat('vi-VN').format(acc.balance || 0) + ' ₫';
+        const isLocked = acc.status === 'DA_KHOA' || acc.status === 'LOCKED';
+        const badgeCls = isLocked ? 'badge-danger' : 'badge-success';
+        const statusText = isLocked ? 'Đã khóa' : 'Hoạt động';
+        const lockBtn = isLocked
+            ? `<button class="action-btn btn-unlock" onclick="toggleLock(${acc.id}, false)">🔓 Mở khóa</button>`
+            : `<button class="action-btn btn-lock" onclick="toggleLock(${acc.id}, true)">🔒 Khóa</button>`;
+        return `<tr>
+            <td style="font-weight:700; color:#333;">${acc.accountNumber}</td>
+            <td>
+                <div style="font-weight:600; color:var(--mb-blue);">${acc.maKH || 'N/A'}</div>
+                <div style="font-size:12px; color:#888;">${acc.customerName || 'N/A'}</div>
+            </td>
+            <td>
+                <div style="font-weight:500;">${acc.loaiTK || 'THANH_TOAN'}</div>
+                <div style="font-size:12px; color:#888;">${acc.ngayMo || '—'}</div>
+            </td>
+            <td style="font-weight:700; color:var(--mb-blue);">${amt}</td>
+            <td><span class="badge ${badgeCls}">● ${statusText}</span></td>
+            <td>${lockBtn}</td>
+        </tr>`;
+    }).join('');
+}
+
+function filterTable() {
+    const kw = document.getElementById('search-input').value.toLowerCase().trim();
+    if (!kw) { renderTable(allAccounts); return; }
+    renderTable(allAccounts.filter(a =>
+        (a.accountNumber||'').toLowerCase().includes(kw) ||
+        (a.maKH||'').toLowerCase().includes(kw) ||
+        (a.customerName||'').toLowerCase().includes(kw)
+    ));
+}
+
+async function toggleLock(id, lock) {
+    const action = lock ? 'lock' : 'unlock';
+    try {
+        const res = await fetch(`/api/account/${action}/${id}`, {
+            method: 'PUT', headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error(await res.text());
+        showToast(lock ? '🔒 Đã khóa tài khoản' : '🔓 Đã mở khóa tài khoản', 'success');
+        await loadAccounts();
+    } catch (err) {
+        showToast('⚠ ' + err.message, 'error');
+    }
+}
+
+function openCreateModal() {
+    document.getElementById('create-modal').classList.add('open');
+}
+
+function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+}
+
+async function createAccount() {
+    const body = {
+        accountNumber : document.getElementById('f-acc-number').value.trim(),
+        customerId    : parseInt(document.getElementById('f-customer-id').value),
+        loaiTK        : document.getElementById('f-loai-tk').value,
+        initialBalance: parseFloat(document.getElementById('f-balance').value) || 0,
+        ngayMo        : document.getElementById('f-ngay-mo').value
+    };
+    if (!body.accountNumber || !body.customerId) {
+        showToast('Vui lòng điền đầy đủ thông tin', 'error'); return;
+    }
+    try {
+        const res = await fetch('/api/account/create', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error(await res.text());
+        showToast('✅ Tạo tài khoản thành công!', 'success');
+        closeModal('create-modal');
+        await loadAccounts();
+    } catch (err) {
+        showToast('⚠ ' + err.message, 'error');
+    }
+}
+
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.className = 'toast show ' + type;
+    setTimeout(() => t.className = 'toast', 3000);
+}
+
+function doLogout() {
+    localStorage.clear();
+    window.location.replace('login.html');
+}
+</script>
+</body>
+</html>

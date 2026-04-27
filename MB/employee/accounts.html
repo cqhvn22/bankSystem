@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Tài Khoản - Nhân viên MB Bank</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background: white; border-right: 1px solid #ddd; padding: 30px 0; }
+        .sidebar-item { padding: 15px 30px; display: flex; align-items: center; gap: 15px; color: #666; text-decoration: none; font-weight: 500; }
+        .sidebar-item.active { background: var(--mb-blue); color: white; }
+        .content { flex: 1; padding: 40px; }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-bar input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="logo-container" style="padding: 0 30px 40px;">
+                <div class="mb-star"></div>
+                <div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">EMPLOYEE</div></div>
+            </div>
+            <a href="dashboard.html" class="sidebar-item">🏠 Giao diện Giao dịch</a>
+            <a href="customers.html" class="sidebar-item">👥 Quản lý khách hàng</a>
+            <a href="accounts.html" class="sidebar-item active">💳 Quản lý tài khoản</a>
+        </aside>
+
+        <main class="content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <h2>Danh sách Tài khoản (Account)</h2>
+                <button class="btn-primary">+ Mở tài khoản (KH mới)</button>
+            </div>
+
+            <div class="card fade-in">
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm theo Số tài khoản hoặc Mã KH...">
+                    <button class="btn-primary">Tìm kiếm</button>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #eee; color: #888;">
+                            <th style="padding: 15px;">Số tài khoản</th>
+                            <th>Mã KH / Tên KH</th>
+                            <th>Loại TK / Ngày Mở</th>
+                            <th>Số dư</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accounts-body">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = [
+                { soTK: "1900 6053 2401", maKH: "CUST_001", hoTen: "Phạm Thị Lan", loaiTK: "Tài khoản thanh toán", ngayMo: "15/01/2021", soDu: "50,250,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2402", maKH: "CUST_002", hoTen: "Trần Phương Linh", loaiTK: "Tài khoản tín dụng", ngayMo: "20/05/2023", soDu: "12,500,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2403", maKH: "CUST_003", hoTen: "Lê Hải Hoàng", loaiTK: "Tài khoản thanh toán", ngayMo: "10/08/2022", soDu: "500,000 VND", trangThai: "Tạm khóa", status_class: "badge-warning" },
+                { soTK: "1900 6053 2404", maKH: "CUST_004", hoTen: "Bùi Tuấn Anh", loaiTK: "Tài khoản tiết kiệm", ngayMo: "05/12/2024", soDu: "0 VND", trangThai: "Đã đóng", status_class: "badge-danger" },
+                { soTK: "1900 6053 2407", maKH: "CUST_005", hoTen: "Vũ Anh Tú", loaiTK: "TK Doanh Nghiệp VIP", ngayMo: "01/03/2020", soDu: "890,000,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2406", maKH: "CUST_006", hoTen: "Đặng Mai Chi", loaiTK: "Tài khoản thanh toán", ngayMo: "11/11/2021", soDu: "3,400,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2408", maKH: "CUST_008", hoTen: "Công ty TNHH ABC", loaiTK: "Tài khoản Doanh Nghiệp", ngayMo: "22/02/2019", soDu: "4,500,600,000 VND", trangThai: "Tạm khóa", status_class: "badge-warning" },
+                { soTK: "1900 6053 2409", maKH: "CUST_009", hoTen: "Trịnh Thu Trang", loaiTK: "Tài khoản tiết kiệm", ngayMo: "14/06/2022", soDu: "22,000,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2410", maKH: "CUST_010", hoTen: "Nguyễn Hoàng Sơn", loaiTK: "Tài khoản trả lương", ngayMo: "09/09/2023", soDu: "15,300,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2411", maKH: "CUST_006", hoTen: "Đặng Mai Chi", loaiTK: "Tài khoản tín dụng", ngayMo: "12/12/2021", soDu: "55,000 VND", trangThai: "Đã đóng", status_class: "badge-danger" },
+                { soTK: "1900 6053 2412", maKH: "CUST_011", hoTen: "Trần Thanh Tùng", loaiTK: "Tài khoản thanh toán", ngayMo: "01/01/2024", soDu: "300,000,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2413", maKH: "CUST_012", hoTen: "Lương Quang Hải", loaiTK: "Tài khoản thanh toán", ngayMo: "15/07/2023", soDu: "1,200,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2414", maKH: "CUST_013", hoTen: "Cửa hàng tiện lợi 247", loaiTK: "Tài khoản Doanh Nghiệp", ngayMo: "20/04/2020", soDu: "68,450,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2415", maKH: "CUST_014", hoTen: "Lưu Chí Bách", loaiTK: "Tài khoản tiết kiệm", ngayMo: "19/08/2021", soDu: "0 VND", trangThai: "Đã đóng", status_class: "badge-danger" },
+                { soTK: "1900 6053 2416", maKH: "CUST_015", hoTen: "Hồ Ngọc Hà", loaiTK: "Tài khoản VIP", ngayMo: "14/02/2025", soDu: "10,000,000 VND", trangThai: "Hoạt động", status_class: "badge-success" },
+                { soTK: "1900 6053 2418", maKH: "CUST_007", hoTen: "Hoàng Văn Thái", loaiTK: "Tài khoản Vay", ngayMo: "10/10/2022", soDu: "- 150,500,000 VND", trangThai: "Hoạt động", status_class: "badge-success" }
+            ];
+
+            const tbody = document.getElementById('accounts-body');
+            data.forEach(acc => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 15px; font-weight: 600; color: #333; font-size: 15px;">${acc.soTK}</td>
+                    <td>
+                        <div style="font-weight: 600;">${acc.maKH}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">${acc.hoTen}</div>
+                    </td>
+                    <td>
+                        <div style="font-weight: 500;">${acc.loaiTK}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Mở ngày: ${acc.ngayMo}</div>
+                    </td>
+                    <td style="font-weight: 700; color: var(--mb-blue);">${acc.soDu}</td>
+                    <td><span class="badge ${acc.status_class}">● ${acc.trangThai}</span></td>
+                    <td>
+                        <button style="border:none; background:none; color:var(--mb-red); cursor:pointer; font-weight: 600;">Khóa / Mở TK</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+</html>

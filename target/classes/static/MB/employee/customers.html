@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Khách hàng - Nhân viên MB Bank</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 30px 0;
+            flex-shrink: 0;
+        }
+
+        .sidebar-item {
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: #f5f7ff;
+            color: var(--mb-blue);
+        }
+
+        .sidebar-item.active {
+            background: var(--mb-blue);
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            background: #f8f9fc;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #666;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #fff0f0;
+            color: var(--mb-red);
+            border-color: var(--mb-red);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--mb-blue);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 14px 15px;
+            text-align: left;
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #eef0f4;
+        }
+
+        td {
+            padding: 14px 15px;
+            font-size: 14px;
+            border-bottom: 1px solid #f0f2f5;
+            vertical-align: top;
+        }
+
+        tr:hover td {
+            background: #fafbff;
+        }
+
+        .action-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .btn-edit {
+            color: var(--mb-blue);
+        }
+
+        .btn-edit:hover {
+            background: #eef2ff;
+        }
+
+        .ab {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: .18s;
+        }
+
+        .ab-lock {
+            color: #f59e0b;
+        }
+
+        .ab-lock:hover {
+            background: #fffbeb;
+        }
+
+        .ab-unlock {
+            color: #10b981;
+        }
+
+        .ab-unlock:hover {
+            background: #ecfdf5;
+        }
+
+        .badge-locked {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 20px;
+            padding: 36px;
+            width: 520px;
+            max-width: 95vw;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box h3 {
+            margin: 0 0 24px;
+            font-size: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--mb-blue);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: #f0f2f5;
+            color: #555;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-save {
+            background: var(--mb-blue);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #333;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            display: none;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .toast.success {
+            background: #28a745;
+        }
+
+        .toast.error {
+            background: var(--mb-red);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="logo-container" style="padding: 0 30px 40px;">
+                <div class="mb-star"></div>
+                <div class="logo-text-group">
+                    <div class="logo-main">MB</div>
+                    <div class="logo-sub">EMPLOYEE</div>
+                </div>
+            </div>
+            <a href="dashboard.html" class="sidebar-item">🏠 Giao diện Giao dịch</a>
+            <a href="customers.html" class="sidebar-item active">👥 Quản lý khách hàng</a>
+            <a href="accounts.html" class="sidebar-item">💳 Quản lý tài khoản</a>
+        </aside>
+
+        <main class="content">
+            <div class="top-bar">
+                <div>
+                    <h2 style="margin:0;">Quản lý Khách hàng</h2>
+                    <p style="margin:4px 0 0; color:#888; font-size:14px;">Xin chào, <strong
+                            id="welcome-name">...</strong></p>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="btn-primary" onclick="openAddModal()">+ Thêm khách hàng</button>
+                    <button class="logout-btn" onclick="doLogout()">🚪 Đăng xuất</button>
+                </div>
+            </div>
+
+            <div class="card fade-in">
+                <div class="search-bar">
+                    <input type="text" value="" id="search-input" placeholder="Tìm theo Mã KH, CCCD, Tên, SĐT..."
+                        autocomplete="off">
+                    <button class="btn-primary" onclick="filterTable()">🔍 Tìm kiếm</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã KH</th>
+                            <th>Họ tên / Ngày sinh</th>
+                            <th>CCCD</th>
+                            <th>Liên hệ</th>
+                            <th>Địa chỉ</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-body">
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding:30px; color:#888;">Đang tải dữ liệu...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal thêm / sửa khách hàng -->
+    <div class="modal-overlay" id="cust-modal">
+        <div class="modal-box">
+            <h3 id="modal-title">👤 Thêm khách hàng</h3>
+            <input type="hidden" id="f-id">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Mã KH</label>
+                    <input type="text" id="f-makh" placeholder="KH0001 (tự sinh nếu trống)">
+                </div>
+                <div class="form-group">
+                    <label>Tên đăng nhập *</label>
+                    <input type="text" id="f-username" placeholder="username">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu <span id="pwd-note" style="color:#aaa; font-weight:400;">(để trống nếu không
+                        đổi)</span></label>
+                <input type="password" id="f-password" placeholder="Mật khẩu mới">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Họ và tên *</label>
+                    <input type="text" id="f-fullname" placeholder="Nguyễn Văn A">
+                </div>
+                <div class="form-group">
+                    <label>Ngày sinh</label>
+                    <input type="date" id="f-ngaysinh">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>CCCD</label>
+                    <input type="text" id="f-cccd" placeholder="012345678901">
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="text" id="f-phone" placeholder="09xxxxxxxx">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="f-email" placeholder="email@example.com">
+            </div>
+            <div class="form-group">
+                <label>Địa chỉ</label>
+                <input autocomplete="off" type="text" id="f-address"
+                    placeholder="Số nhà, đường, quận/huyện, tỉnh/thành">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal('cust-modal')">Hủy</button>
+                <button class="btn-save" onclick="saveCustomer()">💾 Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let allCustomers = [];
+        const token = localStorage.getItem('jwtToken');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!token) { window.location.href = 'login.html'; return; }
+            document.getElementById('welcome-name').innerText = localStorage.getItem('fullName') || 'Nhân viên';
+            await loadCustomers();
+        });
+
+        async function loadCustomers() {
+            const tbody = document.getElementById('customers-body');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#888;">Đang tải...</td></tr>';
+            try {
+                const res = await fetch('/api/customer/list', { headers: { 'Authorization': 'Bearer ' + token } });
+                if (res.status === 401) { doLogout(); return; }
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                allCustomers = await res.json();
+                renderTable(allCustomers);
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:30px;">⚠ ${err.message}</td></tr>`;
+            }
+        }
+
+        function renderTable(customers) {
+            const tbody = document.getElementById('customers-body');
+            if (customers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#aaa;">Chưa có khách hàng nào.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = customers.map(c => {
+                const locked = c.status === 'LOCKED' || c.status === 'DA_KHOA';
+                const lockBtn = locked
+                    ? `<button class="ab ab-unlock" onclick="toggleLock(${c.id}, false)">🔓 Mở khóa</button>`
+                    : `<button class="ab ab-lock" onclick="toggleLock(${c.id}, true)">🔒 Khóa</button>`;
+                return `<tr>
+        <td style="font-weight:700; color:var(--mb-blue);">${c.maKH || ('<span style="color:#ddd">#' + c.id + '</span>')}</td>
+        <td>
+            <div style="font-weight:600;">${c.fullName || c.username}</div>
+            <div style="font-size:12px; color:#888;">@${c.username} · ${c.ngaySinh || '—'}</div>
+            ${locked ? '<div class="badge-locked">Đã khóa</div>' : ''}
+        </td>
+        <td style="font-family:monospace;">${c.cccd || '<span style="color:#ddd">N/A</span>'}</td>
+        <td>
+            <div>${c.phone || 'N/A'}</div>
+            <div style="font-size:12px; color:#888;">${c.email || 'N/A'}</div>
+        </td>
+        <td style="font-size:13px; max-width:180px;">${c.address || 'N/A'}</td>
+        <td>
+            <button class="action-btn btn-edit" onclick="openEditModal(${c.id})">✏ Sửa</button>
+            ${lockBtn}
+        </td>
+    </tr>`;
+            }).join('');
+        }
+
+        function filterTable() {
+            const kw = document.getElementById('search-input').value.toLowerCase().trim();
+            if (!kw) { renderTable(allCustomers); return; }
+            renderTable(allCustomers.filter(c =>
+                (c.maKH || '').toLowerCase().includes(kw) ||
+                (c.fullName || '').toLowerCase().includes(kw) ||
+                (c.cccd || '').toLowerCase().includes(kw) ||
+                (c.phone || '').toLowerCase().includes(kw) ||
+                (c.email || '').toLowerCase().includes(kw)
+            ));
+        }
+
+        function openAddModal() {
+            document.getElementById('modal-title').innerText = '👤 Thêm khách hàng mới';
+            document.getElementById('f-id').value = '';
+            document.getElementById('f-makh').value = '';
+            document.getElementById('f-username').value = '';
+            document.getElementById('f-password').value = '';
+            document.getElementById('f-fullname').value = '';
+            document.getElementById('f-ngaysinh').value = '';
+            document.getElementById('f-cccd').value = '';
+            document.getElementById('f-phone').value = '';
+            document.getElementById('f-email').value = '';
+            document.getElementById('f-address').value = '';
+            document.getElementById('f-username').disabled = false;
+            document.getElementById('pwd-note').innerText = '';
+            document.getElementById('cust-modal').classList.add('open');
+        }
+
+        function openEditModal(id) {
+            const c = allCustomers.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById('modal-title').innerText = '✏ Cập nhật khách hàng';
+            document.getElementById('f-id').value = c.id;
+            document.getElementById('f-makh').value = c.maKH || '';
+            document.getElementById('f-username').value = c.username || '';
+            document.getElementById('f-username').disabled = true;
+            document.getElementById('f-password').value = '';
+            document.getElementById('pwd-note').innerText = '(để trống nếu không đổi)';
+            document.getElementById('f-fullname').value = c.fullName || '';
+            document.getElementById('f-ngaysinh').value = c.ngaySinh || '';
+            document.getElementById('f-cccd').value = c.cccd || '';
+            document.getElementById('f-phone').value = c.phone || '';
+            document.getElementById('f-email').value = c.email || '';
+            document.getElementById('f-address').value = c.address || '';
+            document.getElementById('cust-modal').classList.add('open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        async function saveCustomer() {
+            const id = document.getElementById('f-id').value;
+            const body = {
+                maKH: document.getElementById('f-makh').value.trim() || undefined,
+                username: document.getElementById('f-username').value.trim(),
+                password: document.getElementById('f-password').value || undefined,
+                fullName: document.getElementById('f-fullname').value.trim(),
+                ngaySinh: document.getElementById('f-ngaysinh').value || undefined,
+                cccd: document.getElementById('f-cccd').value.trim() || undefined,
+                phone: document.getElementById('f-phone').value.trim() || undefined,
+                email: document.getElementById('f-email').value.trim() || undefined,
+                address: document.getElementById('f-address').value.trim() || undefined,
+                role: 'ROLE_CUSTOMER'
+            };
+            if (!body.fullName) { showToast('Vui lòng nhập họ tên', 'error'); return; }
+
+            try {
+                let res;
+                if (id) {
+                    // Cập nhật: dùng CustomerDto endpoint
+                    res = await fetch(`/api/customer/update/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                } else {
+                    // Tạo mới: dùng endpoint dành cho nhân viên (cần JWT, encode password)
+                    if (!body.password) { showToast('Vui lòng nhập mật khẩu', 'error'); return; }
+                    if (!body.username) { showToast('Vui lòng nhập tên đăng nhập', 'error'); return; }
+                    res = await fetch('/api/auth/register-customer', {
+                        method: 'POST',
+                        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                }
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({ message: res.statusText }));
+                    throw new Error(err.message || res.statusText);
+                }
+                const result = await res.json();
+                showToast(id ? '✅ Cập nhật thành công!' : '✅ ' + (result.message || 'Thêm khách hàng thành công!'), 'success');
+                closeModal('cust-modal');
+                await loadCustomers();
+            } catch (err) {
+                showToast('⚠ ' + err.message, 'error');
+            }
+        }
+
+        async function toggleLock(id, lock) {
+            const action = lock ? 'lock' : 'unlock';
+            try {
+                const res = await fetch(`/api/customer/${action}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (!res.ok) throw new Error(await res.text());
+                showToast(lock ? '🔒 Đã khóa tài khoản' : '🔓 Đã mở khóa tài khoản', 'success');
+                await loadCustomers();
+            } catch (err) {
+                showToast('⚠ ' + err.message, 'error');
+            }
+        }
+
+        function showToast(msg, type = '') {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.className = 'toast show ' + type;
+            setTimeout(() => t.className = 'toast', 3200);
+        }
+
+        function doLogout() {
+            localStorage.clear();
+            window.location.replace('login.html');
+        }
+    </script>
+</body>
+
+</html>

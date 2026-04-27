@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Quản lý Nhân sự - SysAdmin MB Bank</title>
+<link rel="stylesheet" href="../assets/theme.css">
+<style>
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#fff;border-right:1px solid #eee;padding:28px 0;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:12px;padding:13px 24px;color:#666;text-decoration:none;font-weight:500;font-size:14px;transition:.2s}
+.nav-item:hover{background:#f5f7ff;color:var(--mb-blue)}
+.nav-item.active{background:var(--mb-blue);color:#fff}
+.content{flex:1;padding:36px;background:#f8f9fc;overflow-y:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.topbar h2{margin:0;font-size:22px}
+.topbar p{margin:4px 0 0;color:#888;font-size:13px}
+.actions{display:flex;gap:10px;align-items:center}
+.logout-btn{background:none;border:1px solid #ddd;padding:8px 14px;border-radius:8px;cursor:pointer;color:#666;font-size:13px}
+.logout-btn:hover{background:#fff0f0;color:var(--mb-red);border-color:var(--mb-red)}
+.search-row{display:flex;gap:10px;margin-bottom:16px}
+.search-row input{flex:1;padding:11px 14px;border-radius:10px;border:1px solid #ddd;font-size:14px;outline:none}
+.search-row input:focus{border-color:var(--mb-blue)}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 14px;text-align:left;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #eef0f4}
+td{padding:13px 14px;font-size:13px;border-bottom:1px solid #f0f2f5;vertical-align:middle}
+tr:hover td{background:#fafbff}
+.ab{border:none;background:none;cursor:pointer;font-weight:600;font-size:12px;padding:4px 8px;border-radius:6px;transition:.18s}
+.ab-edit{color:var(--mb-blue)}.ab-edit:hover{background:#eef2ff}
+.ab-del{color:var(--mb-red)}.ab-del:hover{background:#fff0f0}
+.ab-lock{color:#f59e0b}.ab-lock:hover{background:#fffbeb}
+.ab-unlock{color:#10b981}.ab-unlock:hover{background:#ecfdf5}
+.ab-role{color:#7c3aed}.ab-role:hover{background:#f3eeff}
+.ab-branch{color:#0891b2}.ab-branch:hover{background:#ecfeff}
+.badge-role-sa{background:#fff3e0;color:#c2410c;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-role-nv{background:#dcfce7;color:#166534;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-locked{background:#fee2e2;color:#991b1b;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+/* Modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center}
+.modal.open{display:flex}
+.mbox{background:#fff;border-radius:18px;padding:32px;width:500px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto}
+.mbox h3{margin:0 0 22px;font-size:19px}
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:5px}
+.fg input,.fg select{width:100%;padding:10px 13px;border-radius:9px;border:1px solid #ddd;font-size:13px;box-sizing:border-box;outline:none}
+.fg input:focus,.fg select:focus{border-color:var(--mb-blue)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mactions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn-c{background:#f0f2f5;color:#555;border:none;padding:9px 18px;border-radius:9px;cursor:pointer;font-weight:600}
+.btn-s{background:var(--mb-blue);color:#fff;border:none;padding:9px 22px;border-radius:9px;cursor:pointer;font-weight:600}
+.toast{position:fixed;bottom:28px;right:28px;padding:13px 20px;border-radius:11px;font-size:13px;font-weight:500;z-index:9999;display:none;color:#fff}
+.toast.show{display:block}
+.toast.ok{background:#10b981}
+.toast.err{background:#ef4444}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo-container" style="padding:0 24px 36px">
+    <div class="mb-star"></div>
+    <div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">SYSADMIN</div></div>
+  </div>
+  <a href="dashboard.html" class="nav-item">🏠 Tổng quan</a>
+  <a href="employees.html" class="nav-item active">👨‍💼 Nhân viên</a>
+  <a href="branches.html" class="nav-item">🏢 Chi nhánh</a>
+</aside>
+
+<main class="content">
+  <div class="topbar">
+    <div>
+      <h2>Quản lý Nhân sự & Phân quyền</h2>
+      <p>Xin chào, <strong id="wname">Admin</strong></p>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" onclick="openAdd()">+ Thêm nhân viên</button>
+      <button class="logout-btn" onclick="doLogout()">🚪 Đăng xuất</button>
+    </div>
+  </div>
+
+  <div class="card fade-in">
+    <div class="search-row">
+      <input id="kw" placeholder="Tìm theo Mã NV, Họ tên, Bộ phận, Chức vụ..." oninput="filter()">
+      <button class="btn-primary" onclick="filter()">🔍 Tìm</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Mã NV</th><th>Họ tên / Username</th><th>Chức vụ / Bộ phận</th>
+          <th>Chi nhánh</th><th>Lương</th><th>Vai trò / Trạng thái</th><th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"><tr><td colspan="7" style="text-align:center;padding:30px;color:#aaa">Đang tải...</td></tr></tbody>
+    </table>
+  </div>
+</main>
+</div>
+
+<!-- Modal nhân viên -->
+<div class="modal" id="emp-modal">
+  <div class="mbox">
+    <h3 id="m-title">👤 Thêm nhân viên</h3>
+    <input type="hidden" id="f-id">
+    <div class="frow">
+      <div class="fg"><label>Mã NV</label><input id="f-manv" placeholder="NV001 (tự sinh)"></div>
+      <div class="fg"><label>Tên đăng nhập *</label><input id="f-user" placeholder="username"></div>
+    </div>
+    <div class="fg"><label>Mật khẩu <span id="pwd-note" style="color:#aaa;font-weight:400"></span></label><input type="password" id="f-pwd" placeholder="Mật khẩu"></div>
+    <div class="frow">
+      <div class="fg"><label>Họ và tên *</label><input id="f-name" placeholder="Nguyễn Văn A"></div>
+      <div class="fg"><label>Email</label><input id="f-email" placeholder="nv@mbbank.vn"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Chức vụ</label><input id="f-pos" placeholder="Giao dịch viên"></div>
+      <div class="fg"><label>Bộ phận</label><input id="f-bp" placeholder="Phòng GD"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Lương (VND)</label><input type="number" id="f-luong" placeholder="10000000"></div>
+      <div class="fg"><label>Vai trò</label>
+        <select id="f-role">
+          <option value="ROLE_EMPLOYEE">Nhân viên</option>
+          <option value="ROLE_SYSADMIN">Quản trị</option>
+        </select>
+      </div>
+    </div>
+    <div class="mactions">
+      <button class="btn-c" onclick="closeM('emp-modal')">Hủy</button>
+      <button class="btn-s" onclick="saveEmp()">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal phân quyền -->
+<div class="modal" id="role-modal">
+  <div class="mbox" style="width:360px">
+    <h3>🔑 Phân quyền</h3>
+    <input type="hidden" id="r-id">
+    <p id="r-name" style="color:#555;margin-bottom:18px"></p>
+    <div class="fg"><label>Vai trò mới</label>
+      <select id="r-role">
+        <option value="ROLE_EMPLOYEE">Nhân viên</option>
+        <option value="ROLE_SYSADMIN">Quản trị (SysAdmin)</option>
+      </select>
+    </div>
+    <div class="mactions">
+      <button class="btn-c" onclick="closeM('role-modal')">Hủy</button>
+      <button class="btn-s" onclick="applyRole()">Áp dụng</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal phân chi nhánh -->
+<div class="modal" id="branch-modal">
+  <div class="mbox" style="width:380px">
+    <h3>🏢 Phân công Chi nhánh</h3>
+    <input type="hidden" id="b-empid">
+    <p id="b-empname" style="color:#555;margin-bottom:18px"></p>
+    <div class="fg"><label>Chi nhánh</label>
+      <select id="b-branch"></select>
+    </div>
+    <div class="mactions">
+      <button class="btn-c" onclick="closeM('branch-modal')">Hủy</button>
+      <button class="btn-s" onclick="applyBranch()">Phân công</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem('jwtToken');
+let emps = [], branches = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!token || localStorage.getItem('userRole') !== 'ROLE_SYSADMIN') { location.replace('login.html'); return; }
+  document.getElementById('wname').textContent = localStorage.getItem('fullName') || 'Admin';
+  await Promise.all([loadEmps(), loadBranches()]);
+});
+
+async function loadEmps() {
+  try {
+    const r = await fetch('/api/employee/list', {headers:{Authorization:'Bearer '+token}});
+    if (r.status===401){doLogout();return;}
+    emps = await r.json();
+    render(emps);
+  } catch(e){ showTd('⚠ '+e.message,'err'); }
+}
+
+async function loadBranches() {
+  try {
+    const r = await fetch('/api/branch/list', {headers:{Authorization:'Bearer '+token}});
+    if (r.ok) branches = await r.json();
+  } catch(e){}
+}
+
+function render(list) {
+  const tb = document.getElementById('tbody');
+  if (!list.length){
+    tb.innerHTML='<tr><td colspan="7" style="text-align:center;padding:30px;color:#aaa">Chưa có nhân viên nào.</td></tr>';return;
+  }
+  tb.innerHTML = list.map(e=>{
+    const locked = e.status==='LOCKED'||e.status==='DA_KHOA';
+    const roleB = e.role==='ROLE_SYSADMIN'
+      ? '<span class="badge-role-sa">⭐ SysAdmin</span>'
+      : '<span class="badge-role-nv">👤 Nhân viên</span>';
+    const lockB = locked
+      ? `<button class="ab ab-unlock" onclick="toggleLock(${e.id},false)" title="Mở khóa">🔓</button>`
+      : `<button class="ab ab-lock"   onclick="toggleLock(${e.id},true)"  title="Khóa">🔒</button>`;
+    const luong = e.luong ? new Intl.NumberFormat('vi-VN').format(e.luong)+' ₫' : '<span style="color:#aaa">—</span>';
+    const branch = e.branchName
+      ? `<div style="font-weight:600;color:#0891b2">${e.branchName}</div><div style="font-size:11px;color:#aaa">${e.branchAddress||''}</div>`
+      : '<span style="color:#ddd">Chưa phân</span>';
+    return `<tr>
+      <td style="font-weight:700;color:var(--mb-blue)">${e.maNV||e.id}</td>
+      <td><div style="font-weight:600">${e.fullName||e.username}</div><div style="font-size:11px;color:#aaa">@${e.username}</div></td>
+      <td><div>${e.position||'—'}</div><div style="font-size:11px;color:#aaa">${e.boPhan||''}</div></td>
+      <td>${branch}</td>
+      <td>${luong}</td>
+      <td>${roleB}${locked?'<br><span class="badge-locked" style="margin-top:4px">Đã khóa</span>':''}</td>
+      <td>
+        <button class="ab ab-edit"   onclick="openEdit(${e.id})"   title="Sửa">✏</button>
+        <button class="ab ab-role"   onclick="openRole(${e.id})"   title="Phân quyền">🔑</button>
+        <button class="ab ab-branch" onclick="openBranch(${e.id})" title="Chi nhánh">🏢</button>
+        ${lockB}
+        <button class="ab ab-del"    onclick="delEmp(${e.id},'${(e.fullName||e.username).replace(/'/g,"\\'")}')">🗑</button>
+      </td></tr>`;
+  }).join('');
+}
+
+function filter(){
+  const kw=document.getElementById('kw').value.toLowerCase();
+  if(!kw){render(emps);return;}
+  render(emps.filter(e=>
+    [e.maNV,e.fullName,e.username,e.position,e.boPhan,e.branchName].some(v=>(v||'').toLowerCase().includes(kw))
+  ));
+}
+
+/* ---------- ADD / EDIT ---------- */
+function openAdd(){
+  document.getElementById('m-title').textContent='👤 Thêm nhân viên mới';
+  ['f-id','f-manv','f-user','f-pwd','f-name','f-email','f-pos','f-bp','f-luong'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-role').value='ROLE_EMPLOYEE';
+  document.getElementById('f-user').disabled=false;
+  document.getElementById('pwd-note').textContent='';
+  document.getElementById('emp-modal').classList.add('open');
+}
+function openEdit(id){
+  const e=emps.find(x=>x.id===id); if(!e) return;
+  document.getElementById('m-title').textContent='✏ Cập nhật nhân viên';
+  document.getElementById('f-id').value=e.id;
+  document.getElementById('f-manv').value=e.maNV||'';
+  document.getElementById('f-user').value=e.username||''; document.getElementById('f-user').disabled=true;
+  document.getElementById('f-pwd').value=''; document.getElementById('pwd-note').textContent='(để trống = giữ nguyên)';
+  document.getElementById('f-name').value=e.fullName||'';
+  document.getElementById('f-email').value=e.email||'';
+  document.getElementById('f-pos').value=e.position||'';
+  document.getElementById('f-bp').value=e.boPhan||'';
+  document.getElementById('f-luong').value=e.luong||'';
+  document.getElementById('f-role').value=e.role||'ROLE_EMPLOYEE';
+  document.getElementById('emp-modal').classList.add('open');
+}
+async function saveEmp(){
+  const id=document.getElementById('f-id').value;
+  const body={
+    maNV:document.getElementById('f-manv').value.trim()||undefined,
+    username:document.getElementById('f-user').value.trim(),
+    password:document.getElementById('f-pwd').value||undefined,
+    fullName:document.getElementById('f-name').value.trim(),
+    email:document.getElementById('f-email').value.trim()||undefined,
+    position:document.getElementById('f-pos').value.trim()||undefined,
+    boPhan:document.getElementById('f-bp').value.trim()||undefined,
+    luong:parseFloat(document.getElementById('f-luong').value)||undefined,
+    role:document.getElementById('f-role').value
+  };
+  if(!body.fullName){toast('Vui lòng nhập họ tên','err');return;}
+  try{
+    let r;
+    if(id){
+      r=await fetch(`/api/employee/update/${id}`,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    } else {
+      if(!body.password){toast('Vui lòng nhập mật khẩu','err');return;}
+      if(!body.username){toast('Vui lòng nhập tên đăng nhập','err');return;}
+      r=await fetch('/api/auth/register-employee',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    }
+    if(!r.ok){const t=await r.text();throw new Error(t);}
+    toast(id?'✅ Cập nhật thành công!':'✅ Thêm nhân viên thành công!','ok');
+    closeM('emp-modal'); await loadEmps();
+  }catch(e){toast('⚠ '+e.message,'err');}
+}
+
+/* ---------- ROLE ---------- */
+function openRole(id){
+  const e=emps.find(x=>x.id===id); if(!e) return;
+  document.getElementById('r-id').value=id;
+  document.getElementById('r-name').textContent='Nhân viên: '+(e.fullName||e.username);
+  document.getElementById('r-role').value=e.role||'ROLE_EMPLOYEE';
+  document.getElementById('role-modal').classList.add('open');
+}
+async function applyRole(){
+  const id=document.getElementById('r-id').value;
+  const role=document.getElementById('r-role').value;
+  try{
+    const r=await fetch(`/api/employee/role/${id}`,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({role})});
+    if(!r.ok) throw new Error(await r.text());
+    toast('🔑 Đã cập nhật quyền!','ok'); closeM('role-modal'); await loadEmps();
+  }catch(e){toast('⚠ '+e.message,'err');}
+}
+
+/* ---------- BRANCH ---------- */
+function openBranch(id){
+  const e=emps.find(x=>x.id===id); if(!e) return;
+  document.getElementById('b-empid').value=id;
+  document.getElementById('b-empname').textContent='Nhân viên: '+(e.fullName||e.username);
+  const sel=document.getElementById('b-branch');
+  sel.innerHTML=branches.map(b=>`<option value="${b.id}"${e.branchId===b.id?' selected':''}>${b.branchName} (${b.maChiNhanh})</option>`).join('');
+  if(!branches.length) sel.innerHTML='<option>Chưa có chi nhánh nào</option>';
+  document.getElementById('branch-modal').classList.add('open');
+}
+async function applyBranch(){
+  const employeeId=parseInt(document.getElementById('b-empid').value);
+  const branchId=parseInt(document.getElementById('b-branch').value);
+  if(!branchId){toast('Chưa có chi nhánh để chọn','err');return;}
+  try{
+    const r=await fetch('/api/branch/assign-employee',{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({employeeId,branchId})});
+    if(!r.ok) throw new Error(await r.text());
+    toast('🏢 Phân công chi nhánh thành công!','ok'); closeM('branch-modal'); await loadEmps();
+  }catch(e){toast('⚠ '+e.message,'err');}
+}
+
+/* ---------- LOCK ---------- */
+async function toggleLock(id, lock){
+  const action=lock?'lock':'unlock';
+  try{
+    const r=await fetch(`/api/employee/${action}/${id}`,{method:'PUT',headers:{Authorization:'Bearer '+token}});
+    if(!r.ok) throw new Error(await r.text());
+    toast(lock?'🔒 Đã khóa tài khoản':'🔓 Đã mở khóa','ok'); await loadEmps();
+  }catch(e){toast('⚠ '+e.message,'err');}
+}
+
+/* ---------- DELETE ---------- */
+async function delEmp(id, name){
+  if(!confirm(`Xóa nhân viên "${name}"?\nLưu ý: thao tác này không thể hoàn tác.`)) return;
+  try{
+    const r=await fetch(`/api/employee/delete/${id}`,{method:'DELETE',headers:{Authorization:'Bearer '+token}});
+    if(!r.ok) throw new Error(await r.text());
+    toast('🗑 Đã xóa nhân viên','ok'); await loadEmps();
+  }catch(e){toast('⚠ '+e.message,'err');}
+}
+
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function doLogout(){localStorage.clear();location.replace('login.html');}
+function showTd(msg,t){document.getElementById('tbody').innerHTML=`<tr><td colspan="7" style="text-align:center;padding:30px;color:${t==='err'?'red':'#aaa'}">${msg}</td></tr>`;}
+function toast(msg,type){const el=document.getElementById('toast');el.textContent=msg;el.className='toast show '+type;setTimeout(()=>el.className='toast',3200);}
+</script>
+</body>
+</html>

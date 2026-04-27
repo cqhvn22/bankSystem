@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Giao diện Giao dịch - Nhân viên MB Bank</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background: white; border-right: 1px solid #ddd; padding: 30px 0; }
+        .sidebar-item { padding: 15px 30px; display: flex; align-items: center; gap: 15px; color: #666; text-decoration: none; font-weight: 500; }
+        .sidebar-item.active { background: var(--mb-blue); color: white; }
+        .content { flex: 1; padding: 40px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { padding: 20px; border-left: 5px solid var(--mb-blue); }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="logo-container" style="padding: 0 30px 40px;">
+                <div class="mb-star"></div>
+                <div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">EMPLOYEE</div></div>
+            </div>
+            <a href="dashboard.html" class="sidebar-item active">🏠 Giao diện Giao dịch</a>
+            <a href="customers.html" class="sidebar-item">👥 Quản lý khách hàng</a>
+            <a href="accounts.html" class="sidebar-item">💳 Quản lý tài khoản</a>
+        </aside>
+
+        <main class="content">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                <h2>Quản lý Giao dịch (Transaction)</h2>
+                <input type="text" placeholder="Tra cứu Mã GD, Số TK..." style="padding: 10px; border-radius: 8px; border: 1px solid #ddd; width: 300px;">
+            </div>
+
+            <div class="stat-grid">
+                <div class="card stat-card"><h3>16.5 tỉ</h3><p>Tổng giao dịch ngày</p></div>
+                <div class="card stat-card"><h3>5,120</h3><p>Giao dịch thành công</p></div>
+                <div class="card stat-card" style="border-left-color: var(--mb-red);"><h3>45</h3><p>Giao dịch chờ Duyệt</p></div>
+            </div>
+
+            <div class="card fade-in">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Nhật ký Giao dịch (Toàn hệ thống)</h3>
+                    <button class="btn-primary" style="padding: 8px 15px; font-size: 13px;">+ Khởi tạo giao dịch (Thủ công)</button>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #eee; color: #888;">
+                            <th style="padding: 15px;">Mã GD</th>
+                            <th>Số Tài Khoản</th>
+                            <th>Loại Giao Dịch</th>
+                            <th>Số Tiền</th>
+                            <th>Thời Gian</th>
+                            <th>Nội Dung</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-body">
+                        <!-- Data will be populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = [
+                { maGD: "TXN_901235", soTK: "1900 6053 2401", loaiGD: "Chuyển tiền nội bộ", type_class: "badge-success", soTien: "50,000,000 đ", thoiGian: "2026-04-05 10:15:00", noiDung: "Thanh toán hợp đồng số 1" },
+                { maGD: "TXN_901236", soTK: "1900 8933 1120", loaiGD: "Giải ngân tín dụng", type_class: "badge-warning", soTien: "200,000,000 đ", thoiGian: "2026-04-05 09:30:00", noiDung: "Giải ngân mua xe" },
+                { maGD: "TXN_901237", soTK: "1900 6053 2408", loaiGD: "Chuyển tiền quốc tế", type_class: "badge-danger", soTien: "$5,000", thoiGian: "2026-04-04 16:30:22", noiDung: "Đóng phí du học Úc" },
+                { maGD: "TXN_901238", soTK: "1900 6053 2410", loaiGD: "Gửi tiết kiệm", type_class: "badge-success", soTien: "150,000,000 đ", thoiGian: "2026-04-04 11:20:45", noiDung: "Mở sổ TK 6 tháng" },
+                { maGD: "TXN_901239", soTK: "1900 6053 2414", loaiGD: "Thanh toán hóa đơn", type_class: "badge-info", soTien: "2,500,000 đ", thoiGian: "2026-04-03 08:00:10", noiDung: "Thanh toán EVN tháng 3" },
+                { maGD: "TXN_901240", soTK: "1900 6053 2402", loaiGD: "Chuyển liên ngân hàng", type_class: "badge-success", soTien: "12,000,000 đ", thoiGian: "2026-04-02 14:10:00", noiDung: "Mua máy giặt" },
+                { maGD: "TXN_901241", soTK: "1900 6053 2406", loaiGD: "Vay thấu chi", type_class: "badge-warning", soTien: "5,000,000 đ", thoiGian: "2026-04-02 09:12:00", noiDung: "Rút tiền mặt ATM" },
+                { maGD: "TXN_901242", soTK: "1900 6053 2412", loaiGD: "Thu hộ/Chi hộ", type_class: "badge-info", soTien: "8,900,000 đ", thoiGian: "2026-04-01 17:05:00", noiDung: "Nộp tiền viễn thông FPT" },
+                { maGD: "TXN_901243", soTK: "1900 6053 2417", loaiGD: "Thanh toán lương", type_class: "badge-success", soTien: "1,200,000,000 đ", thoiGian: "2026-04-01 08:30:00", noiDung: "Chi lương tháng 3 - CT ABC" },
+                { maGD: "TXN_901244", soTK: "1900 6053 2419", loaiGD: "Chuyển khoản nội bộ", type_class: "badge-success", soTien: "4,200,000 đ", thoiGian: "2026-03-30 18:45:00", noiDung: "Gửi phí dịch vụ" },
+                { maGD: "TXN_901245", soTK: "1900 6053 2405", loaiGD: "Hủy thẻ", type_class: "badge-danger", soTien: "0 đ", thoiGian: "2026-03-29 10:15:00", noiDung: "Khách yêu cầu đóng tài khoản" },
+                { maGD: "TXN_901246", soTK: "1900 6053 2413", loaiGD: "Phát hành thẻ", type_class: "badge-info", soTien: "55,000 đ", thoiGian: "2026-03-28 15:30:00", noiDung: "Phí phát hành thẻ ATM" },
+                { maGD: "TXN_901247", soTK: "1900 6053 2416", loaiGD: "Thanh toán POS", type_class: "badge-success", soTien: "6,500,000 đ", thoiGian: "2026-03-27 20:10:00", noiDung: "Mua sắm tại AEON Mall" },
+                { maGD: "TXN_901248", soTK: "1900 6053 2403", loaiGD: "Thanh toán Visa", type_class: "badge-warning", soTien: "1,200,000 đ", thoiGian: "2026-03-26 22:40:00", noiDung: "Thanh toán Google Ads" },
+                { maGD: "TXN_901249", soTK: "1900 6053 2415", loaiGD: "Tất toán tiết kiệm", type_class: "badge-danger", soTien: "155,000,000 đ", thoiGian: "2026-03-25 09:00:00", noiDung: "Rút toàn bộ gốc lãi" }
+            ];
+
+            const tbody = document.getElementById('transactions-body');
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 15px; font-weight: 600; color: var(--mb-blue);">${item.maGD}</td>
+                    <td style="font-weight: 600;">${item.soTK}</td>
+                    <td><span class="badge ${item.type_class}">${item.loaiGD}</span></td>
+                    <td style="font-weight: 700; color: #28a745;">${item.soTien}</td>
+                    <td style="font-size: 13px; color: #888;">${item.thoiGian}</td>
+                    <td style="font-size: 13px; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.noiDung}</td>
+                    <td>
+                        <button class="btn-primary" style="padding: 6px 12px; font-size: 12px; margin-right: 5px;">Duyệt</button>
+                        <button style="padding: 6px 12px; font-size: 12px; background: transparent; border: 1px solid var(--mb-red); color: var(--mb-red); border-radius: 10px; cursor: pointer; font-weight: 600;">Hủy</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+</html>

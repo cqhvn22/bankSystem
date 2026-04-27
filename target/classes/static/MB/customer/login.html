@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>MB Bank - Đăng nhập Khách hàng</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-wrapper {
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 900px;
+            max-width: 95%;
+            backdrop-filter: blur(10px);
+        }
+        .login-banner {
+            flex: 1;
+            background: linear-gradient(135deg, var(--mb-blue) 0%, #002D7A 100%);
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        .login-banner h2 { font-size: 32px; margin-bottom: 20px; font-weight: 700; z-index: 1;}
+        .login-banner p { font-size: 16px; opacity: 0.9; line-height: 1.6; z-index: 1;}
+        .login-banner::after {
+            content: "";
+            position: absolute;
+            right: -50px;
+            bottom: -50px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+        
+        .login-form-container {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            font-size: 14px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid #eee;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: var(--mb-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 71, 186, 0.1);
+        }
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+            display: block;
+            font-size: 13px;
+            color: var(--mb-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper fade-in">
+        <div class="login-banner">
+            <div class="logo-container" style="margin-bottom: 30px; z-index: 1;">
+                <div class="mb-star" style="background: white;"></div>
+                <div class="logo-text-group">
+                    <div class="logo-main" style="color: white;">MB</div>
+                    <div class="logo-sub" style="color: rgba(255,255,255,0.7);">BANK</div>
+                </div>
+            </div>
+            <h2>Ngân hàng số<br>thông minh</h2>
+            <p>Trải nghiệm dịch vụ tài chính hiện đại, nhanh chóng và bảo mật tuyệt đối với MB Bank.</p>
+        </div>
+        
+        <div class="login-form-container">
+            <h3 style="margin-bottom: 25px; color: #333; font-size: 24px;">Đăng nhập</h3>
+            <div id="error-msg" style="color: red; margin-bottom: 15px; display: none;"></div>
+            <div class="input-group">
+                <label>Tên đăng nhập / Số điện thoại</label>
+                <input type="text" id="username" placeholder="Nhập tên đăng nhập">
+            </div>
+            <div class="input-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="password" placeholder="Nhập mật khẩu">
+            </div>
+            <a href="#" class="forgot-password">Quên mật khẩu?</a>
+            <button class="btn-primary btn-login" onclick="doLogin()">ĐĂNG NHẬP</button>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="#" onclick="doSignup()" style="font-size: 14px; color: var(--mb-blue);">Chưa có tài khoản? Đăng ký ngay</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function doLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            if (!user || !pass) {
+                errorMsg.innerText = "Vui lòng nhập tên đăng nhập và mật khẩu.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('jwtToken', data.token);
+                    localStorage.setItem('userRole', data.role);
+                    localStorage.setItem('username', data.username);
+                    localStorage.setItem('fullName', data.fullName);
+                    
+                    if (data.role === 'ROLE_CUSTOMER') {
+                        location.href = 'dashboard.html';
+                    } else if (data.role === 'ROLE_EMPLOYEE') {
+                        location.href = '../employee/dashboard.html';
+                    } else {
+                        location.href = '../sysadmin/dashboard.html';
+                    }
+                } else {
+                    errorMsg.innerText = "Sai tên đăng nhập hoặc mật khẩu.";
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                errorMsg.innerText = "Lỗi kết nối đến máy chủ.";
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        async function doSignup() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            if (!user || !pass) {
+                errorMsg.innerText = "Vui lòng điền tên đăng nhập và mật khẩu để đăng ký.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass, fullName: 'Khách hàng ' + user, email: user + '@gmail.com', role: 'ROLE_CUSTOMER' })
+                });
+
+                if (response.ok) {
+                    alert("Đăng ký thành công! Đang tiến hành đăng nhập...");
+                    doLogin();
+                } else {
+                    const data = await response.json();
+                    errorMsg.innerText = data.message || "Đăng ký thất bại.";
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                errorMsg.innerText = "Lỗi kết nối đến máy chủ.";
+                errorMsg.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

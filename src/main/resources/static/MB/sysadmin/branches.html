@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Quản lý Chi nhánh - SysAdmin MB Bank</title>
+<link rel="stylesheet" href="../assets/theme.css">
+<style>
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#fff;border-right:1px solid #eee;padding:28px 0;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:12px;padding:13px 24px;color:#666;text-decoration:none;font-weight:500;font-size:14px;transition:.2s}
+.nav-item:hover{background:#f5f7ff;color:var(--mb-blue)}
+.nav-item.active{background:var(--mb-blue);color:#fff}
+.content{flex:1;padding:36px;background:#f8f9fc}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.topbar h2{margin:0;font-size:22px}
+.logout-btn{background:none;border:1px solid #ddd;padding:8px 14px;border-radius:8px;cursor:pointer;color:#666;font-size:13px}
+.logout-btn:hover{background:#fff0f0;color:var(--mb-red);border-color:var(--mb-red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:8px}
+.branch-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-left:5px solid var(--mb-blue);transition:.2s}
+.branch-card:hover{box-shadow:0 8px 30px rgba(0,71,186,.12);transform:translateY(-2px)}
+.bc-code{font-size:11px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.bc-name{font-size:18px;font-weight:800;color:#1a1a2e;margin-bottom:6px}
+.bc-addr{font-size:13px;color:#666;margin-bottom:14px}
+.bc-count{font-size:12px;color:#888;background:#f5f7ff;padding:4px 10px;border-radius:20px;display:inline-block}
+.bc-actions{display:flex;gap:8px;margin-top:14px}
+.ab{border:none;background:none;cursor:pointer;font-weight:600;font-size:12px;padding:6px 12px;border-radius:7px;transition:.15s}
+.ab-edit{background:#eef2ff;color:var(--mb-blue)}.ab-edit:hover{background:#e0e7ff}
+.ab-del{background:#fff0f0;color:var(--mb-red)}.ab-del:hover{background:#fee2e2}
+/* Modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center}
+.modal.open{display:flex}
+.mbox{background:#fff;border-radius:18px;padding:32px;width:440px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.mbox h3{margin:0 0 22px;font-size:19px}
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:5px}
+.fg input{width:100%;padding:10px 13px;border-radius:9px;border:1px solid #ddd;font-size:13px;box-sizing:border-box;outline:none}
+.fg input:focus{border-color:var(--mb-blue)}
+.mactions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn-c{background:#f0f2f5;color:#555;border:none;padding:9px 18px;border-radius:9px;cursor:pointer;font-weight:600}
+.btn-s{background:var(--mb-blue);color:#fff;border:none;padding:9px 22px;border-radius:9px;cursor:pointer;font-weight:600}
+.toast{position:fixed;bottom:28px;right:28px;padding:13px 20px;border-radius:11px;font-size:13px;font-weight:500;z-index:9999;display:none;color:#fff}
+.toast.show{display:block}
+.toast.ok{background:#10b981}
+.toast.err{background:#ef4444}
+.empty{text-align:center;padding:60px;color:#aaa;font-size:15px}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo-container" style="padding:0 24px 36px">
+    <div class="mb-star"></div>
+    <div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">SYSADMIN</div></div>
+  </div>
+  <a href="dashboard.html" class="nav-item">🏠 Tổng quan</a>
+  <a href="employees.html" class="nav-item">👨‍💼 Nhân viên</a>
+  <a href="branches.html" class="nav-item active">🏢 Chi nhánh</a>
+</aside>
+
+<main class="content">
+  <div class="topbar">
+    <div>
+      <h2>Quản lý Chi nhánh</h2>
+      <p style="margin:4px 0 0;color:#888;font-size:13px">Xin chào, <strong id="wname">Admin</strong></p>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-primary" onclick="openAdd()">+ Thêm chi nhánh</button>
+      <button class="logout-btn" onclick="doLogout()">🚪 Đăng xuất</button>
+    </div>
+  </div>
+
+  <div id="grid-area" class="grid"></div>
+</main>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="br-modal">
+  <div class="mbox">
+    <h3 id="m-title">🏢 Thêm chi nhánh</h3>
+    <input type="hidden" id="f-id">
+    <div class="fg"><label>Mã chi nhánh *</label><input id="f-ma" placeholder="VD: CN001"></div>
+    <div class="fg"><label>Tên chi nhánh *</label><input id="f-name" placeholder="Chi nhánh Hà Nội"></div>
+    <div class="fg"><label>Địa chỉ</label><input id="f-addr" placeholder="123 Đường ABC, Quận XYZ, Hà Nội"></div>
+    <div class="mactions">
+      <button class="btn-c" onclick="closeM()">Hủy</button>
+      <button class="btn-s" onclick="save()">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem('jwtToken');
+let branches = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!token || localStorage.getItem('userRole') !== 'ROLE_SYSADMIN') { location.replace('login.html'); return; }
+  document.getElementById('wname').textContent = localStorage.getItem('fullName') || 'Admin';
+  await load();
+});
+
+async function load() {
+  try {
+    const r = await fetch('/api/branch/list', {headers:{Authorization:'Bearer '+token}});
+    if (r.status===401){doLogout();return;}
+    branches = await r.json();
+    render();
+  } catch(e){ toast('⚠ '+e.message,'err'); }
+}
+
+function render() {
+  const el = document.getElementById('grid-area');
+  if (!branches.length) {
+    el.innerHTML = '<div class="empty">🏢<br>Chưa có chi nhánh nào.<br>Nhấn "+ Thêm chi nhánh" để bắt đầu.</div>';
+    return;
+  }
+  el.className = 'grid';
+  el.innerHTML = branches.map(b => `
+    <div class="branch-card">
+      <div class="bc-code">${b.maChiNhanh||'—'}</div>
+      <div class="bc-name">${b.branchName||'Không tên'}</div>
+      <div class="bc-addr">📍 ${b.branchAddress||'Chưa có địa chỉ'}</div>
+      <div class="bc-count">🆔 ID: ${b.id}</div>
+      <div class="bc-actions">
+        <button class="ab ab-edit" onclick="openEdit(${b.id})">✏ Sửa</button>
+        <button class="ab ab-del"  onclick="del(${b.id},'${(b.branchName||'').replace(/'/g,"\\'")}')">🗑 Xóa</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAdd() {
+  document.getElementById('m-title').textContent = '🏢 Thêm chi nhánh mới';
+  ['f-id','f-ma','f-name','f-addr'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('br-modal').classList.add('open');
+}
+
+function openEdit(id) {
+  const b = branches.find(x=>x.id===id); if(!b) return;
+  document.getElementById('m-title').textContent = '✏ Cập nhật chi nhánh';
+  document.getElementById('f-id').value   = b.id;
+  document.getElementById('f-ma').value   = b.maChiNhanh||'';
+  document.getElementById('f-name').value = b.branchName||'';
+  document.getElementById('f-addr').value = b.branchAddress||'';
+  document.getElementById('br-modal').classList.add('open');
+}
+
+async function save() {
+  const id   = document.getElementById('f-id').value;
+  const body = {
+    maChiNhanh   : document.getElementById('f-ma').value.trim(),
+    branchName   : document.getElementById('f-name').value.trim(),
+    branchAddress: document.getElementById('f-addr').value.trim()
+  };
+  if (!body.maChiNhanh || !body.branchName) { toast('Vui lòng điền Mã và Tên chi nhánh','err'); return; }
+  try {
+    const url = id ? `/api/branch/update/${id}` : '/api/branch/add';
+    const r = await fetch(url, {
+      method: id ? 'PUT' : 'POST',
+      headers: {Authorization:'Bearer '+token,'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error(await r.text());
+    toast(id ? '✅ Cập nhật thành công!' : '✅ Thêm chi nhánh thành công!', 'ok');
+    closeM(); await load();
+  } catch(e) { toast('⚠ '+e.message,'err'); }
+}
+
+async function del(id, name) {
+  if (!confirm(`Xóa chi nhánh "${name}"?\nNhân viên thuộc chi nhánh này sẽ bị hủy phân công.`)) return;
+  try {
+    const r = await fetch(`/api/branch/delete/${id}`,{method:'DELETE',headers:{Authorization:'Bearer '+token}});
+    if (!r.ok) throw new Error(await r.text());
+    toast('🗑 Đã xóa chi nhánh','ok'); await load();
+  } catch(e) { toast('⚠ '+e.message,'err'); }
+}
+
+function closeM() { document.getElementById('br-modal').classList.remove('open'); }
+function doLogout() { localStorage.clear(); location.replace('login.html'); }
+function toast(msg,type) {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast show '+type;
+  setTimeout(()=>el.className='toast',3200);
+}
+</script>
+</body>
+</html>

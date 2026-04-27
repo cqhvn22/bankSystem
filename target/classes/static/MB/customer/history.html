@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử giao dịch</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+    <div style="max-width: 800px; margin: 40px auto; padding: 20px;">
+        <h2 style="margin-bottom: 30px;">Lịch sử giao dịch</h2>
+        <div class="card fade-in" id="history-container">
+            <!-- Data will be loaded via JS -->
+        </div>
+        <button class="btn-primary" style="margin-top: 30px; width: 100%; background: #eee; color: #333;" onclick="location.href='dashboard.html'">QUAY LẠI</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const container = document.getElementById('history-container');
+            container.innerHTML = '<p style="text-align:center; padding: 20px;">Đang tải dữ liệu...</p>';
+
+            try {
+                // Fetch user's account to get account number
+                const accRes = await fetch('/api/account/my-accounts', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (!accRes.ok) throw new Error('Không thể tải tài khoản');
+                const accounts = await accRes.json();
+                
+                if (accounts.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; padding: 20px;">Bạn chưa có tài khoản nào.</p>';
+                    return;
+                }
+
+                const myAccount = accounts[0].accountNumber;
+
+                // Fetch transactions for this account
+                const txRes = await fetch('/api/transaction/history/' + myAccount, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (!txRes.ok) throw new Error('Không thể tải lịch sử giao dịch');
+                const transactions = await txRes.json();
+
+                if (transactions.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; padding: 20px;">Chưa có giao dịch nào.</p>';
+                    return;
+                }
+
+                container.innerHTML = ''; // Clear loading text
+                
+                // Group transactions by month
+                const groupedData = {};
+                transactions.forEach(tx => {
+                    const dateObj = new Date(tx.timestamp);
+                    const monthKey = `Tháng ${dateObj.getMonth() + 1} / ${dateObj.getFullYear()}`;
+                    if (!groupedData[monthKey]) groupedData[monthKey] = [];
+                    groupedData[monthKey].push(tx);
+                });
+
+                Object.keys(groupedData).forEach(month => {
+                    const header = document.createElement('div');
+                    header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e9edf7; padding-bottom: 15px; margin-bottom: 15px; margin-top: 20px;';
+                    header.innerHTML = `<h3 style="font-size: 16px; color: var(--text-muted); text-transform: uppercase;">${month}</h3>`;
+                    container.appendChild(header);
+
+                    groupedData[month].forEach(tx => {
+                        const isOut = tx.fromAccount && tx.fromAccount.accountNumber === myAccount;
+                        
+                        let icon = isOut ? '↑' : '↓';
+                        let iconBg = isOut ? '#ffe5e6' : '#dff0e4';
+                        let iconColor = isOut ? 'var(--mb-red)' : '#28a745';
+                        let amountColor = isOut ? 'var(--mb-red)' : '#28a745';
+                        let sign = isOut ? '-' : '+';
+                        
+                        // Handle deposit/withdraw types
+                        if (tx.transactionType === 'DEPOSIT') {
+                            icon = '↓'; iconBg = '#dff0e4'; iconColor = '#28a745'; amountColor = '#28a745'; sign = '+';
+                        } else if (tx.transactionType === 'WITHDRAW') {
+                            icon = '↑'; iconBg = '#ffe5e6'; iconColor = 'var(--mb-red)'; amountColor = 'var(--mb-red)'; sign = '-';
+                        }
+
+                        let title = tx.transactionType;
+                        if (tx.transactionType === 'TRANSFER') {
+                            title = isOut ? `Chuyển tiền tới ${tx.toAccount ? tx.toAccount.accountNumber : ''}` : `Nhận tiền từ ${tx.fromAccount ? tx.fromAccount.accountNumber : ''}`;
+                        }
+
+                        const dateObj = new Date(tx.timestamp);
+                        const timeStr = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()} - ${dateObj.getHours().toString().padStart(2, '0')}:${dateObj.getMinutes().toString().padStart(2, '0')}`;
+                        
+                        const amountFormatted = new Intl.NumberFormat('vi-VN').format(tx.amount);
+
+                        const txDiv = document.createElement('div');
+                        txDiv.style.cssText = 'display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; transition: 0.2s;';
+                        txDiv.innerHTML = `
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <div style="width: 45px; height: 45px; background: ${iconBg}; color: ${iconColor}; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">${icon}</div>
+                                <div>
+                                    <p style="font-weight: 700; font-size: 15px;">${title}</p>
+                                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">${timeStr}</p>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="color: ${amountColor}; font-weight: 700; font-size: 16px;">${sign} ${amountFormatted} VND</p>
+                                <p style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">${tx.content || ''}</p>
+                            </div>
+                        `;
+                        container.appendChild(txDiv);
+                    });
+                });
+
+            } catch (err) {
+                container.innerHTML = `<p style="text-align:center; padding: 20px; color: red;">${err.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

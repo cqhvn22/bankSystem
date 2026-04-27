@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        .transfer-container { max-width: 550px; margin: 50px auto; padding: 20px; }
+        .input-group { margin-bottom: 22px; }
+        .input-group label { display: block; margin-bottom: 10px; font-weight: 600; color: var(--text-main); font-size: 14px; }
+        .input-group input { width: 100%; padding: 16px; border-radius: 14px; border: 2px solid #e9edf7; font-size: 16px; transition: 0.3s; background: #fafbfc; }
+        .input-group input:focus { border-color: var(--mb-blue); outline: none; background: white; box-shadow: 0 0 0 4px rgba(0,71,186,0.1); }
+        .source-acc { background: linear-gradient(135deg, #f8fafc 0%, #eef2f9 100%); padding: 18px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #e9edf7; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; margin-bottom: 20px; transition: color 0.2s; }
+        .back-btn:hover { color: var(--mb-blue); }
+    </style>
+</head>
+<body>
+    <div class="transfer-container fade-in">
+        <a href="dashboard.html" class="back-btn">← Quay lại</a>
+        <div class="logo-container" style="justify-content: center; margin-bottom: 30px;">
+            <div class="mb-star"></div><div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">TRANSFER</div></div>
+        </div>
+        <div class="card" style="padding: 35px;">
+            <h3 style="margin-bottom: 30px; text-align: center; font-size: 22px; color: var(--text-main);">Chuyển khoản nội bộ</h3>
+            <div id="transfer-msg" style="margin-bottom: 15px; font-weight: bold; text-align: center; display: none;"></div>
+            <div class="input-group">
+                <label>Tài khoản nguồn</label>
+                <div class="source-acc">
+                    <div>
+                        <div id="source-acc-number" style="font-weight: 700; color: var(--text-main); font-size: 16px;">Đang tải...</div>
+                        <div style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Số dư: <span id="source-acc-balance" style="color: var(--mb-blue); font-weight: 700;">...</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Số tài khoản thụ hưởng</label>
+                <div style="position: relative;"><input type="text" id="target-account" placeholder="Nhập STK MB Bank"></div><div id="target-account-name" style="margin-top: 8px; font-size: 13px; font-weight: 600; display: none;"></div>
+            </div>
+            
+            <div class="input-group">
+                <label>Số tiền (VND)</label>
+                <input type="number" id="amount" placeholder="0">
+            </div>
+            
+            <div class="input-group">
+                <label>Lời nhắn</label>
+                <input type="text" id="content" value="Chuyển tiền">
+            </div>
+            
+            <button class="btn-primary" onclick="doTransfer()" style="width: 100%; font-size: 16px; padding: 18px; margin-top: 15px; border-radius: 14px;">TIẾP TỤC</button>
+        </div>
+    </div>
+    <script>
+        let myAccountNum = '';
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/account/my-accounts', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                
+                if (res.ok) {
+                    const accounts = await res.json();
+                    if (accounts.length > 0) {
+                        const acc = accounts[0];
+                        myAccountNum = acc.accountNumber;
+                        document.getElementById('source-acc-balance').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(acc.balance);
+                        document.getElementById('source-acc-number').innerText = acc.accountNumber;
+                        
+                        const username = localStorage.getItem('username');
+                        document.getElementById('content').value = username + " chuyen tien";
+                    }
+                } else if (res.status === 401) {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                }
+            } catch (e) {}
+        });
+
+        let typingTimer;
+        document.getElementById('target-account').addEventListener('input', function(e) {
+            clearTimeout(typingTimer);
+            const val = e.target.value.trim();
+            const nameBox = document.getElementById('target-account-name');
+            
+            if (val.length < 5) {
+                nameBox.style.display = 'none';
+                return;
+            }
+            
+            nameBox.style.display = 'block';
+            nameBox.style.color = '#888';
+            nameBox.innerText = 'Đang kiểm tra...';
+            
+            typingTimer = setTimeout(async () => {
+                try {
+                    const token = localStorage.getItem('jwtToken');
+                    const res = await fetch('/api/account/check?accountNumber=' + val, {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (res.ok) {
+                        const acc = await res.json();
+                        nameBox.style.color = 'var(--mb-blue)';
+                        nameBox.innerText = acc.customerName ? ('👤 Tên thụ hưởng: ' + acc.customerName) : '✅ Tài khoản hợp lệ';
+                    } else {
+                        nameBox.style.color = 'var(--mb-red)';
+                        nameBox.innerText = '❌ Không tìm thấy tài khoản';
+                    }
+                } catch(err) {
+                    nameBox.style.color = 'var(--mb-red)';
+                    nameBox.innerText = '❌ Lỗi khi kiểm tra';
+                }
+            }, 600);
+        });
+
+        async function doTransfer() {
+            const toAcc = document.getElementById('target-account').value;
+            const amount = document.getElementById('amount').value;
+            const content = document.getElementById('content').value;
+            const msgBox = document.getElementById('transfer-msg');
+
+            if (!toAcc || !amount || amount <= 0) {
+                msgBox.innerText = "Vui lòng nhập số tài khoản và hợp lệ số tiền.";
+                msgBox.style.color = 'red';
+                msgBox.style.display = 'block';
+                return;
+            }
+
+            const token = localStorage.getItem('jwtToken');
+            try {
+                const res = await fetch('/api/transaction/transfer', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        fromAccount: myAccountNum,
+                        toAccount: toAcc,
+                        amount: amount,
+                        content: content
+                    })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    msgBox.innerText = "Chuyển tiền thành công!";
+                    msgBox.style.color = 'green';
+                    msgBox.style.display = 'block';
+                    setTimeout(() => location.href = 'dashboard.html', 1500);
+                } else {
+                    msgBox.innerText = data.message || "Lỗi giao dịch.";
+                    msgBox.style.color = 'red';
+                    msgBox.style.display = 'block';
+                }
+            } catch (e) {
+                msgBox.innerText = "Lỗi kết nối máy chủ!";
+                msgBox.style.color = 'red';
+                msgBox.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
+

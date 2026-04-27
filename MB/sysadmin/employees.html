@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Nhân sự - Quản trị Hệ thống</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 30px 0;
+        }
+
+        .sidebar-item {
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .sidebar-item.active {
+            background: var(--mb-blue);
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="logo-container" style="padding: 0 30px 40px;">
+                <div class="mb-star"></div>
+                <div class="logo-text-group">
+                    <div class="logo-main">MB</div>
+                    <div class="logo-sub">SYSADMIN</div>
+                </div>
+            </div>
+            <a href="dashboard.html" class="sidebar-item">🏠 Tổng quan Hệ thống</a>
+            <a href="employees.html" class="sidebar-item active">👨‍💼 Quản lý nhân viên (Phân quyền)</a>
+        </aside>
+
+        <main class="content fade-in">
+            <div style="display:flex; justify-content: space-between; margin-bottom: 30px;">
+                <h2>Quản lý Nhân sự (Employee) & Phân quyền User</h2>
+                <button class="btn-primary">+ Tạo mới thông tin Nhân viên</button>
+            </div>
+            <div class="card">
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm theo Mã NV, Họ tên, Bộ phận...">
+                    <button class="btn-primary">Tìm kiếm</button>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 2px solid #eee; color: #888;">
+                            <th style="padding: 15px;">Mã NV</th>
+                            <th>Họ tên</th>
+                            <th>Chức vụ / Bộ phận</th>
+                            <th>Mức Lương</th>
+                            <th>Vai trò / Quyền hạn</th>
+                            <th>Thao tác Cấp cao</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employees-body">
+                        <!-- Data will be loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = [
+                { maNV: "EMP_001", hoTen: "Trần Văn Hải", chucVu: "Giao dịch viên", boPhan: "Chi nhánh Hoàn Kiếm", luong: "15,000,000 VND", role: "Nhân viên Giao dịch", permission_class: "badge-info" },
+                { maNV: "EMP_002", hoTen: "Trần Hữu Nam", chucVu: "Trưởng phòng", boPhan: "Khối Khách hàng Cá nhân", luong: "35,000,000 VND", role: "Quản trị viên (Khối)", permission_class: "badge-warning" },
+                { maNV: "EMP_003", hoTen: "Lê Minh Hằng", chucVu: "Kiểm soát viên", boPhan: "Phòng Phê duyệt Tín dụng", luong: "22,500,000 VND", role: "Cấp Quản lý (Duyệt)", permission_class: "badge-success" },
+                { maNV: "EMP_004", hoTen: "Đặng Diệu Linh", chucVu: "Chuyên viên CSKH", boPhan: "Trung tâm Hỗ trợ 24/7", luong: "12,000,000 VND", role: "Hỗ trợ khách hàng", permission_class: "badge-info" },
+                { maNV: "EMP_005", hoTen: "Cao Xuân Trường", chucVu: "Chuyên viên Tín dụng", boPhan: "Trung tâm Vay vốn", luong: "20,000,000 VND", role: "Nhân viên Thẩm định", permission_class: "badge-info" },
+                { maNV: "EMP_006", hoTen: "Phan Mai Trang", chucVu: "Giao dịch viên", boPhan: "Chi nhánh Đống Đa", luong: "14,500,000 VND", role: "Tài khoản Bị khóa", permission_class: "badge-danger" },
+                { maNV: "EMP_007", hoTen: "Đỗ Hoàng Long", chucVu: "Giám đốc IT", boPhan: "Khối CNTT", luong: "80,000,000 VND", role: "SYSTEM ADMIN", permission_class: "badge-success" },
+                { maNV: "EMP_008", hoTen: "Hoàng Thị Ánh", chucVu: "Nhân viên Telesale", boPhan: "Phòng Kinh Doanh", luong: "10,500,000 VND", role: "Nhân viên (Chỉ xem)", permission_class: "badge-warning" },
+                { maNV: "EMP_009", hoTen: "Đậu Kim Ngân", chucVu: "Thủ quỹ", boPhan: "Quản lý kho quỹ", luong: "18,000,000 VND", role: "Quản lý dữ liệu lõi", permission_class: "badge-info" },
+                { maNV: "EMP_010", hoTen: "Lương Quang Anh", chucVu: "Thực tập sinh", boPhan: "Thu thập dữ liệu", luong: "3,000,000 VND", role: "Tài khoản Thực tập", permission_class: "badge-warning" },
+                { maNV: "EMP_011", hoTen: "Tạ Quang Bửu", chucVu: "Phó giám đốc", boPhan: "Khối Nội bộ", luong: "55,000,000 VND", role: "Quản trị viên (Khối)", permission_class: "badge-warning" },
+                { maNV: "EMP_012", hoTen: "Phạm Quốc Tuấn", chucVu: "Giao dịch viên", boPhan: "Chi nhánh Cầu Giấy", luong: "15,200,000 VND", role: "Nghỉ phép", permission_class: "badge-danger" },
+                { maNV: "EMP_013", hoTen: "Hoàng Xuân Vinh", chucVu: "Kiểm toán viên", boPhan: "Ban Kiểm soát", luong: "32,000,000 VND", role: "Toàn quyền đọc", permission_class: "badge-success" },
+                { maNV: "EMP_014", hoTen: "Vũ Đan Thanh", chucVu: "Chuyên viên CSKH", boPhan: "Khối Khách hàng", luong: "13,500,000 VND", role: "Hỗ trợ khách hàng", permission_class: "badge-info" },
+                { maNV: "EMP_015", hoTen: "Trần Anh Quân", chucVu: "Chuyên viên phân tích", boPhan: "Phòng Data Analytics", luong: "28,000,000 VND", role: "Data Analytics", permission_class: "badge-info" }
+            ];
+
+            const tbody = document.getElementById('employees-body');
+            data.forEach(emp => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 15px; font-weight: 600; color: var(--mb-blue);">${emp.maNV}</td>
+                    <td style="font-weight: 600;">${emp.hoTen}</td>
+                    <td>
+                        <div style="font-weight: 500;">${emp.chucVu}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">${emp.boPhan}</div>
+                    </td>
+                    <td style="font-weight: 600; color: #28a745;">${emp.luong}</td>
+                    <td><span class="badge ${emp.permission_class}">${emp.role}</span></td>
+                    <td>
+                        <button style="color: var(--mb-blue); border:none; background:none; cursor:pointer; font-weight: 600; margin-right: 15px;">phanQuyen()</button>
+                        <button style="color: var(--mb-red); border:none; background:none; cursor:pointer; font-weight: 600;">Thu hồi User</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+
+</html>

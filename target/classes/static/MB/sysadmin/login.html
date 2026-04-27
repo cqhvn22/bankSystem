@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>MB Bank - Đăng nhập Quản trị hệ thống</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <style>
+        body { background: linear-gradient(135deg, #111827 0%, #000000 100%); display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .login-wrapper { display: flex; background: rgba(255,255,255,0.97); border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); overflow: hidden; width: 900px; max-width: 95%; flex-direction: row-reverse; }
+        .login-banner { flex: 1; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        .login-banner h2 { font-size: 32px; margin-bottom: 20px; font-weight: 700; }
+        .login-banner p { font-size: 16px; opacity: 0.9; line-height: 1.6; }
+        .login-form-container { flex: 1; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 14px; }
+        .input-group input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #eee; font-size: 15px; transition: 0.3s; box-sizing: border-box; }
+        .input-group input:focus { border-color: var(--mb-blue); outline: none; box-shadow: 0 0 0 3px rgba(12,59,182,0.1); }
+        .btn-login { width: 100%; padding: 15px; font-size: 16px; background: #1e3c72; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; margin-top: 10px; transition: 0.3s; }
+        .btn-login:hover { background: #16306a; transform: translateY(-2px); }
+        #error-msg { background: #fff0f0; border: 1px solid #ffcccc; border-radius: 8px; padding: 12px 15px; color: #c0131a; margin-bottom: 15px; font-size: 14px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper fade-in">
+        <div class="login-banner">
+            <div class="logo-container" style="margin-bottom: 30px;">
+                <div class="mb-star" style="background: white;"></div>
+                <div class="logo-text-group">
+                    <div class="logo-main" style="color: white;">MB</div>
+                    <div class="logo-sub" style="color: rgba(255,255,255,0.7);">SYSADMIN</div>
+                </div>
+            </div>
+            <h2>Quản trị<br>Hệ thống</h2>
+            <p>Phân quyền nhân viên, cấu hình và sao lưu dữ liệu toàn hệ thống.</p>
+        </div>
+
+        <div class="login-form-container">
+            <h3 style="margin-bottom: 25px; color: #333; font-size: 24px;">Đăng nhập SysAdmin</h3>
+            <div id="error-msg"></div>
+            <div class="input-group">
+                <label>Tên đăng nhập (Admin ID)</label>
+                <input type="text" id="login-username" placeholder="Nhập ID Quản trị" autocomplete="username">
+            </div>
+            <div class="input-group">
+                <label>Mật khẩu hệ thống</label>
+                <input type="password" id="login-password" placeholder="Nhập mật khẩu cấp cao" autocomplete="current-password">
+            </div>
+            <button class="btn-login" id="login-btn" onclick="doLogin()">XÁC THỰC BẢO MẬT</button>
+        </div>
+    </div>
+
+    <script>
+        // Clear old session on login page load
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('username');
+        localStorage.removeItem('fullName');
+
+        async function doLogin() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.getElementById('login-btn');
+
+            errorMsg.style.display = 'none';
+            errorMsg.innerText = '';
+
+            if (!username) {
+                errorMsg.innerText = '⚠ Vui lòng nhập Admin ID.';
+                errorMsg.style.display = 'block';
+                document.getElementById('login-username').focus();
+                return;
+            }
+
+            if (!password) {
+                errorMsg.innerText = '⚠ Vui lòng nhập mật khẩu.';
+                errorMsg.style.display = 'block';
+                document.getElementById('login-password').focus();
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'Đang xác thực...';
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: username, password: password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    errorMsg.innerText = '✗ Sai tên đăng nhập hoặc mật khẩu.';
+                    errorMsg.style.display = 'block';
+                    btn.disabled = false;
+                    btn.innerText = 'XÁC THỰC BẢO MẬT';
+                    return;
+                }
+
+                if (data.role !== 'ROLE_SYSADMIN') {
+                    errorMsg.innerText = '✗ Tài khoản không có quyền truy cập hệ thống quản trị.';
+                    errorMsg.style.display = 'block';
+                    btn.disabled = false;
+                    btn.innerText = 'XÁC THỰC BẢO MẬT';
+                    return;
+                }
+
+                localStorage.setItem('jwtToken', data.token);
+                localStorage.setItem('userRole', data.role);
+                localStorage.setItem('username', data.username);
+                localStorage.setItem('fullName', data.fullName || data.username);
+
+                window.location.replace('dashboard.html');
+
+            } catch (err) {
+                errorMsg.innerText = '✗ Lỗi kết nối đến máy chủ. Vui lòng thử lại.';
+                errorMsg.style.display = 'block';
+                btn.disabled = false;
+                btn.innerText = 'XÁC THỰC BẢO MẬT';
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') doLogin();
+        });
+    </script>
+</body>
+</html>
