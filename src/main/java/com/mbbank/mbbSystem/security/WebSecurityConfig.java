@@ -54,15 +54,15 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(cors -> cors.configure(http)) // Enable CORS
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource())) // Sửa lại dòng này
             .csrf(csrf -> csrf.disable())
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth ->
                 auth.requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/MB/**").permitAll() // Allow static resources
-                    .requestMatchers("/api/registration/submit").permitAll() // Public: khách gửi yêu cầu
-                    .requestMatchers("/api/branch/public/**").permitAll()    // Public: lấy danh sách chi nhánh
+                    .requestMatchers("/MB/**").permitAll()
+                    .requestMatchers("/api/registration/submit").permitAll()
+                    .requestMatchers("/api/branch/public/**").permitAll()
                     .anyRequest().authenticated()
             );
 
