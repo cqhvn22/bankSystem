@@ -13,4 +13,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByUsername(String username);
     /** Lấy danh sách khách hàng theo chi nhánh */
     List<Customer> findByBranchId(Long branchId);
+    boolean existsByCccd(String cccd);
 }

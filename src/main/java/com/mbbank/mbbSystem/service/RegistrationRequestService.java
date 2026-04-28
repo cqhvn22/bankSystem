@@ -34,6 +34,9 @@ public class RegistrationRequestService {
     private AccountRepository accountRepo;
 
     @Autowired
+    private CustomerRepository customerRepo;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     // ===================== PUBLIC: Khách gửi yêu cầu =====================
@@ -63,6 +66,11 @@ public class RegistrationRequestService {
         // Kiểm tra CCCD đã có tài khoản PENDING chưa
         requestRepo.findByCccdAndStatus(dto.getCccd(), "PENDING")
                 .ifPresent(r -> { throw new RuntimeException("CCCD này đã có yêu cầu đang chờ xử lý!"); });
+
+        // Kiểm tra CCCD đã tồn tại trong hệ thống chưa
+        if (customerRepo.existsByCccd(dto.getCccd())) {
+            throw new RuntimeException("Số CCCD này đã được đăng ký trên hệ thống!");
+        }
 
         Branch branch = branchRepo.findById(dto.getBranchId())
                 .orElseThrow(() -> new RuntimeException("Chi nhánh không tồn tại!"));
@@ -138,7 +146,13 @@ public class RegistrationRequestService {
         customer.setBranch(req.getBranch());
         userRepo.save(customer);
 
-        String accNumber = generateAccountNumber();
+        String accNumber = req.getPhone(); // Dùng số điện thoại làm số tài khoản
+        if (accountRepo.existsByAccountNumber(accNumber)) {
+            // Nếu STK (SĐT) đã tồn tại, sinh ngẫu nhiên như cũ hoặc báo lỗi
+            // Ở đây ta báo lỗi vì yêu cầu là "Lấy SĐT làm STK luôn"
+            throw new RuntimeException("Số tài khoản (SĐT) " + accNumber + " đã tồn tại trên hệ thống!");
+        }
+        
         Account account = new Account(accNumber, BigDecimal.ZERO, req.getLoaiTK(), LocalDate.now(), customer);
         accountRepo.save(account);
 

@@ -15,6 +15,7 @@ public class Customer extends User {
 
     private LocalDate ngaySinh; // Ngày sinh
 
+    @Column(unique = true)
     private String cccd;
     private String phone;
 

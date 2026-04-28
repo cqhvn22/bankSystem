@@ -23,7 +23,17 @@ public class AccountService {
 
     public Account createAccount(String accountNumber, BigDecimal initialBalance, String loaiTK, LocalDate ngayMo, Long customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Customer not found"));
-        Account account = new Account(accountNumber, initialBalance, loaiTK, ngayMo != null ? ngayMo : LocalDate.now(), customer);
+        
+        String finalAccNumber = accountNumber;
+        if (finalAccNumber == null || finalAccNumber.isBlank()) {
+            finalAccNumber = customer.getPhone();
+        }
+
+        if (accountRepository.existsByAccountNumber(finalAccNumber)) {
+            throw new RuntimeException("Số tài khoản " + finalAccNumber + " đã tồn tại!");
+        }
+
+        Account account = new Account(finalAccNumber, initialBalance, loaiTK, ngayMo != null ? ngayMo : LocalDate.now(), customer);
         return accountRepository.save(account);
     }
 

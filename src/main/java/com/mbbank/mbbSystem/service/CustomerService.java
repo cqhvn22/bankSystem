@@ -15,6 +15,9 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
     public Customer addCustomer(Customer customer) {
+        if (customerRepository.existsByCccd(customer.getCccd())) {
+            throw new RuntimeException("Số CCCD này đã tồn tại trên hệ thống!");
+        }
         return customerRepository.save(customer);
     }
 
@@ -23,7 +26,13 @@ public class CustomerService {
         customer.setFullName(updatedInfo.getFullName());
         customer.setPhone(updatedInfo.getPhone());
         customer.setAddress(updatedInfo.getAddress());
-        customer.setCccd(updatedInfo.getCccd());
+        
+        if (updatedInfo.getCccd() != null && !updatedInfo.getCccd().equals(customer.getCccd())) {
+            if (customerRepository.existsByCccd(updatedInfo.getCccd())) {
+                throw new RuntimeException("Số CCCD mới này đã tồn tại trên hệ thống!");
+            }
+            customer.setCccd(updatedInfo.getCccd());
+        }
         if (updatedInfo.getMaKH() != null) customer.setMaKH(updatedInfo.getMaKH());
         if (updatedInfo.getNgaySinh() != null) customer.setNgaySinh(updatedInfo.getNgaySinh());
         if (updatedInfo.getEmail() != null) customer.setEmail(updatedInfo.getEmail());
