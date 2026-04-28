@@ -50,16 +50,18 @@
     </div>
 
     <script>
+        console.log("SysAdmin login script loaded");
         // Auto-redirect if already logged in
         const role = localStorage.getItem('userRole');
         const token = localStorage.getItem('token');
         if (token && role) {
-            if (role === 'ROLE_SYSADMIN') { window.location.replace('dashboard.html'); return; }
-            else if (role === 'ROLE_CUSTOMER') { window.location.replace('../customer/dashboard.html'); return; }
-            else if (role === 'ROLE_EMPLOYEE') { window.location.replace('../employee/dashboard.html'); return; }
+            if (role === 'ROLE_SYSADMIN') { window.location.replace('index.html'); }
+            else if (role === 'ROLE_CUSTOMER') { window.location.replace('../customer/index.html'); }
+            else if (role === 'ROLE_EMPLOYEE') { window.location.replace('../employee/index.html'); }
         }
 
         async function doLogin() {
+            console.log("SysAdmin doLogin called");
             const username = document.getElementById('login-username').value.trim();
             const password = document.getElementById('login-password').value;
             const errorMsg = document.getElementById('error-msg');
@@ -86,6 +88,7 @@
             btn.innerText = 'Đang xác thực...';
 
             try {
+                console.log("Sending SysAdmin login request...");
                 const res = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -93,6 +96,7 @@
                 });
 
                 const data = await res.json();
+                console.log("SysAdmin response received:", res.status);
 
                 if (!res.ok) {
                     errorMsg.innerText = '✗ Sai tên đăng nhập hoặc mật khẩu.';
@@ -115,9 +119,11 @@
                 localStorage.setItem('username', data.username);
                 localStorage.setItem('fullName', data.fullName || data.username);
 
-                window.location.replace('dashboard.html');
+                console.log("Login successful, redirecting...");
+                window.location.replace('index.html');
 
             } catch (err) {
+                console.error("SysAdmin login error:", err);
                 errorMsg.innerText = '✗ Lỗi kết nối đến máy chủ. Vui lòng thử lại.';
                 errorMsg.style.display = 'block';
                 btn.disabled = false;

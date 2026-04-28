@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="transfer-container fade-in">
-        <a href="dashboard.html" class="back-btn">← Quay lại</a>
+        <a href="index.html" class="back-btn">← Quay lại</a>
         <div class="logo-container" style="justify-content: center; margin-bottom: 30px;">
             <div class="mb-star"></div><div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">TRANSFER</div></div>
         </div>
@@ -40,7 +40,7 @@
             
             <div class="input-group">
                 <label>Số tiền (VND)</label>
-                <input type="number" id="amount" placeholder="0">
+                <input type="number" id="amount" placeholder="0" step="1" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             </div>
             
             <div class="input-group">
@@ -96,6 +96,13 @@
                 nameBox.style.display = 'none';
                 return;
             }
+
+            if (val === myAccountNum) {
+                nameBox.style.display = 'block';
+                nameBox.style.color = 'var(--mb-red)';
+                nameBox.innerText = '❌ Không thể chuyển khoản cho chính mình';
+                return;
+            }
             
             nameBox.style.display = 'block';
             nameBox.style.color = '#888';
@@ -128,13 +135,21 @@
             const content = document.getElementById('content').value;
             const msgBox = document.getElementById('transfer-msg');
 
-            if (!toAcc || !amount || amount <= 0) {
-                msgBox.innerText = "Vui lòng nhập số tài khoản và hợp lệ số tiền.";
+            if (!toAcc || !amount || amount <= 0 || !Number.isInteger(Number(amount))) {
+                msgBox.innerText = "Vui lòng nhập số tài khoản và số tiền (số nguyên) hợp lệ.";
                 msgBox.style.color = 'red';
                 msgBox.style.display = 'block';
                 return;
             }
 
+            if (toAcc === myAccountNum) {
+                msgBox.innerText = "Không thể chuyển tiền cho chính mình!";
+                msgBox.style.color = 'red';
+                msgBox.style.display = 'block';
+                return;
+            }
+
+            console.log("Transferring from:", myAccountNum, "to:", toAcc, "amount:", amount);
             const token = localStorage.getItem('token');
             try {
                 const res = await fetch('/api/transaction/transfer', {
@@ -152,11 +167,12 @@
                 });
 
                 const data = await res.json();
+                console.log("Response data:", data);
                 if (res.ok) {
                     msgBox.innerText = "Chuyển tiền thành công!";
                     msgBox.style.color = 'green';
                     msgBox.style.display = 'block';
-                    setTimeout(() => location.href = 'dashboard.html', 1500);
+                    setTimeout(() => location.href = 'index.html', 1500);
                 } else {
                     msgBox.innerText = data.message || "Lỗi giao dịch.";
                     msgBox.style.color = 'red';

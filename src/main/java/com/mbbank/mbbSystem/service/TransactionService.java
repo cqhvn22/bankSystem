@@ -57,8 +57,20 @@ public class TransactionService {
         Account fromAccount = accountRepository.findByAccountNumber(fromAccountNum).orElseThrow(() -> new RuntimeException("Source account not found"));
         Account toAccount = accountRepository.findByAccountNumber(toAccountNum).orElseThrow(() -> new RuntimeException("Destination account not found"));
 
+        if (fromAccountNum.equals(toAccountNum)) {
+            throw new RuntimeException("Không thể chuyển tiền cho chính mình!");
+        }
+
+        if (amount == null || amount.compareTo(java.math.BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Số tiền chuyển khoản không hợp lệ!");
+        }
+
+        if (amount.scale() > 0 && amount.stripTrailingZeros().scale() > 0) {
+            throw new RuntimeException("Số tiền chuyển khoản phải là số nguyên!");
+        }
+
         if (!fromAccount.kiemTraSoDu(amount)) {
-            throw new RuntimeException("Khong du so du");
+            throw new RuntimeException("Số dư tài khoản không đủ để thực hiện giao dịch này.");
         }
 
         fromAccount.setBalance(fromAccount.getBalance().subtract(amount));

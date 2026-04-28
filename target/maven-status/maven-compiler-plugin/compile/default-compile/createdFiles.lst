@@ -7,6 +7,7 @@ com\mbbank\mbbSystem\service\CustomerService.class
 com\mbbank\mbbSystem\repository\TransactionRepository.class
 com\mbbank\mbbSystem\model\User.class
 com\mbbank\mbbSystem\model\Account.class
+com\mbbank\mbbSystem\config\WebMvcConfig.class
 com\mbbank\mbbSystem\service\TransactionService.class
 com\mbbank\mbbSystem\security\AuthEntryPointJwt.class
 com\mbbank\mbbSystem\service\BranchService.class

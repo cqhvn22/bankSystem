@@ -70,7 +70,7 @@
                 <label>Mật khẩu</label>
                 <input type="password" id="password" placeholder="Nhập mật khẩu">
             </div>
-            <button class="btn-primary btn-login" id="loginBtn">ĐĂNG NHẬP</button>
+            <button class="btn-primary btn-login" id="loginBtn" onclick="doLogin()">ĐĂNG NHẬP</button>
             <div id="error-msg" style="color: var(--mb-red); font-size: 13px; margin-top: 15px; text-align: center; display: none;"></div>
             <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">
                 Chưa có tài khoản? <a href="register.html" style="color: var(--mb-blue); font-weight: 600; text-decoration: none;">Đăng ký ngay</a>
@@ -79,17 +79,18 @@
     </div>
 
     <script>
+        console.log("Login script loaded");
         // Auto-redirect if already logged in
         const role = localStorage.getItem('userRole');
         const token = localStorage.getItem('token');
         if (token && role) {
-            if (role === 'ROLE_CUSTOMER') { window.location.href = 'dashboard.html'; return; }
-            else if (role === 'ROLE_EMPLOYEE') { window.location.href = '../employee/dashboard.html'; return; }
-            else if (role === 'ROLE_SYSADMIN') { window.location.href = '../sysadmin/dashboard.html'; return; }
+            if (role === 'ROLE_CUSTOMER') { window.location.replace('index.html'); }
+            else if (role === 'ROLE_EMPLOYEE') { window.location.replace('../employee/index.html'); }
+            else if (role === 'ROLE_SYSADMIN') { window.location.replace('../sysadmin/index.html'); }
         }
 
-        const API_BASE = '/api';
-        document.getElementById('loginBtn').addEventListener('click', async () => {
+        async function doLogin() {
+            console.log("doLogin called");
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const errorEl = document.getElementById('error-msg');
@@ -103,12 +104,15 @@
 
             try {
                 btn.disabled = true; btn.textContent = 'Đang đăng nhập...';
-                const res = await fetch(`${API_BASE}/auth/login`, {
+                console.log("Sending login request...");
+                const res = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
                 const data = await res.json();
+                console.log("Response received:", res.status);
+                
                 if (res.ok) {
                     if (data.role !== 'ROLE_CUSTOMER') {
                         errorEl.textContent = 'Tài khoản này không phải là khách hàng!';
@@ -121,18 +125,21 @@
                     localStorage.setItem('username', data.username);
                     localStorage.setItem('fullName', data.fullName);
                     localStorage.setItem('userRole', data.role);
-                    window.location.href = 'dashboard.html';
+                    window.location.replace('index.html');
                 } else {
                     errorEl.textContent = data.message || 'Tên đăng nhập hoặc mật khẩu không chính xác';
                     errorEl.style.display = 'block';
                 }
             } catch (err) {
+                console.error("Login error:", err);
                 errorEl.textContent = 'Không thể kết nối đến máy chủ';
                 errorEl.style.display = 'block';
             } finally {
                 btn.disabled = false; btn.textContent = 'ĐĂNG NHẬP';
             }
-        });
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
     </script>
 </body>
 </html>
