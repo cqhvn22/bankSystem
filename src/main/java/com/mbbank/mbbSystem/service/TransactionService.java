@@ -23,20 +23,23 @@ public class TransactionService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private SavedRecipientService savedRecipientService;
+
     @Transactional
-    public Transaction deposit(String accountNumber, BigDecimal amount) {
+    public Transaction deposit(String accountNumber, BigDecimal amount, String performedBy) {
         Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new RuntimeException("Account not found"));
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
 
         String maGD = generateMaGD("NAP");
-        Transaction transaction = new Transaction(maGD, null, account, amount, LocalDateTime.now(), "DEPOSIT", "DEPOSIT");
+        Transaction transaction = new Transaction(maGD, null, account, amount, LocalDateTime.now(), "DEPOSIT", "DEPOSIT", performedBy);
         transaction.ghiNhatKyGD();
         return transactionRepository.save(transaction);
     }
 
     @Transactional
-    public Transaction withdraw(String accountNumber, BigDecimal amount) {
+    public Transaction withdraw(String accountNumber, BigDecimal amount, String performedBy) {
         Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new RuntimeException("Account not found"));
         
         if (!account.kiemTraSoDu(amount)) {
@@ -47,7 +50,7 @@ public class TransactionService {
         accountRepository.save(account);
 
         String maGD = generateMaGD("RUT");
-        Transaction transaction = new Transaction(maGD, account, null, amount, LocalDateTime.now(), "WITHDRAW", "WITHDRAW");
+        Transaction transaction = new Transaction(maGD, account, null, amount, LocalDateTime.now(), "WITHDRAW", "WITHDRAW", performedBy);
         transaction.ghiNhatKyGD();
         return transactionRepository.save(transaction);
     }
@@ -80,8 +83,16 @@ public class TransactionService {
         accountRepository.save(toAccount);
 
         String maGD = generateMaGD("CK");
-        Transaction transaction = new Transaction(maGD, fromAccount, toAccount, amount, LocalDateTime.now(), content, "TRANSFER");
+        Transaction transaction = new Transaction(maGD, fromAccount, toAccount, amount, LocalDateTime.now(), content, "TRANSFER", null);
         transaction.ghiNhatKyGD();
+
+        // Tự động lưu người nhận vào danh bạ
+        try {
+            savedRecipientService.saveRecipient(fromAccount.getCustomer(), toAccountNum, toAccount.getCustomer().getFullName());
+        } catch (Exception e) {
+            System.err.println("Lỗi lưu danh bạ: " + e.getMessage());
+        }
+
         return transactionRepository.save(transaction);
     }
 

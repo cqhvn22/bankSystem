@@ -98,8 +98,17 @@ public class AccountController {
     @GetMapping("/check")
     @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
     public ResponseEntity<?> checkAccountName(@RequestParam String accountNumber) {
-        return accountService.findAccount(accountNumber)
-                .map(acc -> ResponseEntity.ok(Map.of("customerName", acc.getCustomer() != null ? acc.getCustomer().getFullName() : "Tài khoản hệ thống")))
+        return accountService.searchCounterAccount(accountNumber)
+                .map(acc -> {
+                    java.util.Map<String, Object> resp = new java.util.HashMap<>();
+                    resp.put("customerName", acc.getCustomer() != null ? acc.getCustomer().getFullName() : "Tài khoản hệ thống");
+                    resp.put("accountNumber", acc.getAccountNumber());
+                    resp.put("balance", acc.getBalance());
+                    resp.put("phone", acc.getCustomer() != null ? acc.getCustomer().getPhone() : "-");
+                    resp.put("cccd", acc.getCustomer() != null ? acc.getCustomer().getCccd() : "-");
+                    resp.put("branchName", (acc.getCustomer() != null && acc.getCustomer().getBranch() != null) ? acc.getCustomer().getBranch().getBranchName() : "-");
+                    return ResponseEntity.ok(resp);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 

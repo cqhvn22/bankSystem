@@ -1,6 +1,8 @@
+C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\model\SavedRecipient.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\security\AuthEntryPointJwt.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\model\Transaction.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\security\UserDetailsImpl.java
+C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\repository\SavedRecipientRepository.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\security\UserDetailsServiceImpl.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\repository\BranchRepository.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\service\CustomerService.java
@@ -13,6 +15,7 @@ C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\service\RegistrationRequestService.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\security\JwtUtils.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\service\AccountService.java
+C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\service\SavedRecipientService.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\model\Branch.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\MbbSystemApplication.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\model\AccountRegistrationRequest.java
@@ -28,6 +31,7 @@ C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\controller\AuthController.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\controller\CustomerController.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\dto\RegistrationRequestDto.java
+C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\controller\SavedRecipientController.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\dto\EmployeeDto.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\repository\CustomerRepository.java
 C:\Users\ADMIN\Downloads\mbbSystem\bankSystem\src\main\java\com\mbbank\mbbSystem\controller\EmployeeController.java

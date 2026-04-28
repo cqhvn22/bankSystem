@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Giao dịch tại quầy - MB Bank</title>
+    <link rel="stylesheet" href="../assets/theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #fff; border-right: 1px solid #eee; padding: 28px 0; flex-shrink: 0; display: flex; flex-direction: column; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 13px 24px; color: #666; text-decoration: none; font-weight: 500; font-size: 14px; transition: .2s; }
+        .nav-item:hover { background: #f5f7ff; color: var(--mb-blue); }
+        .nav-item.active { background: var(--mb-blue); color: #fff; }
+        .content { flex: 1; padding: 36px; background: #f8f9fc; overflow-y: auto; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 30px; }
+        .search-box input { flex: 1; padding: 14px; border-radius: 12px; border: 1px solid #ddd; outline: none; }
+        .search-box input:focus { border-color: var(--mb-blue); }
+        
+        .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .service-card { background: white; padding: 24px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .service-card h3 { margin-top: 0; margin-bottom: 20px; color: var(--mb-blue); display: flex; align-items: center; gap: 10px; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: #666; }
+        .form-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #eee; background: #fafafa; }
+        .form-group input:focus { border-color: var(--mb-blue); background: white; }
+        
+        .acc-info { background: #f0f7ff; padding: 20px; border-radius: 15px; margin-bottom: 24px; display: none; }
+        .info-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .info-label { color: #666; }
+        .info-val { font-weight: 700; color: var(--text-main); }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo-container" style="padding:0 24px 36px">
+                <div class="mb-star"></div><div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">EMPLOYEE</div></div>
+            </div>
+            <a href="index.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Tổng quan</a>
+            <a href="customers.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg> Khách hàng</a>
+            <a href="accounts.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> Tài khoản</a>
+            <a href="counter-services.html" class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Giao dịch tại quầy</a>
+            <a href="registration-requests.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg> Duyệt tài khoản</a>
+        </aside>
+
+        <main class="content">
+            <div class="topbar">
+                <h2 style="margin:0">Giao dịch tại quầy</h2>
+                <p style="color:#888; font-size:14px">Nạp/Rút tiền trực tiếp cho khách hàng</p>
+            </div>
+
+            <div class="card" style="padding: 30px;">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Nhập Số tài khoản, Số điện thoại hoặc CCCD...">
+                    <button class="btn-primary" onclick="searchAccount()">TÌM KIẾM</button>
+                </div>
+
+                <div id="accountInfo" class="acc-info">
+                    <div class="card-header" style="margin-bottom: 15px;">
+                        <h4 style="margin:0; color:var(--mb-blue)">Thông tin tài khoản</h4>
+                        <span id="acc-status" class="badge badge-success">HOẠT ĐỘNG</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                        <div>
+                            <div class="info-item"><span class="info-label">Chủ tài khoản:</span><span class="info-val" id="acc-name">-</span></div>
+                            <div class="info-item"><span class="info-label">Số tài khoản:</span><span class="info-val" id="acc-number">-</span></div>
+                            <div class="info-item"><span class="info-label">Số điện thoại:</span><span class="info-val" id="acc-phone">-</span></div>
+                        </div>
+                        <div>
+                            <div class="info-item"><span class="info-label">Số dư hiện tại:</span><span class="info-val" id="acc-balance" style="color:var(--mb-blue); font-size: 18px;">0 VND</span></div>
+                            <div class="info-item"><span class="info-label">CCCD:</span><span class="info-val" id="acc-cccd">-</span></div>
+                            <div class="info-item"><span class="info-label">Chi nhánh:</span><span class="info-val" id="acc-branch">-</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-grid" id="serviceForms" style="display: none;">
+                    <div class="service-card">
+                        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg> Nạp tiền (Deposit)</h3>
+                        <div class="form-group">
+                            <label>Số tiền nạp (VND)</label>
+                            <input type="number" id="depositAmount" placeholder="Ví dụ: 1000000">
+                        </div>
+                        <button class="btn-primary" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="doCounterTransaction('deposit')">XÁC NHẬN NẠP TIỀN</button>
+                    </div>
+
+                    <div class="service-card">
+                        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"></path></svg> Rút tiền (Withdraw)</h3>
+                        <div class="form-group">
+                            <label>Số tiền rút (VND)</label>
+                            <input type="number" id="withdrawAmount" placeholder="Ví dụ: 500000">
+                        </div>
+                        <button class="btn-primary" style="width: 100%; background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="doCounterTransaction('withdraw')">XÁC NHẬN RÚT TIỀN</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        let currentAccount = null;
+
+        async function searchAccount() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            showLoading();
+            try {
+                // Giả định có API tìm kiếm tài khoản tổng hợp hoặc dùng check API
+                const res = await fetch(`/api/account/check?accountNumber=${query}`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                
+                if (res.ok) {
+                    const acc = await res.json();
+                    currentAccount = acc;
+                    displayAccount(acc);
+                } else {
+                    Swal.fire('Lỗi', 'Không tìm thấy tài khoản', 'error');
+                    document.getElementById('accountInfo').style.display = 'none';
+                    document.getElementById('serviceForms').style.display = 'none';
+                }
+            } catch (err) {
+                Swal.fire('Lỗi', 'Lỗi kết nối máy chủ', 'error');
+            } finally { hideLoading(); }
+        }
+
+        function displayAccount(acc) {
+            document.getElementById('acc-name').innerText = acc.customerName;
+            document.getElementById('acc-number').innerText = acc.accountNumber;
+            document.getElementById('acc-balance').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(acc.balance);
+            document.getElementById('acc-phone').innerText = acc.phone || '-';
+            document.getElementById('acc-cccd').innerText = acc.cccd || '-';
+            document.getElementById('acc-branch').innerText = acc.branchName || '-';
+            
+            document.getElementById('accountInfo').style.display = 'block';
+            document.getElementById('serviceForms').style.display = 'grid';
+        }
+
+        async function doCounterTransaction(type) {
+            const amountInput = document.getElementById(type + 'Amount');
+            const amount = amountInput.value;
+
+            if (!amount || amount <= 0) {
+                Swal.fire('Lỗi', 'Số tiền không hợp lệ', 'error');
+                return;
+            }
+
+            const confirmText = type === 'deposit' ? 'nạp' : 'rút';
+            const result = await Swal.fire({
+                title: `Xác nhận ${confirmText} tiền`,
+                text: `Bạn có chắc chắn muốn ${confirmText} ${new Intl.NumberFormat('vi-VN').format(amount)} VND cho tài khoản ${currentAccount.accountNumber}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy'
+            });
+
+            if (!result.isConfirmed) return;
+
+            showLoading();
+            try {
+                const endpoint = type === 'deposit' ? '/api/transaction/deposit' : '/api/transaction/withdraw';
+                const body = type === 'deposit' 
+                    ? { toAccount: currentAccount.accountNumber, amount: amount }
+                    : { fromAccount: currentAccount.accountNumber, amount: amount };
+
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (res.ok) {
+                    const data = await res.json(); // We might need transaction info
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: `${type === 'deposit' ? 'Nạp' : 'Rút'} tiền thành công!`,
+                        showCancelButton: true,
+                        confirmButtonText: 'IN HÓA ĐƠN',
+                        cancelButtonText: 'ĐÓNG',
+                        confirmButtonColor: '#10b981'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            printReceipt(type, amount, currentAccount);
+                        }
+                    });
+
+                    amountInput.value = '';
+                    searchAccount(); // Refresh info
+                } else {
+                    const data = await res.json();
+                    Swal.fire('Thất bại', data.message || 'Giao dịch không thành công', 'error');
+                }
+            } catch (err) {
+                Swal.fire('Lỗi', 'Lỗi hệ thống', 'error');
+            } finally { hideLoading(); }
+        }
+
+        function printReceipt(type, amount, acc) {
+            const now = new Date();
+            const dateStr = now.toLocaleString('vi-VN');
+            const typeStr = type === 'deposit' ? 'PHIẾU NẠP TIỀN' : 'PHIẾU RÚT TIỀN';
+            const employeeName = localStorage.getItem('fullName') || 'Nhân viên MB';
+
+            const receiptHtml = `
+                <html>
+                <head>
+                    <title>In hóa đơn</title>
+                    <style>
+                        body { font-family: 'Arial', sans-serif; padding: 40px; color: #333; }
+                        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #0047BA; padding-bottom: 10px; margin-bottom: 20px; }
+                        .logo { font-size: 24px; font-weight: bold; color: #0047BA; }
+                        .title { text-align: center; font-size: 22px; font-weight: bold; margin: 30px 0; }
+                        .info-row { display: flex; margin-bottom: 12px; }
+                        .label { width: 200px; font-weight: bold; }
+                        .footer { margin-top: 50px; display: grid; grid-template-columns: 1fr 1fr; text-align: center; }
+                        .sign-box { height: 100px; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="logo">MB BANK</div>
+                        <div>Số: GD${Date.now()}</div>
+                    </div>
+                    <div class="title">${typeStr}</div>
+                    <div class="info-row"><div class="label">Ngày giao dịch:</div><div>${dateStr}</div></div>
+                    <div class="info-row"><div class="label">Khách hàng:</div><div style="text-transform: uppercase;">${acc.customerName}</div></div>
+                    <div class="info-row"><div class="label">Số tài khoản:</div><div style="font-weight: bold;">${acc.accountNumber}</div></div>
+                    <div class="info-row"><div class="label">CCCD:</div><div>${acc.cccd || '-'}</div></div>
+                    <div class="info-row"><div class="label">Số tiền:</div><div style="font-size: 18px; font-weight: bold;">${new Intl.NumberFormat('vi-VN').format(amount)} VND</div></div>
+                    <div class="info-row"><div class="label">Nội dung:</div><div>${type === 'deposit' ? 'Nạp tiền tại quầy' : 'Rút tiền tại quầy'}</div></div>
+                    <div class="info-row"><div class="label">Nhân viên thực hiện:</div><div>${employeeName}</div></div>
+                    
+                    <div class="footer">
+                        <div>
+                            <p><b>KHÁCH HÀNG</b></p>
+                            <p style="font-size: 11px; font-style: italic;">(Ký, ghi rõ họ tên)</p>
+                            <div class="sign-box"></div>
+                            <p><b>${acc.customerName}</b></p>
+                        </div>
+                        <div>
+                            <p><b>GIAO DỊCH VIÊN</b></p>
+                            <p style="font-size: 11px; font-style: italic;">(Ký, ghi rõ họ tên)</p>
+                            <div class="sign-box"></div>
+                            <p><b>${employeeName}</b></p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 40px; text-align: center; font-size: 12px; color: #888; border-top: 1px dashed #ccc; padding-top: 10px;">
+                        Cảm ơn quý khách đã sử dụng dịch vụ của MB Bank!
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(receiptHtml);
+            printWindow.document.close();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        }
+
+        function showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
+    </script>
+</body>
+</html>

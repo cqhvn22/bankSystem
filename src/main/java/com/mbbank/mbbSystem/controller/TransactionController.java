@@ -47,8 +47,9 @@ public class TransactionController {
     @PostMapping("/deposit")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
     public ResponseEntity<?> deposit(@RequestBody TransferRequest request) {
+        String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
-            transactionService.deposit(request.getToAccount(), request.getAmount());
+            transactionService.deposit(request.getToAccount(), request.getAmount(), employeeName);
             return ResponseEntity.ok(new MessageResponse("Nạp tiền thành công!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
@@ -58,8 +59,9 @@ public class TransactionController {
     @PostMapping("/withdraw")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
     public ResponseEntity<?> withdraw(@RequestBody TransferRequest request) {
+        String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
-            transactionService.withdraw(request.getFromAccount(), request.getAmount());
+            transactionService.withdraw(request.getFromAccount(), request.getAmount(), employeeName);
             return ResponseEntity.ok(new MessageResponse("Rút tiền thành công!"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));

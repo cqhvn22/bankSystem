@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>MB Bank - Đăng nhập Khách hàng</title>
     <link rel="stylesheet" href="../assets/theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -50,6 +51,7 @@
     </style>
 </head>
 <body>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
     <div class="login-wrapper fade-in">
         <div class="login-banner">
             <div class="logo-container" style="margin-bottom: 30px; z-index: 1;">
@@ -90,34 +92,26 @@
         }
 
         async function doLogin() {
-            console.log("doLogin called");
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            const errorEl = document.getElementById('error-msg');
-            const btn = document.getElementById('loginBtn');
 
             if (!username || !password) {
-                errorEl.textContent = 'Vui lòng nhập tên đăng nhập và mật khẩu';
-                errorEl.style.display = 'block';
+                Swal.fire('Chú ý', 'Vui lòng nhập đầy đủ thông tin đăng nhập', 'warning');
                 return;
             }
 
+            showLoading();
             try {
-                btn.disabled = true; btn.textContent = 'Đang đăng nhập...';
-                console.log("Sending login request...");
                 const res = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
                 const data = await res.json();
-                console.log("Response received:", res.status);
                 
                 if (res.ok) {
                     if (data.role !== 'ROLE_CUSTOMER') {
-                        errorEl.textContent = 'Tài khoản này không phải là khách hàng!';
-                        errorEl.style.display = 'block';
-                        btn.disabled = false; btn.textContent = 'ĐĂNG NHẬP';
+                        Swal.fire('Lỗi truy cập', 'Tài khoản này không phải là khách hàng!', 'error');
                         return;
                     }
                     localStorage.setItem('token', data.token);
@@ -127,17 +121,17 @@
                     localStorage.setItem('userRole', data.role);
                     window.location.replace('index.html');
                 } else {
-                    errorEl.textContent = data.message || 'Tên đăng nhập hoặc mật khẩu không chính xác';
-                    errorEl.style.display = 'block';
+                    Swal.fire('Đăng nhập thất bại', data.message || 'Tên đăng nhập hoặc mật khẩu không chính xác', 'error');
                 }
             } catch (err) {
-                console.error("Login error:", err);
-                errorEl.textContent = 'Không thể kết nối đến máy chủ';
-                errorEl.style.display = 'block';
+                Swal.fire('Lỗi kết nối', 'Không thể kết nối đến máy chủ', 'error');
             } finally {
-                btn.disabled = false; btn.textContent = 'ĐĂNG NHẬP';
+                hideLoading();
             }
         }
+
+        function showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
 
         document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
     </script>

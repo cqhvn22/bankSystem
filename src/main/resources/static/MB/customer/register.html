@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MB Bank - Đăng ký tài khoản trực tuyến</title>
     <link rel="stylesheet" href="../assets/theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background: radial-gradient(circle at top right, #f0f4ff, #ffffff);
@@ -126,6 +127,9 @@
 
 <body>
     <div class="page-wrapper fade-in">
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
         <div class="register-container">
             <div class="register-info">
                 <div class="logo-container" style="margin-bottom: 50px;">
@@ -190,6 +194,7 @@
         const API_BASE = '/api';
 
         async function loadBranches() {
+            showLoading();
             try {
                 const res = await fetch(`${API_BASE}/branch/public/list`);
                 const branches = await res.json();
@@ -201,6 +206,7 @@
                     select.appendChild(opt);
                 });
             } catch (err) { console.error('Lỗi tải chi nhánh', err); }
+            finally { hideLoading(); }
         }
 
         async function submitRegistration() {
@@ -211,11 +217,12 @@
                 cccd: document.getElementById('cccd').value,
                 address: document.getElementById('address').value,
                 branchId: document.getElementById('branchId').value,
-                desiredUsername: phoneValue, // Sử dụng SĐT làm Username
+                desiredUsername: phoneValue,
                 password: document.getElementById('password').value,
                 loaiTK: 'THANH_TOAN'
             };
 
+            showLoading();
             try {
                 const res = await fetch(`${API_BASE}/registration/submit`, {
                     method: 'POST',
@@ -223,14 +230,35 @@
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    alert('Gửi yêu cầu thành công! Vui lòng dùng SĐT vừa đăng ký để đăng nhập sau khi được phê duyệt.');
-                    window.location.href = 'login.html';
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Đăng ký thành công',
+                        text: 'Vui lòng đợi nhân viên chi nhánh phê duyệt tài khoản của bạn.',
+                        confirmButtonText: 'Đồng ý'
+                    }).then(() => {
+                        window.location.href = 'login.html';
+                    });
                 } else {
                     const err = await res.json();
-                    alert('Lỗi: ' + (err.message || 'Gửi yêu cầu thất bại'));
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi đăng ký',
+                        text: err.message || 'Gửi yêu cầu thất bại'
+                    });
                 }
-            } catch (err) { alert('Không thể kết nối đến máy chủ'); }
+            } catch (err) { 
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi kết nối',
+                    text: 'Không thể kết nối đến máy chủ'
+                });
+            } finally {
+                hideLoading();
+            }
         }
+
+        function showLoading() { document.getElementById('loadingOverlay').classList.add('show'); }
+        function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
 
         loadBranches();
     </script>

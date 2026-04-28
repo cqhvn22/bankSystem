@@ -1,0 +1,11 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!mvnw
+!mvnw.cmd
+.mvn/wrapper/maven-wrapper.properties
+*.log
+.git/
+.idea/
+.vscode/
+*.swp
+*.DS_Store

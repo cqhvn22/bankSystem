@@ -11,9 +11,11 @@ com\mbbank\mbbSystem\config\WebMvcConfig.class
 com\mbbank\mbbSystem\service\TransactionService.class
 com\mbbank\mbbSystem\security\AuthEntryPointJwt.class
 com\mbbank\mbbSystem\service\BranchService.class
+com\mbbank\mbbSystem\controller\SavedRecipientController.class
 com\mbbank\mbbSystem\model\Employee.class
 com\mbbank\mbbSystem\repository\BranchRepository.class
 com\mbbank\mbbSystem\dto\CustomerDto.class
+com\mbbank\mbbSystem\model\SavedRecipient.class
 com\mbbank\mbbSystem\controller\CustomerController.class
 com\mbbank\mbbSystem\security\WebSecurityConfig.class
 com\mbbank\mbbSystem\dto\RegistrationRequestDto.class
@@ -25,6 +27,7 @@ com\mbbank\mbbSystem\dto\JwtResponse.class
 com\mbbank\mbbSystem\model\Transaction.class
 com\mbbank\mbbSystem\repository\CustomerRepository.class
 com\mbbank\mbbSystem\repository\EmployeeRepository.class
+com\mbbank\mbbSystem\service\SavedRecipientService.class
 com\mbbank\mbbSystem\controller\TransactionController.class
 com\mbbank\mbbSystem\security\JwtUtils.class
 com\mbbank\mbbSystem\model\Branch.class
@@ -35,6 +38,7 @@ com\mbbank\mbbSystem\controller\RegistrationRequestController.class
 com\mbbank\mbbSystem\service\RegistrationRequestService.class
 com\mbbank\mbbSystem\security\AuthTokenFilter.class
 com\mbbank\mbbSystem\security\UserDetailsImpl.class
+com\mbbank\mbbSystem\repository\SavedRecipientRepository.class
 com\mbbank\mbbSystem\controller\BranchController.class
 com\mbbank\mbbSystem\model\Customer.class
 com\mbbank\mbbSystem\repository\AccountRepository.class

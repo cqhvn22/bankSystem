@@ -33,9 +33,11 @@ public class Transaction {
 
     private String transactionType; // DEPOSIT, WITHDRAW, TRANSFER
 
+    private String performedBy; // Username of employee who performed this at counter
+
     public Transaction() {}
 
-    public Transaction(String maGD, Account fromAccount, Account toAccount, BigDecimal amount, LocalDateTime timestamp, String content, String transactionType) {
+    public Transaction(String maGD, Account fromAccount, Account toAccount, BigDecimal amount, LocalDateTime timestamp, String content, String transactionType, String performedBy) {
         this.maGD = maGD;
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
@@ -43,6 +45,7 @@ public class Transaction {
         this.timestamp = timestamp;
         this.content = content;
         this.transactionType = transactionType;
+        this.performedBy = performedBy;
     }
 
     public void ghiNhatKyGD() {
@@ -68,4 +71,7 @@ public class Transaction {
     public void setContent(String content) { this.content = content; }
     public String getTransactionType() { return transactionType; }
     public void setTransactionType(String transactionType) { this.transactionType = transactionType; }
+
+    public String getPerformedBy() { return performedBy; }
+    public void setPerformedBy(String performedBy) { this.performedBy = performedBy; }
 }

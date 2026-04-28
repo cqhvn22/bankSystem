@@ -76,4 +76,26 @@ public class AccountService {
     public Optional<Account> getAccountById(Long id) {
         return accountRepository.findById(id);
     }
+
+    public Optional<Account> searchCounterAccount(String query) {
+        // 1. Tìm theo số tài khoản
+        Optional<Account> acc = accountRepository.findByAccountNumber(query);
+        if (acc.isPresent()) return acc;
+        
+        // 2. Tìm theo số điện thoại
+        Optional<Customer> customer = customerRepository.findByPhone(query);
+        if (customer.isPresent()) {
+            List<Account> accounts = accountRepository.findByCustomerId(customer.get().getId());
+            if (!accounts.isEmpty()) return Optional.of(accounts.get(0));
+        }
+
+        // 3. Tìm theo CCCD
+        customer = customerRepository.findByCccd(query);
+        if (customer.isPresent()) {
+            List<Account> accounts = accountRepository.findByCustomerId(customer.get().getId());
+            if (!accounts.isEmpty()) return Optional.of(accounts.get(0));
+        }
+
+        return Optional.empty();
+    }
 }
