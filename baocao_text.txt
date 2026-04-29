@@ -1,0 +1,670 @@
+﻿ĐẠI HỌC CÔNG NGHIỆP HÀ NỘI
+TRƯỜNG CÔNG NGHỆ THÔNG TIN VÀ TRUYỀN THÔNG
+---------------------------------------
+
+BÁO CÁO THỰC TẬP CƠ SỞ NGÀNH
+Mã lớp độc lập: IT6046.1 (20252IT6046001)
+ĐỀ TÀI:
+XÂY DỰNG HỆ THỐNG QUẢN LÍ CỦA NGÂN HÀNG MB BANK
+GVHD: Chu Thị Quyên
+Nhóm: 8
+Sinh viên thực hiện:
+Nguyễn Minh Đức
+2024605324
+KHMT01
+K19
+Quách Gia Hiếu
+2024606067
+KHMT01
+K19
+Chu Quang Hưng
+2024604669
+KHMT01
+K19
+Nguyễn Mạnh Hùng
+2024601533
+KHMT01
+K19
+Hà Nội - 2026
+ĐẠI HỌC CÔNG NGHIỆP HÀ NỘI
+TRƯỜNG CÔNG NGHỆ THÔNG TIN VÀ TRUYỀN THÔNG
+---------------------------------------
+
+BÁO CÁO THỰC TẬP CƠ SỞ NGÀNH
+Mã lớp độc lập: IT6046.1 (20252IT6046001)
+ĐỀ TÀI:
+XÂY DỰNG HỆ THỐNG QUẢN LÍ CỦA NGÂN HÀNG MB BANK
+GVHD: Chu Thị Quyên
+Nhóm: 8
+Sinh viên thực hiện:
+Nguyễn Minh Đức
+2024605324
+KHMT01
+K19
+Quách Gia Hiếu
+2024606067
+KHMT01
+K19
+Chu Quang Hưng
+2024604669
+KHMT01
+K19
+Nguyễn Mạnh Hùng
+2024601533
+KHMT01
+K19
+Hà Nội - 2026
+LỜI CẢM ƠN
+MỤC LỤC
+DANH MỤC CÁC THUẬT NGỮ KÍ HIỆU VÀ CÁC CHỮ VIẾT TẮT
+DANH MỤC HÌNH VẼ
+DANH MỤC BẢNG BIỂU
+MỞ ĐẦU
+1. Lý do chọn đề tài
+Trong bối cảnh chuyển đổi số đang diễn ra mạnh mẽ, lĩnh vực ngân hàng là một trong những ngành đi đầu trong việc ứng dụng công nghệ thông tin nhằm nâng cao chất lượng dịch vụ và tối ưu hóa hoạt động quản lý. Các hệ thống quản lý ngân hàng hiện đại không chỉ giúp tự động hóa quy trình nghiệp vụ mà còn đảm bảo tính chính xác, bảo mật và hiệu quả trong xử lý dữ liệu.
+Ngân hàng MB Bank là một trong những ngân hàng thương mại có tốc độ phát triển nhanh tại Việt Nam, với nhu cầu quản lý dữ liệu khách hàng, tài khoản, giao dịch ngày càng lớn. Vì vậy, việc xây dựng một hệ thống quản lý ngân hàng mô phỏng theo mô hình của MB Bank là cần thiết, giúp sinh viên hiểu rõ hơn về cách vận hành của hệ thống thực tế cũng như áp dụng kiến thức đã học vào thực tiễn.
+Xuất phát từ những lý do trên, nhóm quyết định chọn đề tài: “Xây dựng hệ thống quản lý ngân hàng MB Bank”.
+2. Mục tiêu nghiên cứu
+Mục tiêu của đề tài là thiết kế và xây dựng một hệ thống quản lý ngân hàng cơ bản, đáp ứng các chức năng chính như quản lý thông tin khách hàng, quản lý tài khoản và thực hiện các giao dịch ngân hàng.
+Bên cạnh đó, đề tài còn nhằm áp dụng kiến thức về lập trình và phân tích thiết kế hệ thống, đồng thời rèn luyện kỹ năng phát triển phần mềm và làm việc nhóm.
+3. Đối tượng nghiên cứu
+Đối tượng nghiên cứu của đề tài là các nghiệp vụ cơ bản trong hệ thống ngân hàng, bao gồm quản lý khách hàng, tài khoản và giao dịch. Ngoài ra, đề tài cũng tập trung vào các phương pháp thiết kế và xây dựng hệ thống phần mềm.
+4. Phạm vi nghiên cứu
+Đề tài tập trung xây dựng hệ thống quản lý ngân hàng ở mức cơ bản, phục vụ mục đích học tập và nghiên cứu. Hệ thống chỉ bao gồm các chức năng chính như quản lý khách hàng, tài khoản và giao dịch với quy mô dữ liệu nhỏ.
+Đề tài không đi sâu vào các vấn đề như bảo mật nâng cao, xử lý dữ liệu lớn hay tích hợp với hệ thống ngân hàng thực tế.
+5. Phương pháp nghiên cứu
+Đề tài được thực hiện dựa trên các phương pháp nghiên cứu như: nghiên cứu lý thuyết thông qua tài liệu, phân tích và thiết kế hệ thống, lập trình thực nghiệm và kiểm thử chương trình. Ngoài ra, nhóm cũng tiến hành đánh giá kết quả đạt được so với mục tiêu ban đầu.
+6. Kết quả mong muốn của đề tài
+Đề tài hướng tới việc xây dựng một hệ thống quản lý ngân hàng cơ bản có thể đáp ứng các chức năng chính như quản lý khách hàng, quản lý tài khoản và thực hiện các giao dịch như gửi tiền, rút tiền, chuyển khoản.
+Kết quả mong muốn là hệ thống có thể hoạt động ổn định, xử lý chính xác các nghiệp vụ cơ bản của ngân hàng và đảm bảo tính nhất quán của dữ liệu. Ngoài ra, hệ thống cần có giao diện đơn giản, dễ sử dụng, phù hợp với người dùng.
+Bên cạnh đó, đề tài cũng hướng tới việc giúp người thực hiện nắm vững quy trình phân tích, thiết kế và xây dựng một hệ thống phần mềm, từ đó nâng cao kỹ năng lập trình, tư duy logic và khả năng làm việc nhóm.
+
+
+7. Cấu trúc báo cáo
+Báo cáo gồm các chương chính như sau:
+- Chương 1: Tổng quan về Ngân hàng MB Bank và hệ thống quản lý ngân hàng.
+- Chương 2: Phân tích và thiết kế Hệ thống quản lý Ngân hàng MB Bank.
+- Chương 3: Xây dựng và kiểm thử hệ thống.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHƯƠNG 1: TỔNG QUAN VỀ NGÂN HÀNG MB BANK VÀ HỆ THỐNG QUẢN LÝ NGÂN HÀNG
+1.1 Giới thiệu tổng quan về MBBank
+1.1.1 Quá trình hình thành và phát triển
+04/11/1994: Thành lập Ngân hàng TMCP Quân đội với vốn ban đầu ~20 tỷ đồng.
+ 2004: Tròn 10 năm, MB phát hành cổ phần qua đấu giá công khai đầu tiên, tổng tài sản đạt hàng ngàn tỷ đồng.
+2008: Tái cơ cấu tổ chức; Viettel trở thành cổ đông chiến lược.
+2009: Ra mắt Trung tâm Dịch vụ Khách hàng 24/7.
+2011: MB niêm yết trên HSX (1/11/2011) và mở chi nhánh tại Campuchia.
+2015: Được trao danh hiệu Anh hùng Lao động (năm 2015).
+2016: Thành lập MB Ageas Life (bảo hiểm nhân thọ) và Mcredit (tài chính tiêu dùng).
+2024: Kỷ niệm 30 năm thành lập; được trao Huân chương Bảo vệ Tổ quốc hạng Nhất.
+1.1.2 Lĩnh vực hoạt động của MBBank
+MB Bank hoạt động đa dạng trên nhiều lĩnh vực tài chính – ngân hàng. Các mảng kinh doanh chính bao gồm:
+Cơ cấu tổ chức của ngân hàng
+MB Bank tổ chức theo mô hình tập đoàn tài chính đa ngành. Ở cấp cao nhất là Hội đồng Quản trị (HĐQT) và Ban Kiểm soát; người đứng đầu quản lý điều hành là Tổng Giám đốc (CEO). Dưới Ban Lãnh đạo gồm nhiều khối/phòng ban chuyên môn, có thể chia thành hai nhóm chính:
+- Khối kinh doanh: gồm các Ban/Khối Kinh doanh bán lẻ, Kinh doanh doanh nghiệp và Đối tác chiến lược, Ngân hàng quốc tế (MB Cambodia, OceanBank), Thanh toán và Dịch vụ thẻ, Ngân hàng số và Công nghệ thông tin. Các khối này chịu trách nhiệm phát triển sản phẩm và dịch vụ phục vụ khách hàng cá nhân và tổ chức.
+- Khối chức năng: gồm các Ban/Khối Hỗ trợ (Tài chính – Kế toán, Nhân sự, Quản trị nguồn vốn, Pháp chế, Chiến lược, Marketing…), Ban Quản lý rủi ro &amp; Tuân thủ, Ban Kiểm toán nội bộ, Ban Công nghệ và Hệ thống, v.v. Các đơn vị này đảm bảo hoạt động ngân hàng tuân thủ quy định, quản lý tài chính nội bộ và hỗ trợ vận hành hiệu quả.
+1.2 Các dịch vụ chính của ngân hàng
+1.2.1 Quản lý tài khoản khách hàng
+Quản lý tài khoản khách hàng là nền tảng cốt lõi của mọi hệ thống ngân hàng. Dịch vụ này không chỉ đơn thuần lưu trữ thông tin cá nhân mà còn đóng vai trò là trung tâm liên kết tất cả các nghiệp vụ khác như giao dịch, vay vốn hay thanh toán.
+Về mặt nghiệp vụ, khách hàng tự đăng ký tài khoản thông qua hệ thống trực tuyến và được duyệt bởi nhân viên ngân hàng chi nhánh. Mỗi khách hàng được định danh duy nhất thông qua mã CCCD. Hệ thống hiện tại sử dụng số điện thoại của khách hàng làm số tài khoản duy nhất (tài khoản thanh toán), giúp khách hàng dễ dàng nhớ và tiện lợi khi sử dụng.
+Về mặt hệ thống, chức năng này cần đảm bảo:
+- Tính toàn vẹn dữ liệu (không trùng lặp, không sai lệch thông tin)
+- Khả năng tra cứu nhanh khi số lượng khách hàng lớn
+- Hỗ trợ cập nhật linh hoạt nhưng vẫn đảm bảo lịch sử thay đổi
+Ngoài ra, hệ thống cũng cần quản lý trạng thái tài khoản (hoạt động, khóa, đóng) để phục vụ kiểm soát rủi ro.
+1.2.2 Dịch vụ gửi tiền và rút tiền
+Gửi tiền và rút tiền là nghiệp vụ cơ bản nhưng có tần suất sử dụng cao nhất trong hệ thống ngân hàng. Đây là các giao dịch trực tiếp làm thay đổi số dư tài khoản, do đó yêu cầu độ chính xác và an toàn rất cao.
+Về bản chất, mỗi giao dịch gửi hoặc rút tiền đều là một thao tác cập nhật số dư tài khoản. Tuy nhiên, trong hệ thống thực tế, các thao tác này cần được xử lý theo cơ chế giao dịch (transaction) nhằm đảm bảo các tính chất như:
+- Tính nguyên tử (Atomicity): Giao dịch phải thực hiện hoàn toàn hoặc không thực hiện 
+- Tính nhất quán (Consistency): Số dư luôn đúng trước và sau giao dịch
+- Tính cô lập (Isolation): Các giao dịch đồng thời không gây xung đột
+- Tính bền vững (Durability): Dữ liệu không bị mất khi có sự cố
+Ngoài ra, hệ thống cần lưu lại lịch sử giao dịch để phục vụ kiểm tra và truy vết khi cần thiết.
+1.2.3 Dịch vụ chuyển khoản
+Chuyển khoản là một trong những dịch vụ quan trọng nhất, phản ánh mức độ hiện đại của hệ thống ngân hàng. Dịch vụ này cho phép chuyển tiền giữa các tài khoản trong cùng hệ thống hoặc liên ngân hàng.
+Về mặt nghiệp vụ, chuyển khoản bao gồm hai thao tác đồng thời:
+- Trừ tiền từ tài khoản nguồn
+- Cộng tiền vào tài khoản đích
+Điều này đòi hỏi hệ thống phải đảm bảo tính đồng bộ và chính xác tuyệt đối, tránh các trường hợp mất tiền hoặc sai lệch dữ liệu.
+Đối với hệ thống quản lý, cần xử lý các vấn đề như:
+- Kiểm tra số dư trước khi thực hiện giao dịch
+- Xác thực thông tin người dùng (mật khẩu, OTP,...)
+- Ghi nhận chi tiết giao dịch (thời gian, số tiền, nội dung)
+Ngoài ra, đối với chuyển khoản liên ngân hàng, hệ thống còn cần tích hợp với các hệ thống trung gian, làm tăng độ phức tạp trong xử lý.
+1.2.4 Dịch vụ cho vay
+Dịch vụ cho vay là một trong những nguồn lợi nhuận chính của ngân hàng. Khác với các dịch vụ giao dịch thông thường, cho vay là một nghiệp vụ dài hạn và có mức độ rủi ro cao.
+Về mặt nghiệp vụ, hệ thống cần quản lý các thông tin như:
+- Số tiền vay
+- Lãi suất
+- Thời hạn vay
+- Lịch trả nợ
+Đặc biệt, hệ thống phải hỗ trợ tính toán lãi suất theo nhiều phương thức khác nhau (lãi đơn, lãi kép, dư nợ giảm dần). Điều này đòi hỏi các thuật toán tính toán chính xác và linh hoạt.
+Ngoài ra, hệ thống cũng cần theo dõi trạng thái khoản vay (đang vay, quá hạn, đã tất toán) để hỗ trợ quản lý rủi ro và nhắc nhở khách hàng.
+1.2.5 Dịch vụ ngân hàng điện tử
+Ngân hàng điện tử là xu hướng tất yếu trong thời đại số, cho phép khách hàng thực hiện giao dịch mà không cần đến trực tiếp ngân hàng.
+Các dịch vụ phổ biến bao gồm Internet Banking và Mobile Banking, hỗ trợ các chức năng như kiểm tra số dư, chuyển khoản, thanh toán hóa đơn.
+Về mặt hệ thống, đây là dịch vụ yêu cầu cao nhất về:
+- Bảo mật: mã hóa dữ liệu, xác thực nhiều lớp (OTP, sinh trắc học)
+- Hiệu năng: xử lý nhanh, đáp ứng lượng truy cập lớn
+- Trải nghiệm người dùng: giao diện thân thiện, dễ sử dụng
+Ngoài ra, hệ thống còn phải đảm bảo hoạt động liên tục 24/7 và có khả năng mở rộng khi số lượng người dùng tăng.
+1.3 Tổng quan về hệ thống quản lý ngân hàng
+Hệ thống quản lý ngân hàng là một trong những thành phần cốt lõi trong hoạt động của các tổ chức tài chính hiện đại. Với sự phát triển mạnh mẽ của công nghệ thông tin, các hệ thống này không chỉ giúp tự động hóa các nghiệp vụ truyền thống mà còn nâng cao hiệu quả quản lý, tăng cường bảo mật và cải thiện trải nghiệm khách hàng.
+Trong bối cảnh chuyển đổi số, hệ thống quản lý ngân hàng đóng vai trò trung tâm trong việc kết nối các hoạt động nghiệp vụ như quản lý tài khoản, giao dịch, khách hàng và dữ liệu tài chính.
+1.3.1 Khái niệm hệ thống quản lý ngân hàng
+Hệ thống quản lý ngân hàng (Bank Management System) là một hệ thống phần mềm được xây dựng nhằm hỗ trợ và tự động hóa các hoạt động nghiệp vụ trong ngân hàng.
+Hệ thống này cho phép quản lý toàn bộ thông tin liên quan đến:
+- Khách hàng
+- Tài khoản ngân hàng
+- Giao dịch tài chính
+- Nhân viên và hoạt động nội bộ
+Thông qua hệ thống quản lý ngân hàng, các nghiệp vụ như mở tài khoản, gửi tiền, rút tiền, chuyển khoản và kiểm tra số dư được thực hiện một cách nhanh chóng và chính xác.
+Ngoài ra, hệ thống còn hỗ trợ lưu trữ và xử lý dữ liệu lớn, đảm bảo tính toàn vẹn, chính xác và bảo mật của thông tin tài chính.
+1.3.2 Vai trò của hệ thống quản lý trong ngân hàng
+Hệ thống quản lý ngân hàng đóng vai trò cực kỳ quan trọng trong hoạt động của ngân hàng, cụ thể:
+- Tự động hóa quy trình nghiệp vụ: Hệ thống giúp tự động hóa các quy trình như xử lý giao dịch, quản lý tài khoản, từ đó giảm thiểu sai sót do con người và tăng tốc độ xử lý.
+- Quản lý dữ liệu tập trung: Tất cả thông tin khách hàng và giao dịch được lưu trữ tập trung, giúp dễ dàng truy xuất, quản lý và phân tích dữ liệu.
+- Nâng cao hiệu quả hoạt động: Nhờ hệ thống phần mềm, ngân hàng có thể xử lý số lượng lớn giao dịch trong thời gian ngắn, tiết kiệm chi phí và nguồn lực.
+- Tăng cường bảo mật: Hệ thống tích hợp các cơ chế bảo mật như xác thực người dùng, mã hóa dữ liệu, giúp bảo vệ thông tin khách hàng và tài sản ngân hàng.
+- Hỗ trợ ra quyết định:  Dữ liệu từ hệ thống giúp ban lãnh đạo phân tích và đưa ra các quyết định kinh doanh chính xác hơn.
+1.3.3 Các chức năng chính của hệ thống ngân hàng
+Một hệ thống quản lý ngân hàng thường bao gồm các chức năng chính sau:
+- Quản lý khách hàng
++ Lưu trữ thông tin cá nhân khách hàng
++ Tìm kiếm và cập nhật thông tin
++ Phân loại khách hàng
+- Quản lý tài khoản
++ Duyệt yêu cầu mở tài khoản trực tuyến
++ Đóng tài khoản
++ Theo dõi trạng thái tài khoản
+- Quản lý giao dịch
++ Gửi tiền
++ Rút tiền
++ Chuyển khoản
++ Ghi nhận lịch sử giao dịch
+- Quản lý nhân viên
++ Quản lý thông tin nhân viên
++ Phân quyền truy cập
++ Theo dõi hoạt động của nhân viên
+- Báo cáo và thống kê
++ Báo cáo giao dịch
++ Báo cáo tài chính
++ Thống kê hoạt động hệ thống
+1.3.4 Các công nghệ sử dụng trong hệ thống ngân hàng hiện đại
+Trong các hệ thống ngân hàng hiện đại, nhiều công nghệ tiên tiến được áp dụng nhằm đảm bảo hiệu năng, bảo mật và khả năng mở rộng.
+ Core Banking System: Là hệ thống cốt lõi xử lý tất cả các giao dịch ngân hàng theo thời gian thực. Core Banking cho phép khách hàng thực hiện giao dịch tại bất kỳ chi nhánh nào.
+Hệ quản trị cơ sở dữ liệu (Database Management System): Các hệ thống như MySQL, Oracle, SQL Server được sử dụng để lưu trữ và quản lý dữ liệu lớn của ngân hàng.
+Công nghệ Web và Mobile:
+- Web Application: cho phép truy cập qua trình duyệt
+- Mobile Banking: ứng dụng trên điện thoại
+Công nghệ bảo mật:
+- Mã hóa dữ liệu (Encryption)
+- Xác thực đa yếu tố (MFA)
+- SSL/TLS bảo mật truyền dữ liệu
+Điện toán đám mây (Cloud Computing): Giúp hệ thống linh hoạt, dễ mở rộng và tiết kiệm chi phí hạ tầng.
+Trí tuệ nhân tạo (AI) và Big Data:
+- Phân tích hành vi khách hàng
+- Phát hiện gian lận
+- Tối ưu dịch vụ
+1.4 Các hệ thống ngân hàng điện tử hiện nay
+1.4.1 Internet Banking
+Là dịch vụ ngân hàng trực tuyến trên nền tảng web. Dịch vụ này cho phép khách hàng quản lý tài khoản và thực hiện các giao dịch (chuyển khoản, thanh toán, gửi tiết kiệm) thông qua thiết bị có kết nối Internet mọi lúc, mọi nơi mà không cần đến quầy.
+1.4.2 Mobile Banking
+Là ứng dụng ngân hàng chuyên biệt trên thiết bị di động (ví dụ: App MB Bank). Cung cấp đầy đủ tính năng giao dịch nhưng tiện lợi hơn nhờ tích hợp các công nghệ di động tiên tiến như: quét mã QR, thanh toán không chạm và xác thực sinh trắc học (vân tay, FaceID).
+1.4.3 Core Banking
+Là hệ thống phần mềm trung tâm xử lý, ghi nhận và lưu trữ toàn bộ dữ liệu nghiệp vụ của ngân hàng (khách hàng, tài khoản, số dư) theo thời gian thực (real-time). Core Banking giúp đồng bộ hóa hoạt động của tất cả các chi nhánh và kênh giao dịch điện tử.
+1.4.4 Công nghệ bảo mật ngân hàng
+Là hệ thống các giải pháp kỹ thuật nhằm bảo vệ dữ liệu và phòng chống gian lận. Các công nghệ cốt lõi bao gồm:
+-Mã hóa dữ liệu đường truyền (SSL/TLS).
+- Xác thực đa yếu tố và xác thực giao dịch OTP, Smart OTP).
+- Hệ thống tường lửa (Firewall) và chống xâm nhập.
+- Ứng dụng AI để theo dõi, phát hiện và ngăn chặn các giao dịch bất thường.
+CHƯƠNG 2: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG QUẢN LÝ NGÂN HÀNG MB BANK
+2.1 Phân tích yêu cầu hệ thống
+Phân tích yêu cầu hệ thống là bước quan trọng trong quá trình xây dựng hệ thống quản lý ngân hàng MB Bank. Mục đích của bước này là xác định rõ các đối tượng sử dụng hệ thống, các chức năng cần thiết và các yêu cầu kỹ thuật nhằm đảm bảo hệ thống hoạt động hiệu quả và đáp ứng nhu cầu thực tế.
+2.1.1 Đối tượng sử dụng hệ thống
+Hệ thống quản lý ngân hàng MB Bank được thiết kế phục vụ cho nhiều đối tượng khác nhau, mỗi đối tượng có vai trò và quyền hạn riêng trong hệ thống. Các đối tượng sử dụng chính bao gồm:
+- Nhân viên ngân hàng: là người trực tiếp sử dụng hệ thống để thực hiện các nghiệp vụ hằng ngày. Các chức năng mà nhân viên ngân hàng có thể thực hiện bao gồm:
++ Quản lý thông tin khách hàng
++ Duyệt yêu cầu đăng ký mở tài khoản
++ Thực hiện giao dịch gửi tiền, rút tiền
++ Thực hiện chuyển khoản
++ Tra cứu thông tin khách hàng và tài khoản
++ Cập nhật thông tin khách hàng
+- Nhân viên ngân hàng đóng vai trò quan trọng trong việc đảm bảo hệ thống hoạt động chính xác và phục vụ khách hàng hiệu quả.
+- Quản trị hệ thống: là người chịu trách nhiệm quản lý toàn bộ hệ thống ngân hàng. Người quản trị có quyền cao nhất trong hệ thống và thực hiện các chức năng như:
++ Quản lý tài khoản nhân viên
++ Phân quyền người dùng
++ Quản lý dữ liệu hệ thống
++ Theo dõi hoạt động của hệ thống
++ Sao lưu và phục hồi dữ liệu
+- Quản trị hệ thống đảm bảo hệ thống hoạt động ổn định và an toàn.
+- Khách hàng: là đối tượng sử dụng dịch vụ ngân hàng. Khách hàng có thể thực hiện các chức năng như:
++ Xem thông tin tài khoản
++ Thực hiện giao dịch chuyển khoản
++ Gửi tiền và rút tiền
++ Xem lịch sử giao dịch
++ Sử dụng các dịch vụ ngân hàng điện tử
+- Khách hàng là đối tượng trung tâm của hệ thống, do đó hệ thống cần đảm bảo dễ sử dụng và an toàn.
+2.1.2 Yêu cầu chức năng của hệ thống
+Yêu cầu chức năng mô tả các chức năng mà hệ thống cần thực hiện để đáp ứng nhu cầu của người sử dụng. Hệ thống quản lý ngân hàng MB Bank bao gồm các chức năng chính sau:
+Chức năng quản lý khách hàng: Chức năng này cho phép lưu trữ và quản lý thông tin khách hàng. Các chức năng bao gồm:
+- Thêm khách hàng mới
+- Cập nhật thông tin khách hàng
+- Xóa khách hàng
+- Tìm kiếm khách hàng
+- Xem danh sách khách hàng
+=&gt; Chức năng này giúp ngân hàng quản lý thông tin khách hàng một cách hiệu quả.
+Chức năng quản lý tài khoản: Cho phép ngân hàng quản lý các tài khoản của khách hàng. Các chức năng bao gồm:
+- Cấp số tài khoản tự động (theo số điện thoại) khi duyệt đăng ký
+- Đóng tài khoản
+- Cập nhật thông tin tài khoản 
+- Xem thông tin tài khoản 
+- Tra cứu tài khoản
+=&gt; Chức năng này giúp kiểm soát các tài khoản và đảm bảo tính chính xác của dữ liệu.
+Quản lý giao dịch: Chức năng quản lý giao dịch cho phép thực hiện các nghiệp vụ tài chính như:
+- Gửi tiền
+- Rút tiền
+- Chuyển khoản 
+- Tra cứu lịch sử giao dịch
+=&gt; Hệ thống cần đảm bảo các giao dịch được thực hiện chính xác và an toàn.
+Quản lý nhân viên: Giúp quản lý thông tin nhân viên ngân hàng. Các chức năng bao gồm:
+- Thêm nhân viên mới
+- Cập nhật thông tin nhân viên
+- Xóa nhân viên
+- Phân quyền nhân viên
+=&gt; Chức năng này giúp quản lý nhân viên và đảm bảo phân quyền hợp lý.
+2.1.3 Yêu cầu phi chức năng
+Ngoài các yêu cầu chức năng, hệ thống còn cần đáp ứng các yêu cầu phi chức năng để đảm bảo hoạt động hiệu quả.
+Bảo mật dữ liệu: Hệ thống cần đảm bảo tính bảo mật thông tin khách hàng và dữ liệu giao dịch. Các biện pháp bảo mật bao gồm:
+- Xác thực người dùng
+- Phân quyền truy cập
+- Mã hóa dữ liệu
+Hiệu năng hệ thống: Hệ thống cần đảm bảo tốc độ xử lý nhanh và ổn định khi có nhiều người sử dụng. Ngoài ra, hệ thống phải đảm bảo hoạt động liên tục và hạn chế lỗi xảy ra.
+Khả năng mở rộng: Hệ thống cần có khả năng mở rộng trong tương lai khi số lượng khách hàng tăng lên. Điều này giúp hệ thống có thể phát triển và nâng cấp dễ dàng.
+2.2 Mô hình nghiệp vụ của hệ thống
+2.2.1 Quy trình mở tài khoản trực tuyến
+Quy trình mở tài khoản trong hệ thống ngân hàng được thực hiện qua luồng đăng ký trực tuyến như sau:
+- Bước 1: Đăng ký trực tuyến
+Khách hàng truy cập trang đăng ký và nhập thông tin (CCCD, họ tên, số điện thoại, chi nhánh...).
+- Bước 2: Khởi tạo yêu cầu (Pending)
+Hệ thống lưu trữ yêu cầu mở tài khoản ở trạng thái chờ duyệt (PENDING).
+- Bước 3: Nhân viên xét duyệt
+Nhân viên ngân hàng xem xét hồ sơ yêu cầu của khách hàng theo chi nhánh quản lý.
+- Bước 4: Duyệt và tạo tài khoản
+Nhân viên thực hiện duyệt (Approve) yêu cầu. Hệ thống tự động khởi tạo tài khoản, lấy số điện thoại làm số tài khoản. (Hoặc Reject nếu không hợp lệ).
+- Bước 5: Thông báo kết quả
+Hệ thống hiển thị kết quả cấp tài khoản thành công để khách hàng có thể đăng nhập.
+2.2.2 Quy trình giao dịch tiền gửi và rút
+Quy trình giao dịch tiền gửi và rút tiền là một trong những nghiệp vụ cơ bản và quan trọng của hệ thống quản lý ngân hàng. Quy trình này giúp đảm bảo các giao dịch được thực hiện chính xác, an toàn và cập nhật kịp thời vào hệ thống.
+Quy trình gửi tiền:
+- Bước 1: Khách hàng cung cấp thông tin tài khoản cần gửi tiền cho nhân viên ngân hàng hoặc thực hiện thông qua hệ thống ngân hàng điện tử.
+- Bước 2: Nhân viên ngân hàng hoặc hệ thống kiểm tra thông tin tài khoản của khách hàng trong cơ sở dữ liệu.
+- Bước 3: Khách hàng cung cấp số tiền cần gửi vào tài khoản.
+- Bước 4: Hệ thống kiểm tra tính hợp lệ của giao dịch và tiến hành cập nhật số dư tài khoản.
+- Bước 5: Hệ thống lưu lại thông tin giao dịch vào cơ sở dữ liệu, bao gồm thời gian, số tiền gửi và thông tin tài khoản.
+- Bước 6: Hệ thống thông báo giao dịch thành công và in biên lai hoặc hiển thị thông báo cho khách hàng.
+
+Quy trình rút tiền:
+- Bước 1: Khách hàng cung cấp thông tin tài khoản và yêu cầu rút tiền.
+- Bước 2: Hệ thống kiểm tra thông tin tài khoản và xác thực khách hàng.
+- Bước 3: Hệ thống kiểm tra số dư tài khoản có đủ để thực hiện giao dịch hay không.
+- Bước 4: Nếu số dư đủ, hệ thống tiến hành trừ số tiền rút khỏi tài khoản.
+- Bước 5: Hệ thống lưu lại thông tin giao dịch vào cơ sở dữ liệu.
+- Bước 6: Nhân viên ngân hàng hoặc hệ thống thực hiện giao tiền cho khách hàng và thông báo giao dịch thành công. Trong trường hợp số dư không đủ, hệ thống sẽ thông báo lỗi và không thực hiện giao dịch.
+
+Để đảm bảo quy trình gửi tiền và rút tiền hoạt động hiệu quả, hệ thống cần đáp ứng các yêu cầu sau:
+- Đảm bảo tính chính xác của số dư tài khoản
+- Lưu trữ đầy đủ lịch sử giao dịch
+- Đảm bảo tính bảo mật thông tin khách hàng
+- Hệ thống hoạt động ổn định và nhanh chóng
+Quy trình giao dịch gửi tiền và rút tiền là nền tảng cho các dịch vụ ngân hàng khác và đóng vai trò quan trọng trong hệ thống quản lý ngân hàng.
+2.2.3. Quy trình chuyển tiền
+Quy trình chuyển tiền trong hệ thống ngân hàng được mô tả như sau:
+- Bước 1: Khởi tạo giao dịch. Khách hàng đăng nhập vào hệ thống và nhập các thông tin cần thiết như số tài khoản người nhận, số tiền chuyển và nội dung giao dịch. 
+- Bước 2: Kiểm tra thông tin. Hệ thống tiến hành kiểm tra tính hợp lệ của giao dịch, bao gồm: 
++ Số dư tài khoản người gửi 
++ Sự tồn tại của tài khoản người nhận 
++ Hạn mức giao dịch 
+- Bước 3: Xác thực giao dịch. Khách hàng xác nhận giao dịch thông qua các phương thức bảo mật như mã OTP hoặc xác thực hai yếu tố. 
+- Bước 4: Xử lý giao dịch. Sau khi xác thực thành công, hệ thống thực hiện: 
++ Trừ tiền từ tài khoản người gửi 
++ Cộng tiền vào tài khoản người nhận 
+- Bước 5: Lưu trữ và thông báo. Hệ thống lưu lại thông tin giao dịch vào cơ sở dữ liệu và gửi thông báo xác nhận đến các bên liên quan.
+2.2.4 Quy trình quản lý ngân hàng
+Quy trình quản lý ngân hàng tập trung vào việc điều hành các hoạt động nội bộ, quản trị nhân sự và giám sát dữ liệu để đảm bảo hệ thống vận hành ổn định, minh bạch. Quy trình này bao gồm các bước chính sau:
+- Bước 1: Quản lý và phân quyền nhân viên
++ Admin tiến hành cập nhật và lưu trữ thông tin hồ sơ của nhân viên ngân hàng vào hệ thống.
++ Hệ thống thực hiện phân quyền truy cập chi tiết cho từng giao dịch, quản lý chi nhánh) để đảm bảo bảo mật và đúng trách nhiệm nghiệp vụ.
+- Bước 2: Giám sát hoạt động nghiệp vụ
++ Hệ thống tự động ghi lại toàn bộ nhật ký thao tác và hoạt động của nhân viên trong quá trình xử lý giao dịch cho khách hàng.
++ Quản trị viên theo dõi tiến độ và kiểm tra tính hợp lệ của các hoạt động nội bộ để kịp thời phát hiện các sai sót hoặc hành vi bất thường.
+- Bước 3: Tổng hợp báo cáo và thống kê
++ Định kỳ hoặc theo yêu cầu, hệ thống sẽ kết xuất các báo cáo chi tiết về giao dịch, báo cáo tài chính và lưu lượng hoạt động của toàn hệ thống.
++ Các dữ liệu thống kê này giúp ban lãnh đạo đánh giá hiệu quả hoạt động và đưa ra các quyết định kinh doanh chính xác.
+- Bước 4: Bảo trì và tối ưu hóa hệ thống
++ Dựa trên các báo cáo hiệu năng, bộ phận kỹ thuật tiến hành kiểm tra trạng thái hoạt động của hệ thống và cơ sở dữ liệu.
++ Thực hiện sao lưu dữ liệu và cập nhật các biện pháp bảo mật mới (như vá lỗi, nâng cấp tường lửa) để đảm bảo an toàn tài sản cho ngân hàng và khách hàng.
+2.3 Phân tích hệ thống bằng UML
+Việc sử dụng ngôn ngữ mô hình hóa thống nhất (UML) giúp chuyển đổi các yêu cầu nghiệp vụ thành các biểu đồ trực quan, giúp nắm bắt cấu trúc và hành vi của hệ thống quản lý ngân hàng một cách chính xác.
+2.3.1 Sơ đồ Use Case
+Sơ đồ Use Case xác định ranh giới hệ thống, các tác nhân (Actors) và các chức năng mà hệ thống cung cấp.
+2.3.1.1 Sơ đồ Use Case tổng thể
+
+Hình 2.1: Use Case tổng thể Hệ thống quản lý ngân hàng MB Bank
+Sơ đồ Use Case tổng thể mô tả các nhóm chức năng chính mà hệ thống cần thực hiện để đáp ứng nhu cầu của người sử dụng. Hệ thống được chia thành 4 nhóm Use Case lớn:
+- Quản lý khách hàng: Cho phép lưu trữ và quản lý thông tin khách hàng.
+- Quản lý tài khoản: Cho phép ngân hàng quản lý các tài khoản của khách hàng để kiểm soát và đảm bảo tính chính xác của dữ liệu.
+- Quản lý giao dịch: Cho phép thực hiện và quản lý các nghiệp vụ tài chính như gửi tiền, rút tiền, chuyển khoản .
+- Quản lý nhân viên: Giúp quản lý thông tin nhân viên ngân hàng và phân quyền hợp lý.
+Để đảm bảo tính bảo mật, tất cả các nhóm nghiệp vụ này đều có quan hệ &lt;&lt;include&gt;&gt; bắt buộc với chức năng Xác thực người dùng (Đăng nhập) trước khi thực hiện.
+2.3.1.2 Use Case quản lí khách hàng
+Nhóm Use Case này giúp ngân hàng quản lý thông tin khách hàng một cách hiệu quả, do tác nhân là Nhân viên ngân hàng trực tiếp thao tác. Các chức năng chi tiết trong phân hệ này bao gồm:
+- Duyệt yêu cầu khách hàng: Nhân viên xem xét và đưa ra quyết định duyệt hoặc từ chối yêu cầu đăng ký.
+- Cập nhật thông tin khách hàng: Chỉnh sửa và cập nhật các thay đổi liên quan đến thông tin cá nhân của khách hàng.
+- Xóa khách hàng: Xóa bỏ dữ liệu của khách hàng khỏi hệ thống khi cần thiết.
+- Tìm kiếm khách hàng: Tra cứu nhanh thông tin hồ sơ dựa trên các tiêu chí cụ thể.
+- Xem danh sách khách hàng: Truy xuất và hiển thị danh sách toàn bộ khách hàng đang được quản lý.
+
+Hình 2.2: Use Case chức năng quản lý khách hàng
+Các quan hệ (Relationships):
+- Duyệt yêu cầu đăng ký khách hàng &lt;&lt;include&gt;&gt; Xác minh danh tính (KYC): Khi duyệt, nhân viên ngân hàng kiểm tra và xác thực tính hợp lệ của thông tin do khách hàng cung cấp.
+- Cập nhật thông tin khách hàng / Xóa khách hàng &lt;&lt;include&gt;&gt; Tìm kiếm khách hàng: Nhân viên bắt buộc phải tìm kiếm để xác định chính xác hồ sơ trước khi tiến hành cập nhật hoặc xóa.
+- Tìm kiếm khách hàng &lt;&lt;extend&gt;&gt; Xem danh sách khách hàng: Trong quá trình xem danh sách tổng thể, nhân viên có thể sử dụng thêm tính năng tìm kiếm để lọc ra các khách hàng cụ thể nếu cần.
+2.3.1.3 Use Case quản lí tài khoản
+ 
+Hình 2.3. Use Case chức năng quản lý tài khoản
+Chức năng quản lý tài khoản cho phép nhân viên ngân hàng quản lý các tài khoản của khách hàng trong hệ thống. Nhân viên có thể thực hiện các chức năng như :
+- Duyệt và tạo tài khoản: Tài khoản được tạo tự động cho khách hàng khi yêu cầu đăng ký được nhân viên phê duyệt. Số điện thoại sẽ được dùng làm số tài khoản.
+- Cập nhật thông tin tài khoản: Cho phép nhân viên chỉnh sửa và cập nhật các thông tin của tài khoản khi có thay đổi.
+- Khóa tài khoản: Cho phép nhân viên khóa tài khoản trong trường hợp tài khoản có vấn đề hoặc theo yêu cầu của khách hàng.
+- Mở khóa tài khoản: Cho phép nhân viên mở lại tài khoản đã bị khóa để khách hàng tiếp tục sử dụng.
+- Tìm kiếm tài khoản: Cho phép nhân viên tìm kiếm tài khoản theo các thông tin như số tài khoản hoặc tên khách hàng.
+- Xem danh sách tài khoản: Cho phép nhân viên xem toàn bộ danh sách tài khoản hiện có trong hệ thống.
+
+Các quan hệ (Relationships):
+- Duyệt và tạo tài khoản <<include>> Xem xét hồ sơ: Nhân viên cần xem xét hồ sơ trước khi duyệt hoặc từ chối.
+- Cập nhật thông tin / Khóa / Mở khóa tài khoản <<include>> Tìm kiếm tài khoản: Nhân viên bắt buộc phải tìm kiếm để xác định tài khoản trước khi thực hiện thao tác.
+- Cập nhật thông tin tài khoản <<include>> Kiểm tra dữ liệu: Đảm bảo dữ liệu mới nhập vào là hợp lệ.
+- Tìm kiếm tài khoản <<extend>> Xem danh sách tài khoản: Nhân viên có thể sử dụng tính năng tìm kiếm để lọc kết quả khi xem danh sách.
+2.3.1.4 Use Case giao dịch ngân hàng
+Nhóm Use Case này mô tả các chức năng quản lý giao dịch do người dùng thực hiện. Các chức năng chi tiết bao gồm:
+- Kiểm tra số dư: Khách hàng xem số dư tài khoản hiện tại.
+- Gửi tiền: Khách hàng nộp tiền vào tài khoản tại quầy.
+- Rút tiền: Khách hàng rút tiền mặt từ tài khoản tại quầy.
+- Chuyển khoản: Khách hàng thực hiện chuyển tiền sang tài khoản khác.
+- Xem lịch sử giao dịch: Khách hàng tra cứu lại lịch sử biến động số dư.
+
+Hình 2.4: Use case giao dịch ngân hàng
+Các quan hệ (Relationships):
+- Kiểm tra số dư / Gửi tiền / Rút tiền / Chuyển khoản <<include>> Xác thực khách hàng: Mọi giao dịch đều yêu cầu xác thực người dùng hợp lệ.
+- Gửi tiền / Rút tiền / Chuyển khoản <<include>> Cập nhật giao dịch: Hệ thống phải lưu lại thông tin sau mỗi lần dòng tiền thay đổi.
+- Chuyển khoản <<extend>> Xác minh OTP: Đối với giao dịch chuyển khoản, có thể phát sinh thêm bước xác minh mã OTP để bảo mật.
+2.3.1.5 Use Case quản lí nhân viên
+Nhóm Use Case này giúp ngân hàng quản lý thông tin nhân viên một cách hiệu quả, với các tác nhân chính là Nhân viên HR và Admin trực tiếp thao tác. Các chức năng chi tiết trong phân hệ này bao gồm:
+- Tạo hồ sơ nhân viên: Nhập và lưu trữ thông tin nhân viên mới vào hệ thống.
+- Chỉnh sửa hồ sơ nhân viên: Cập nhật các thay đổi liên quan đến thông tin cá nhân hoặc công việc.
+- Xóa hồ sơ nhân viên: Loại bỏ thông tin nhân viên khỏi hệ thống khi cần thiết.
+- Tra cứu nhân viên: Tìm kiếm thông tin nhân viên theo các tiêu chí cụ thể.
+- Xem danh sách nhân viên: Hiển thị toàn bộ danh sách nhân viên đang được quản lý.
+- Quản lý lương nhân viên: Cập nhật và theo dõi thông tin lương.
+- Quản lý hợp đồng lao động: Quản lý thông tin hợp đồng của nhân viên.
+- Phân quyền truy cập: Gán và điều chỉnh quyền truy cập hệ thống.
+- Chọn chi nhánh: Xác định chi nhánh làm việc cho nhân viên.
+- Xem thông tin cá nhân: Nhân viên tự xem thông tin của mình.
+
+Hình 2.5: Use case quản lí nhân viên
+Các quan hệ (Relationships):
+- Tạo hồ sơ nhân viên <<include>> Chọn chi nhánh: Khi tạo mới, hệ thống bắt buộc phải xác định chi nhánh làm việc của nhân viên.
+- Chỉnh sửa hồ sơ / Xóa hồ sơ / Quản lý lương / Quản lý hợp đồng <<include>> Tra cứu nhân viên: Người dùng phải tra cứu để xác định đúng nhân viên trước khi thao tác.
+- Phân quyền truy cập <<extend>> Chỉnh sửa hồ sơ nhân viên: Trong quá trình chỉnh sửa, có thể phát sinh nhu cầu thay đổi quyền truy cập.
+- Xem danh sách nhân viên <<extend>> Tra cứu nhân viên: Khi xem danh sách, có thể sử dụng thêm chức năng tra cứu để lọc thông tin.
+2.3.2 Sơ đồ Activity
+Sơ đồ hoạt động mô tả luồng điều khiển của các quy trình nghiệp vụ quan trọng, làm rõ các điểm rẽ nhánh và điều kiện xử lý.
+2.3.2.1 Activity Diagram mở tài khoản
+- Khách hàng truy cập trang đăng ký, điền các thông tin (Họ tên, CCCD, Ngày sinh, Số điện thoại, Email, Chi nhánh...).
+- Hệ thống tiếp nhận, tạo yêu cầu đăng ký với trạng thái PENDING.
+- Nhân viên chi nhánh đăng nhập, chọn chức năng duyệt yêu cầu.
+- Nhân viên xem xét chi tiết hồ sơ yêu cầu.
+- Nếu không hợp lệ: Nhân viên Từ chối (Reject) kèm theo lý do, hệ thống cập nhật trạng thái bị từ chối.
+- Nếu hợp lệ: Nhân viên Duyệt (Approve), hệ thống tạo khách hàng và tài khoản tự động (sử dụng Số điện thoại làm Số tài khoản).
+- Thông báo kết quả và kết thúc.
+
+Hình 2.3.2.1: Activity Diagram mở tài khoản
+2.3.2.2 Activity Diagram giao dịch tiền tại quầy (Nạp/Rút)
+- Nhân viên ngân hàng (hoặc Admin) đăng nhập vào hệ thống.
+- Nhân viên chọn chức năng Nạp tiền hoặc Rút tiền, nhập Số tài khoản khách hàng và Số tiền.
+- Hệ thống truy vấn Số tài khoản để xác thực sự tồn tại. Nếu không tồn tại -> Thông báo lỗi.
+- Nếu là giao dịch Rút tiền: Hệ thống kiểm tra số dư hiện tại của khách hàng. Nếu không đủ -> Thông báo lỗi và dừng.
+- Nếu điều kiện hợp lệ: Hệ thống tiến hành cộng tiền (Nạp) hoặc trừ tiền (Rút), cập nhật số dư mới vào DB.
+- Ghi nhận lịch sử giao dịch (bao gồm mã nhân viên thực hiện) và mã giao dịch (NAP/RUT + Timestamp).
+- Thông báo kết quả thành công cho nhân viên và kết thúc.
+
+Hình 2.6: Activity Diagram giao dịch tiền
+2.3.2.3 Activity Diagram chuyển khoản
+- Khách hàng đăng nhập vào hệ thống ngân hàng (Internet Banking).
+- Khách hàng truy cập chức năng Chuyển khoản, nhập Số tài khoản đích, Số tiền (phải là số nguyên dương) và Nội dung.
+- Hệ thống tự động kiểm tra Số tài khoản đích có tồn tại không và không được trùng với tài khoản nguồn. Nếu lỗi -> Thông báo.
+- Hệ thống kiểm tra số dư của tài khoản nguồn. Nếu số dư không đủ -> Thông báo lỗi.
+- Nếu tất cả hợp lệ, hệ thống tiến hành:
+  + Trừ tiền từ tài khoản nguồn.
+  + Cộng tiền vào tài khoản đích.
+  + Tự động lưu người nhận vào Danh bạ người nhận (Saved Recipients).
+  + Ghi nhận giao dịch với mã tiền tố CK.
+- Thông báo chuyển tiền thành công cho khách hàng và kết thúc.
+
+Hình 2.7: Activity Diagram chuyển khoản
+2.3.3 Sơ đồ Sequence
+Sơ đồ trình tự mô tả sự tương tác theo thời gian giữa các đối tượng (Giao diện, Xử lý logic và Cơ sở dữ liệu).
+2.3.3.1 Sequence đăng ký và duyệt mở tài khoản
+Khi khách hàng gửi form đăng ký trực tuyến, hệ thống lưu yêu cầu đăng ký vào cơ sở dữ liệu. Sau đó, nhân viên ngân hàng truy cập để xét duyệt yêu cầu. Nếu duyệt thành công, hệ thống tự động tạo tài khoản dựa trên thông tin đã đăng ký.
+Trong sơ đồ Sequence bao gồm các đối tượng sau:
+- Khách hàng (Customer)
+- Nhân viên ngân hàng (Employee)
+- Hệ thống quản lý (System)
+- Cơ sở dữ liệu (Database)
+
+Hình 2.8: Sequence đăng ký và duyệt tài khoản
+Trình tự hoạt động:
+- Luồng chính: Khách hàng gửi thông tin đăng ký lên Hệ thống. Hệ thống lưu trạng thái PENDING xuống Cơ sở dữ liệu. Nhân viên truy cập hệ thống để duyệt yêu cầu. Hệ thống khởi tạo tài khoản (lấy số điện thoại làm số tài khoản) và lưu vào Cơ sở dữ liệu, cuối cùng thông báo kết quả.
+- Kịch bản thay thế (Alt) - Từ chối duyệt: Nếu thông tin không hợp lệ, Nhân viên chọn Từ chối. Hệ thống cập nhật trạng thái từ chối vào Cơ sở dữ liệu và thông báo cho Khách hàng, quy trình kết thúc mà không tạo tài khoản.
+2.3.3.2 Sequence giao dịch tiền tại quầy (Nạp/Rút)
+Sơ đồ trình tự này mô tả tương tác khi Nhân viên ngân hàng thực hiện giao dịch nạp tiền hoặc rút tiền cho Khách hàng tại quầy.
+Các đối tượng tham gia: Khách hàng, Nhân viên ngân hàng, Hệ thống, và Cơ sở dữ liệu.
+
+Hình 2.9: Sequence giao dịch tiền tại quầy
+Trình tự hoạt động:
+- Luồng chính: Nhân viên đăng nhập và gửi yêu cầu giao dịch (Nạp/Rút) kèm thông tin tài khoản và số tiền vào Hệ thống. Hệ thống truy vấn Cơ sở dữ liệu để kiểm tra tính hợp lệ của tài khoản và số dư (nếu rút). Khi thỏa mãn, Hệ thống tiến hành cộng/trừ số dư, ghi nhận lịch sử giao dịch kèm mã nhân viên, lưu vào Cơ sở dữ liệu và trả về kết quả thành công.
+- Kịch bản thay thế (Alt):
+  + Tài khoản không tồn tại: Hệ thống báo lỗi ngay sau khi truy vấn Cơ sở dữ liệu.
+  + Số dư không đủ (khi rút tiền): Hệ thống từ chối giao dịch và báo lỗi "Không đủ số dư" cho Nhân viên.
+2.3.3.3 Sequence chuyển khoản
+Sơ đồ trình tự mô tả quá trình chuyển tiền trực tuyến giữa các tài khoản do Khách hàng tự thực hiện thông qua hệ thống Internet Banking.
+Các đối tượng tham gia: Khách hàng (người gửi), Hệ thống, và Cơ sở dữ liệu.
+
+Hình 2.10: Sequence chuyển khoản
+Trình tự hoạt động:
+- Luồng chính: Khách hàng gửi yêu cầu Chuyển khoản (nhập STK đích, Số tiền, Nội dung). Hệ thống xác thực thông tin, kiểm tra số dư qua Cơ sở dữ liệu. Nếu hợp lệ, Hệ thống trừ tiền tài khoản gửi, cộng tiền tài khoản nhận, tự động lưu người nhận vào Danh bạ, lưu lịch sử giao dịch và trả về thông báo thành công.
+- Kịch bản thay thế (Alt):
+  + Tài khoản đích không tồn tại hoặc trùng tài khoản nguồn: Hệ thống báo lỗi.
+  + Số dư không đủ hoặc Số tiền không hợp lệ: Hệ thống từ chối giao dịch và trả về thông báo lỗi cho Khách hàng.
+2.3.4 Sơ đồ Class
+Sơ đồ lớp mô tả cấu trúc tĩnh của hệ thống, bao gồm các lớp (Class), thuộc tính (Attributes), phương thức (Methods) và mối quan hệ thực tế giữa các thực thể trong cơ sở dữ liệu.
+
+Hình 2.11: Sơ đồ class hệ thống MB Bank
+Các lớp chính:
+- Lớp User (Lớp cơ sở): Chứa các thuộc tính định danh chung cho tất cả người dùng (username, password, fullName, email, role, status).
+- Lớp Customer (Khách hàng): Kế thừa từ User, bổ sung thông tin định danh cá nhân (maKH, cccd, phone, address). Lớp này có quan hệ 1-N với Account và SavedRecipient.
+- Lớp Employee (Nhân viên): Kế thừa từ User, bổ sung thông tin nội bộ (maNV, position, boPhan, luong). Lớp này có phương thức xacMinhKYC() ứng với nghiệp vụ kiểm duyệt.
+- Lớp Account (Tài khoản): Quản lý số dư (balance) và trạng thái. Phương thức kiemTraSoDu() là chốt chặn quan trọng trong mọi giao dịch tiền.
+- Lớp Transaction (Giao dịch): Lưu trữ lịch sử biến động số dư. Phương thức ghiNhatKyGD() dùng để cập nhật dữ liệu tự động. Lưu kèm mã nhân viên thực hiện (performedBy) nếu là giao dịch tại quầy.
+- Lớp Branch (Chi nhánh): Thực thể chi nhánh, quản lý trực tiếp danh sách Nhân viên, Khách hàng và các Yêu cầu mở tài khoản thuộc chi nhánh đó.
+- Lớp AccountRegistrationRequest: Lưu trữ các form đăng ký trực tuyến của khách (trạng thái PENDING, APPROVED, REJECTED).
+- Lớp SavedRecipient: Lưu trữ danh bạ người nhận để hỗ trợ khách hàng chuyển khoản nhanh.
+
+Các mối quan hệ logic:
+- Kế thừa (Generalization): Khách hàng và Nhân viên đều kế thừa từ đối tượng người dùng chung (User) để tái sử dụng logic xác thực hệ thống.
+- Một - Nhiều (1:N):
+  + Một Chi nhánh (Branch) quản lý nhiều Nhân viên và nhiều Khách hàng.
+  + Một Khách hàng sở hữu nhiều Tài khoản (Account) và nhiều Danh bạ người nhận (SavedRecipient).
+  + Một Tài khoản liên kết với nhiều Giao dịch (Transaction) nhận và gửi.
+2.4 Thiết kế hệ thống
+2.4 Thiết kế hệ thống
+2.4.1 Kiến trúc tổng thể hệ thống
+Hệ thống quản lý ngân hàng MB Bank được thiết kế dựa trên mô hình Client-Server kết hợp với Kiến trúc 3 tầng (3-Tier Architecture) của Spring Boot. Mô hình này giúp đảm bảo tính bảo mật, khả năng mở rộng và dễ dàng bảo trì trong tương lai.
+
+Kiến trúc hệ thống bao gồm các thành phần chính:
+- Tầng Client (Giao diện người dùng - Presentation Layer): Sử dụng HTML, CSS, JavaScript kết hợp Bootstrap/Thymeleaf để render giao diện trên trình duyệt web. Tầng này chịu trách nhiệm hiển thị thông tin, tiếp nhận dữ liệu đầu vào (từ Khách hàng và Nhân viên) và gửi các HTTP Request lên Server.
+- Tầng Server (Xử lý nghiệp vụ - Business Logic Layer): Được xây dựng bằng Spring Boot, chia thành các thành phần:
+  + Controller (API/Web Layer): Tiếp nhận Request từ Client, điều hướng và kiểm tra quyền truy cập thông qua cấu hình Spring Security.
+  + Service Layer: Nơi chứa toàn bộ logic nghiệp vụ cốt lõi (xử lý chuyển khoản, kiểm tra số dư, xét duyệt hồ sơ mở tài khoản). Đây là "trái tim" của hệ thống, giúp tách biệt logic xử lý khỏi giao diện.
+- Tầng Data Access (Truy cập dữ liệu - Data Layer): Sử dụng Spring Data JPA / Hibernate đóng vai trò làm ORM (Object-Relational Mapping). Tầng này tự động chuyển đổi các đối tượng Java (Entities) thành câu lệnh SQL để thao tác với cơ sở dữ liệu.
+- Cơ sở dữ liệu (Database): Sử dụng MySQL để lưu trữ toàn bộ dữ liệu vật lý một cách an toàn, đảm bảo tính toàn vẹn thông qua các khóa ngoại (Foreign Key) và quy trình Transaction (@Transactional).
+
+Ưu điểm của kiến trúc này:
+- Phân tách mối quan tâm (Separation of Concerns): Tách bạch rõ ràng giữa Giao diện, Logic nghiệp vụ và Dữ liệu.
+- Bảo mật cao: Tích hợp bảo mật thống nhất từ Security Context ở tầng Server đến Transaction ở Database.
+- Dễ dàng mở rộng: Các Service được module hóa, dễ nâng cấp và bảo trì.
+
+2.4.2 Thiết kế cơ sở dữ liệu
+Thiết kế cơ sở dữ liệu đóng vai trò quan trọng trong việc đảm bảo hệ thống vận hành trơn tru, lưu trữ dữ liệu an toàn và đáp ứng tốc độ truy xuất cao. Hệ thống sử dụng cơ sở dữ liệu quan hệ (Relational Database) thông qua sự hỗ trợ của ORM.
+
+2.4.2.1 Sơ đồ Thực thể - Liên kết (ERD)
+Sơ đồ ERD mô tả cấu trúc các bảng vật lý trong cơ sở dữ liệu và các khóa ngoại liên kết giữa chúng.
+
+Hình 2.12: Sơ đồ ERD Cơ sở dữ liệu MB Bank
+
+2.4.2.2 Mô tả các bảng dữ liệu chính
+- Bảng users: Lưu trữ thông tin định danh của tất cả người dùng (username, password, role, status).
+- Bảng customers: Lưu trữ thông tin chi tiết khách hàng (maKH, cccd, phone), liên kết khóa ngoại với chi nhánh (branch_id).
+- Bảng employees: Lưu trữ thông tin nhân viên ngân hàng (maNV, position, luong), quản lý bởi branch_id.
+- Bảng accounts: Quản lý thông tin tài khoản tiền gửi (accountNumber, balance, loaiTK), thuộc sở hữu của customer_id.
+- Bảng transactions: Ghi nhận mọi biến động số dư. Lưu trữ từ tài khoản nào (from_account_id) đến tài khoản nào (to_account_id), số tiền (amount) và người thực hiện (performedBy).
+- Bảng branches: Quản lý danh sách chi nhánh (maChiNhanh, branchName, branchAddress).
+- Bảng account_registration_request: Lưu hồ sơ mở tài khoản online chờ nhân viên duyệt.
+- Bảng saved_recipient: Lưu danh bạ người nhận hỗ trợ khách hàng chuyển khoản nhanh.
+2.4.3.1 Giao diện của khách hàng
+
+Hình 2.13: Giao diện đăng nhập
+
+Hình 2.14: Giao diện trang chủ của khách hang
+
+Hình 2.15: Giao diện chuyển khoản
+
+Hình 2.16: Giao diện lịch sử giao dịch
+
+
+
+
+
+2.4.3.2 Giao diện của nhân viên ngân hàng
+
+Hình 2.17: Employee Login Screen
+
+
+Hình 2.18: Transaction Interface
+
+
+Hình 2.19: Customer Management
+
+
+Hình 2.20: Account Management
+
+2.4.3.3 Giao diện của quản trị hệ thống
+
+
+Hình 2.21: Dashboard
+
+
+Hình 2.22: employee
+
+Hình 2.23:  Login
+
+
+
+
+
+
+
+
+
+
+
+
+
+CHƯƠNG 3: XÂY DỰNG VÀ KIỂM THỬ HỆ THỐNG
+3.1 Công nghệ và công cụ sử dụng
+Việc lựa chọn công nghệ cho hệ thống quản lý ngân hàng không chỉ dựa trên sự phổ biến mà còn phải đáp ứng khắt khe các tiêu chuẩn về tính bảo mật, sự ổn định và khả năng xử lý giao dịch phức tạp. Nhóm đề xuất bộ công nghệ sau dựa trên các yêu cầu nghiệp vụ thực tế:
+
+3.1.1 Ngôn ngữ lập trình và Framework Backend
+3.1.1 Ngôn ngữ lập trình và Framework Backend
+Hệ thống sử dụng Java 17 và hệ sinh thái Spring Boot.
+Lý do lựa chọn (So với PHP hay Node.js):
+- Tính bảo mật (Security): Khác với PHP, Java chạy trên máy ảo JVM với cơ chế quản lý bộ nhớ nghiêm ngặt, giảm thiểu rủi ro bảo mật. Spring Boot tích hợp sẵn Spring Security, giúp dễ dàng triển khai các lớp bảo mật, xác thực người dùng bằng mã hóa mật khẩu (BCrypt) và kiểm soát quyền truy cập chặt chẽ (Role-Based Access Control) cho Khách hàng, Nhân viên, Quản trị viên.
+- Xử lý giao dịch (Transaction Management): Ngân hàng yêu cầu tính nhất quán (Consistency) tuyệt đối. Khác với Node.js vốn thiên về xử lý I/O không đồng bộ, Java và Spring Data JPA hỗ trợ hoàn hảo các cơ chế quản lý giao dịch ACID (@Transactional). Điều này đảm bảo nếu một bước trong quy trình chuyển khoản thất bại, toàn bộ thao tác sẽ được hoàn tác (Rollback), ngăn chặn triệt để tình trạng tiền bị trừ ở tài khoản nguồn nhưng tài khoản đích không nhận được.
+- Khả năng mở rộng (Scalability): Spring Boot phân chia kiến trúc thành các layer rõ ràng (Controller, Service, Repository), rất dễ dàng nâng cấp hoặc chuyển đổi sang kiến trúc Microservices khi hệ thống mở rộng quy mô trong tương lai.
+
+3.1.2 Công nghệ giao diện (Frontend)
+Hệ thống sử dụng HTML5, CSS3, JavaScript kết hợp cùng Bootstrap 5 và Thymeleaf.
+Lý do lựa chọn:
+- Bootstrap: Cung cấp sẵn các component chuẩn, hỗ trợ Responsive Design hoàn hảo, giúp giao diện ngân hàng hiển thị tốt trên mọi thiết bị (Mobile, Tablet, PC) mà không tốn quá nhiều thời gian viết CSS thủ công.
+- Thymeleaf (So với React/Vue.js): Thay vì tách biệt hoàn toàn Frontend như React/Vue (đòi hỏi phải xây dựng hệ thống API phức tạp hơn và quản lý state rườm rà), Thymeleaf là Template Engine được tích hợp chuẩn (native) với Spring Boot. Nó cho phép render dữ liệu động trực tiếp từ Controller xuống giao diện một cách mượt mà, tốc độ tải trang nhanh và đặc biệt an toàn trước các cuộc tấn công XSS (Cross-Site Scripting).
+
+3.1.3 Hệ quản trị cơ sở dữ liệu
+Hệ thống sử dụng MySQL.
+Lý do lựa chọn (So với MongoDB hay Microsoft SQL Server):
+- Đảm bảo tính toàn vẹn dữ liệu (ACID): Khác với các hệ quản trị NoSQL như MongoDB (thường đánh đổi tính nhất quán lấy tốc độ), MySQL (với InnoDB engine) tuân thủ chặt chẽ nguyên tắc ACID, đảm bảo mọi giao dịch nạp/rút/chuyển khoản không bao giờ bị sai lệch.
+- Phù hợp với quy mô dự án: So với Microsoft SQL Server (thường yêu cầu bản quyền đắt đỏ và tốn nhiều tài nguyên server), MySQL hoàn toàn miễn phí, nhẹ nhàng nhưng vẫn đáp ứng xuất sắc khối lượng dữ liệu lớn và tốc độ truy vấn cao. Ngoài ra, MySQL tương thích hoàn hảo với hệ sinh thái mã nguồn mở của Java.
+- Khóa ngoại (Foreign Key) chặt chẽ: MySQL hỗ trợ tạo các liên kết ràng buộc dữ liệu (ví dụ: một giao dịch bắt buộc phải tham chiếu đến một tài khoản có thật), giúp dữ liệu luôn an toàn và logic.
+3.2 Xây dựng hệ thống quản lý ngân hàng
+Vì hệ thống thực tế đã được lập trình hoàn thiện, thay vì sử dụng mã giả (pseudo-code) mang tính lý thuyết, phần này sẽ trình bày trực tiếp cách thức cài đặt các chức năng cốt lõi thông qua nền tảng Spring Boot. Hệ thống được tổ chức theo kiến trúc MVC chặt chẽ và an toàn.
+
+3.2.1 Cấu trúc mã nguồn (Project Structure)
+Mã nguồn hệ thống được tổ chức thành các package độc lập nhằm đảm bảo nguyên tắc SOLID:
+- com.mbbank.mbbSystem.controller: Tiếp nhận các HTTP Request từ người dùng, xử lý điều hướng trang (Thymeleaf) và nhận dữ liệu từ các biểu mẫu (Web MVC).
+- com.mbbank.mbbSystem.service: Chứa các class xử lý nghiệp vụ cốt lõi (như TransactionService, AccountRegistrationService,...). Nơi đây chứa các thuật toán tính toán và kiểm tra điều kiện.
+- com.mbbank.mbbSystem.repository: Chứa các interface kế thừa từ JpaRepository để thao tác trực tiếp với Database mà không cần viết câu lệnh SQL thủ công.
+- com.mbbank.mbbSystem.model: Chứa các Entity class map trực tiếp tới các bảng trong cơ sở dữ liệu (Customer, Employee, Account, Transaction,...).
+- com.mbbank.mbbSystem.security: Chứa cấu hình bảo mật Spring Security, quy định quyền truy cập cho từng đường dẫn (URL).
+
+3.2.2 Cài đặt chức năng Quản lý mở tài khoản trực tuyến
+Quy trình mở tài khoản được số hóa thành luồng duyệt hồ sơ thay vì nhập liệu thủ công tại quầy:
+- Bước 1 (Gửi yêu cầu): Khách hàng điền thông tin trên website. Controller tiếp nhận, tạo đối tượng AccountRegistrationRequest với trạng thái PENDING và lưu xuống Database.
+- Bước 2 (Kiểm duyệt): Nhân viên ngân hàng (thuộc đúng chi nhánh của khách) truy cập danh sách hồ sơ. Khi nhân viên xác minh KYC thành công và nhấn "Duyệt", AccountRegistrationService sẽ tiến hành xử lý.
+- Bước 3 (Sinh tài khoản tự động): Service tự động lấy Số điện thoại của khách hàng làm Số tài khoản (accountNumber), mã hóa mật khẩu bằng thuật toán BCrypt, tự động khởi tạo và lưu bản ghi Customer cùng Account. Điều này giúp loại bỏ hoàn toàn sai sót do con người khi nhập liệu.
+
+3.2.3 Cài đặt chức năng Giao dịch tiền (Nạp, Rút, Chuyển khoản)
+Giao dịch tiền là chức năng cốt lõi nhất, được xử lý tập trung tại TransactionService với các tiêu chuẩn an toàn cao nhất:
+- Bảo toàn dữ liệu với @Transactional: Mọi hàm xử lý giao dịch (đặc biệt là chuyển khoản) đều được gắn annotation @Transactional của Spring. Quá trình chuyển khoản gồm 3 bước:
+  1. Trừ tiền tài khoản Nguồn (fromAccount.setBalance).
+  2. Cộng tiền tài khoản Đích (toAccount.setBalance).
+  3. Ghi nhận lịch sử vào bảng Transactions.
+  => Nếu hệ thống mất điện, sập mạng hoặc xảy ra lỗi ở Bước 2, Spring Boot sẽ tự động hoàn tác (Rollback) lại Bước 1. Đảm bảo tuyệt đối không bao giờ xảy ra lỗi "mất tiền oan".
+- Logic kiểm tra nghiệp vụ: Trước khi thực hiện trừ tiền, hệ thống kiểm tra khắt khe bằng mã Java: Số tiền chuyển phải > 0, Tài khoản nguồn phải có số dư lớn hơn hoặc bằng số tiền chuyển, và Tài khoản đích phải tồn tại trong DB.
+- Lưu danh bạ thông minh: Khi chuyển khoản thành công, hệ thống gọi hàm trong SavedRecipientService để tự động lưu thông tin người nhận vào danh bạ cá nhân của khách hàng, tối ưu trải nghiệm cho các lần chuyển sau.
+
+3.2.4 Cài đặt chức năng Bảo mật và Phân quyền
+Hệ thống thiết lập luồng an ninh đa lớp vô cùng chặt chẽ thông qua Spring Security:
+- Xác thực (Authentication): Người dùng phải đăng nhập. Mật khẩu nhập vào sẽ được băm (hash) và so khớp với chuỗi BCrypt đã lưu trong DB. Tuyệt đối không lưu mật khẩu dạng rõ (plaintext).
+- Phân quyền (Authorization): Các đường dẫn (URL) được phân luồng truy cập khắt khe:
+  + /customer/** : Chỉ dành cho người dùng mang quyền ROLE_CUSTOMER.
+  + /employee/** : Chỉ dành cho nhân viên mang quyền ROLE_EMPLOYEE.
+  + /admin/** : Chỉ dành cho quản trị viên tối cao mang quyền ROLE_SYSADMIN.
+  => Bất kỳ hành vi cố tình truy cập sai quyền (ví dụ khách hàng gõ URL của trang nhân viên) đều bị chặn ngay lập tức bởi bộ lọc SecurityFilterChain và trả về lỗi 403 (Access Denied).
+
+KẾT LUẬN CHƯƠNG 3
+Bằng việc áp dụng các công nghệ hiện đại như Spring Boot và MySQL, hệ thống không chỉ giải quyết được bài toán quản lý ngân hàng truyền thống mà còn mang lại trải nghiệm số hóa an toàn, bảo mật và cực kỳ tối ưu về mặt hiệu năng.
