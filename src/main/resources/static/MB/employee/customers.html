@@ -1,320 +1,74 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <title>Quản lý Khách hàng - Nhân viên MB Bank</title>
     <link rel="stylesheet" href="../assets/theme.css">
     <style>
-        .admin-layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 280px;
-            background: white;
-            border-right: 1px solid #ddd;
-            padding: 30px 0;
-            flex-shrink: 0;
-        }
-
-        .sidebar-item {
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: #666;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-
-        .sidebar-item:hover {
-            background: #f5f7ff;
-            color: var(--mb-blue);
-        }
-
-        .sidebar-item.active {
-            background: var(--mb-blue);
-            color: white;
-        }
-
-        .content {
-            flex: 1;
-            padding: 40px;
-            background: #f8f9fc;
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .logout-btn {
-            background: none;
-            border: 1px solid #ddd;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #666;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-
-        .logout-btn:hover {
-            background: #fff0f0;
-            color: var(--mb-red);
-            border-color: var(--mb-red);
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            font-size: 14px;
-            outline: none;
-            transition: 0.2s;
-        }
-
-        .search-bar input:focus {
-            border-color: var(--mb-blue);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            padding: 14px 15px;
-            text-align: left;
-            color: #888;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #eef0f4;
-        }
-
-        td {
-            padding: 14px 15px;
-            font-size: 14px;
-            border-bottom: 1px solid #f0f2f5;
-            vertical-align: top;
-        }
-
-        tr:hover td {
-            background: #fafbff;
-        }
-
-        .action-btn {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            padding: 5px 10px;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-
-        .btn-edit {
-            color: var(--mb-blue);
-        }
-
-        .btn-edit:hover {
-            background: #eef2ff;
-        }
-
-        .ab {
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: .18s;
-        }
-
-        .ab-lock {
-            color: #f59e0b;
-        }
-
-        .ab-lock:hover {
-            background: #fffbeb;
-        }
-
-        .ab-unlock {
-            color: #10b981;
-        }
-
-        .ab-unlock:hover {
-            background: #ecfdf5;
-        }
-
-        .badge-locked {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 3px 9px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            display: inline-block;
-            margin-top: 4px;
-        }
-
+        .admin-layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background: white; border-right: 1px solid #ddd; padding: 30px 0; flex-shrink: 0; }
+        .sidebar-item { padding: 15px 30px; display: flex; align-items: center; gap: 15px; color: #666; text-decoration: none; font-weight: 500; transition: 0.2s; }
+        .sidebar-item:hover { background: #f5f7ff; color: var(--mb-blue); }
+        .sidebar-item.active { background: var(--mb-blue); color: white; }
+        .content { flex: 1; padding: 40px; background: #f8f9fc; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .logout-btn { background: none; border: 1px solid #ddd; padding: 8px 16px; border-radius: 8px; cursor: pointer; color: #666; font-size: 13px; transition: 0.2s; }
+        .logout-btn:hover { background: #fff0f0; color: var(--mb-red); border-color: var(--mb-red); }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-bar input { flex: 1; padding: 12px 16px; border-radius: 10px; border: 1px solid #ddd; font-size: 14px; outline: none; transition: 0.2s; }
+        .search-bar input:focus { border-color: var(--mb-blue); }
+        table { width: 100%; border-collapse: collapse; }
+        th { padding: 14px 15px; text-align: left; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #eef0f4; }
+        td { padding: 14px 15px; font-size: 14px; border-bottom: 1px solid #f0f2f5; vertical-align: top; }
+        tr:hover td { background: #fafbff; }
+        .action-btn { border: none; background: none; cursor: pointer; font-weight: 600; font-size: 13px; padding: 5px 10px; border-radius: 6px; transition: 0.2s; }
+        .btn-edit { color: var(--mb-blue); }
+        .btn-edit:hover { background: #eef2ff; }
+        .ab { border: none; background: none; cursor: pointer; font-weight: 600; font-size: 12px; padding: 4px 8px; border-radius: 6px; transition: .18s; }
+        .ab-lock { color: #f59e0b; }
+        .ab-lock:hover { background: #fffbeb; }
+        .ab-unlock { color: #10b981; }
+        .ab-unlock:hover { background: #ecfdf5; }
+        .badge-locked { background: #fee2e2; color: #991b1b; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; margin-top: 4px; }
+        .badge-active-acc { background: #dcfce7; color: #166534; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .badge-locked-acc { background: #fee2e2; color: #991b1b; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-overlay.open {
-            display: flex;
-        }
-
-        .modal-box {
-            background: white;
-            border-radius: 20px;
-            padding: 36px;
-            width: 520px;
-            max-width: 95vw;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-box h3 {
-            margin: 0 0 24px;
-            font-size: 20px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            font-size: 14px;
-            box-sizing: border-box;
-            outline: none;
-            transition: 0.2s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--mb-blue);
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            justify-content: flex-end;
-        }
-
-        .btn-cancel {
-            background: #f0f2f5;
-            color: #555;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-save {
-            background: var(--mb-blue);
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #333;
-            color: white;
-            padding: 14px 22px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 9999;
-            display: none;
-        }
-
-        .toast.show {
-            display: block;
-        }
-
-        .toast.success {
-            background: #28a745;
-        }
-
-        .toast.error {
-            background: var(--mb-red);
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); z-index: 200; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: white; border-radius: 20px; padding: 36px; width: 520px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); max-height: 90vh; overflow-y: auto; }
+        .modal-box h3 { margin: 0 0 24px; font-size: 20px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #555; margin-bottom: 6px; }
+        .form-group input, .form-group select { width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid #ddd; font-size: 14px; box-sizing: border-box; outline: none; transition: 0.2s; }
+        .form-group input:focus { border-color: var(--mb-blue); }
+        .modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+        .btn-cancel { background: #f0f2f5; color: #555; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .btn-save { background: var(--mb-blue); color: white; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: #333; color: white; padding: 14px 22px; border-radius: 12px; font-size: 14px; font-weight: 500; z-index: 9999; display: none; }
+        .toast.show { display: block; }
+        .toast.success { background: #28a745; }
+        .toast.error { background: var(--mb-red); }
     </style>
 </head>
-
 <body>
     <div class="admin-layout">
         <aside class="sidebar">
             <div class="logo-container" style="padding: 0 30px 40px;">
                 <div class="mb-star"></div>
-                <div class="logo-text-group">
-                    <div class="logo-main">MB</div>
-                    <div class="logo-sub">EMPLOYEE</div>
-                </div>
+                <div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">EMPLOYEE</div></div>
             </div>
-            <a href="index.html" class="sidebar-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Giao diện Giao dịch</a>
-            <a href="customers.html" class="sidebar-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Quản lý khách hàng</a>
-            <a href="accounts.html" class="sidebar-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> Quản lý tài khoản</a>
+            <a href="index.html" class="sidebar-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Tổng quan</a>
+            <a href="customers.html" class="sidebar-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Khách hàng & Tài khoản</a>
+            <a href="counter-services.html" class="sidebar-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Giao dịch tại quầy</a>
             <a href="registration-requests.html" class="sidebar-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Duyệt tài khoản mới</a>
         </aside>
 
         <main class="content">
             <div class="top-bar">
                 <div>
-                    <h2 style="margin:0;">Quản lý Khách hàng</h2>
-                    <p style="margin:4px 0 0; color:#888; font-size:14px;">Xin chào, <strong
-                            id="welcome-name">...</strong></p>
+                    <h2 style="margin:0;">Quản lý Khách hàng & Tài khoản</h2>
+                    <p style="margin:4px 0 0; color:#888; font-size:14px;">Xin chào, <strong id="welcome-name">...</strong></p>
                 </div>
                 <div style="display:flex; gap:10px; align-items:center;">
                     <button class="btn-primary" onclick="openAddModal()">+ Thêm khách hàng</button>
@@ -324,8 +78,7 @@
 
             <div class="card fade-in">
                 <div class="search-bar">
-                    <input type="text" value="" id="search-input" placeholder="Tìm theo Mã KH, CCCD, Tên, SĐT..."
-                        autocomplete="off">
+                    <input type="text" value="" id="search-input" placeholder="Tìm theo Mã KH, CCCD, Tên, SĐT, Số TK..." autocomplete="off">
                     <button class="btn-primary" onclick="filterTable()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Tìm kiếm</button>
                 </div>
                 <table>
@@ -335,15 +88,13 @@
                             <th>Họ tên / Ngày sinh</th>
                             <th>CCCD</th>
                             <th>Liên hệ</th>
-                            <th>Địa chỉ</th>
+                            <th>Số TK / Số dư</th>
+                            <th>TT Tài khoản</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody id="customers-body">
-                        <tr>
-                            <td colspan="6" style="text-align:center; padding:30px; color:#888;">Đang tải dữ liệu...
-                            </td>
-                        </tr>
+                        <tr><td colspan="7" style="text-align:center; padding:30px; color:#888;">Đang tải dữ liệu...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -356,49 +107,23 @@
             <h3 id="modal-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Thêm khách hàng</h3>
             <input type="hidden" id="f-id">
             <div class="form-row">
-                <div class="form-group">
-                    <label>Mã KH</label>
-                    <input type="text" id="f-makh" placeholder="KH0001 (tự sinh nếu trống)">
-                </div>
-                <div class="form-group">
-                    <label>Tên đăng nhập *</label>
-                    <input type="text" id="f-username" placeholder="username">
-                </div>
+                <div class="form-group"><label>Mã KH</label><input type="text" id="f-makh" placeholder="KH0001 (tự sinh nếu trống)"></div>
+                <div class="form-group"><label>Tên đăng nhập *</label><input type="text" id="f-username" placeholder="username"></div>
             </div>
             <div class="form-group">
-                <label>Mật khẩu <span id="pwd-note" style="color:#aaa; font-weight:400;">(để trống nếu không
-                        đổi)</span></label>
+                <label>Mật khẩu <span id="pwd-note" style="color:#aaa; font-weight:400;">(để trống nếu không đổi)</span></label>
                 <input type="password" id="f-password" placeholder="Mật khẩu mới">
             </div>
             <div class="form-row">
-                <div class="form-group">
-                    <label>Họ và tên *</label>
-                    <input type="text" id="f-fullname" placeholder="Nguyễn Văn A">
-                </div>
-                <div class="form-group">
-                    <label>Ngày sinh</label>
-                    <input type="date" id="f-ngaysinh">
-                </div>
+                <div class="form-group"><label>Họ và tên *</label><input type="text" id="f-fullname" placeholder="Nguyễn Văn A"></div>
+                <div class="form-group"><label>Ngày sinh</label><input type="date" id="f-ngaysinh"></div>
             </div>
             <div class="form-row">
-                <div class="form-group">
-                    <label>CCCD</label>
-                    <input type="text" id="f-cccd" placeholder="012345678901">
-                </div>
-                <div class="form-group">
-                    <label>Số điện thoại</label>
-                    <input type="text" id="f-phone" placeholder="09xxxxxxxx">
-                </div>
+                <div class="form-group"><label>CCCD</label><input type="text" id="f-cccd" placeholder="012345678901"></div>
+                <div class="form-group"><label>Số điện thoại</label><input type="text" id="f-phone" placeholder="09xxxxxxxx"></div>
             </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="f-email" placeholder="email@example.com">
-            </div>
-            <div class="form-group">
-                <label>Địa chỉ</label>
-                <input autocomplete="off" type="text" id="f-address"
-                    placeholder="Số nhà, đường, quận/huyện, tỉnh/thành">
-            </div>
+            <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="email@example.com"></div>
+            <div class="form-group"><label>Địa chỉ</label><input autocomplete="off" type="text" id="f-address" placeholder="Số nhà, đường, quận/huyện, tỉnh/thành"></div>
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeModal('cust-modal')">Hủy</button>
                 <button class="btn-save" onclick="saveCustomer()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Lưu</button>
@@ -420,7 +145,7 @@
 
         async function loadCustomers() {
             const tbody = document.getElementById('customers-body');
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#888;">Đang tải...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:#888;">Đang tải...</td></tr>';
             try {
                 const res = await fetch('/api/customer/list', { headers: { 'Authorization': 'Bearer ' + token } });
                 if (res.status === 401) { doLogout(); return; }
@@ -428,14 +153,14 @@
                 allCustomers = await res.json();
                 renderTable(allCustomers);
             } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:30px;">⚠ ${err.message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red; padding:30px;">⚠ ${err.message}</td></tr>`;
             }
         }
 
         function renderTable(customers) {
             const tbody = document.getElementById('customers-body');
             if (customers.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#aaa;">Chưa có khách hàng nào.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:#aaa;">Chưa có khách hàng nào.</td></tr>';
                 return;
             }
             tbody.innerHTML = customers.map(c => {
@@ -443,6 +168,14 @@
                 const lockBtn = locked
                     ? `<button class="ab ab-unlock" onclick="toggleLock(${c.id}, false)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg> Mở khóa</button>`
                     : `<button class="ab ab-lock" onclick="toggleLock(${c.id}, true)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> Khóa</button>`;
+
+                const accNum = c.accountNumber || '<span style="color:#ddd">Chưa có</span>';
+                const balance = c.balance != null ? new Intl.NumberFormat('vi-VN').format(c.balance) + ' ₫' : '—';
+                const accLocked = c.accountStatus === 'DA_KHOA' || c.accountStatus === 'LOCKED';
+                const accBadge = c.accountNumber
+                    ? (accLocked ? '<span class="badge-locked-acc">Đã khóa</span>' : '<span class="badge-active-acc">Hoạt động</span>')
+                    : '<span style="color:#ccc;font-size:12px;">—</span>';
+
                 return `<tr>
         <td style="font-weight:700; color:var(--mb-blue);">${c.maKH || ('<span style="color:#ddd">#' + c.id + '</span>')}</td>
         <td>
@@ -455,7 +188,11 @@
             <div>${c.phone || 'N/A'}</div>
             <div style="font-size:12px; color:#888;">${c.email || 'N/A'}</div>
         </td>
-        <td style="font-size:13px; max-width:180px;">${c.address || 'N/A'}</td>
+        <td>
+            <div style="font-weight:700; font-family:monospace;">${accNum}</div>
+            <div style="font-size:13px; color:var(--mb-blue); font-weight:700; margin-top:4px;">${balance}</div>
+        </td>
+        <td>${accBadge}</td>
         <td>
             <button class="action-btn btn-edit" onclick="openEditModal(${c.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Sửa</button>
             ${lockBtn}
@@ -472,7 +209,8 @@
                 (c.fullName || '').toLowerCase().includes(kw) ||
                 (c.cccd || '').toLowerCase().includes(kw) ||
                 (c.phone || '').toLowerCase().includes(kw) ||
-                (c.email || '').toLowerCase().includes(kw)
+                (c.email || '').toLowerCase().includes(kw) ||
+                (c.accountNumber || '').toLowerCase().includes(kw)
             ));
         }
 
@@ -512,9 +250,7 @@
             document.getElementById('cust-modal').classList.add('open');
         }
 
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('open');
-        }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
         async function saveCustomer() {
             const id = document.getElementById('f-id').value;
@@ -531,18 +267,15 @@
                 role: 'ROLE_CUSTOMER'
             };
             if (!body.fullName) { showToast('Vui lòng nhập họ tên', 'error'); return; }
-
             try {
                 let res;
                 if (id) {
-                    // Cập nhật: dùng CustomerDto endpoint
                     res = await fetch(`/api/customer/update/${id}`, {
                         method: 'PUT',
                         headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
                         body: JSON.stringify(body)
                     });
                 } else {
-                    // Tạo mới: dùng endpoint dành cho nhân viên (cần JWT, encode password)
                     if (!body.password) { showToast('Vui lòng nhập mật khẩu', 'error'); return; }
                     if (!body.username) { showToast('Vui lòng nhập tên đăng nhập', 'error'); return; }
                     res = await fetch('/api/auth/register-customer', {
@@ -559,24 +292,19 @@
                 showToast(id ? '✅ Cập nhật thành công!' : '✅ ' + (result.message || 'Thêm khách hàng thành công!'), 'success');
                 closeModal('cust-modal');
                 await loadCustomers();
-            } catch (err) {
-                showToast('⚠ ' + err.message, 'error');
-            }
+            } catch (err) { showToast('⚠ ' + err.message, 'error'); }
         }
 
         async function toggleLock(id, lock) {
             const action = lock ? 'lock' : 'unlock';
             try {
                 const res = await fetch(`/api/customer/${action}/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token }
+                    method: 'PUT', headers: { 'Authorization': 'Bearer ' + token }
                 });
                 if (!res.ok) throw new Error(await res.text());
-                showToast(lock ? '🔒 Đã khóa tài khoản' : '🔓 Đã mở khóa tài khoản', 'success');
+                showToast(lock ? '🔒 Đã khóa khách hàng & tài khoản' : '🔓 Đã mở khóa khách hàng & tài khoản', 'success');
                 await loadCustomers();
-            } catch (err) {
-                showToast('⚠ ' + err.message, 'error');
-            }
+            } catch (err) { showToast('⚠ ' + err.message, 'error'); }
         }
 
         function showToast(msg, type = '') {
@@ -586,11 +314,7 @@
             setTimeout(() => t.className = 'toast', 3200);
         }
 
-        function doLogout() {
-            localStorage.clear();
-            window.location.replace('login.html');
-        }
+        function doLogout() { localStorage.clear(); window.location.replace('login.html'); }
     </script>
 </body>
-
 </html>

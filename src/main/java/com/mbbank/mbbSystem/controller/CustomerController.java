@@ -1,10 +1,12 @@
 package com.mbbank.mbbSystem.controller;
 
 import com.mbbank.mbbSystem.dto.CustomerDto;
+import com.mbbank.mbbSystem.model.Account;
 import com.mbbank.mbbSystem.model.Customer;
 import com.mbbank.mbbSystem.model.Employee;
 import com.mbbank.mbbSystem.repository.EmployeeRepository;
 import com.mbbank.mbbSystem.security.UserDetailsImpl;
+import com.mbbank.mbbSystem.service.AccountService;
 import com.mbbank.mbbSystem.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -82,7 +87,7 @@ public class CustomerController {
     /**
      * KHÔNG cung cấp endpoint xóa khách hàng.
      * Lý do: Xóa customer sẽ gây mất lịch sử giao dịch liên quan (orphan transactions).
-     * Thay vào đó, sử dụng khóa khách hàng.
+     * Thay vào đó, sử dụng khóa khách hàng (đồng thời khóa tài khoản).
      */
     @PutMapping("/lock/{id}")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
@@ -90,7 +95,7 @@ public class CustomerController {
         try {
             checkBranchPermission(id);
             customerService.lockCustomer(id);
-            return ResponseEntity.ok("Đã khóa tài khoản khách hàng.");
+            return ResponseEntity.ok("Đã khóa khách hàng và tài khoản ngân hàng.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -102,7 +107,7 @@ public class CustomerController {
         try {
             checkBranchPermission(id);
             customerService.unlockCustomer(id);
-            return ResponseEntity.ok("Đã mở khóa tài khoản khách hàng.");
+            return ResponseEntity.ok("Đã mở khóa khách hàng và tài khoản ngân hàng.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

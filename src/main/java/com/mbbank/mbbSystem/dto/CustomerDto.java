@@ -1,11 +1,14 @@
 package com.mbbank.mbbSystem.dto;
 
+import com.mbbank.mbbSystem.model.Account;
 import com.mbbank.mbbSystem.model.Customer;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
  * DTO đại diện cho Customer, expose toàn bộ trường nghiệp vụ nhưng KHÔNG expose password.
+ * Bao gồm luôn thông tin tài khoản ngân hàng (mỗi KH chỉ có 1 TK duy nhất).
  */
 public class CustomerDto {
     private Long id;
@@ -23,6 +26,14 @@ public class CustomerDto {
     private String branchName;
     private String branchAddress;
     private String maChiNhanh;
+
+    // === Thông tin tài khoản ngân hàng (gộp từ AccountDto) ===
+    private Long accountId;
+    private String accountNumber;
+    private BigDecimal balance;
+    private String loaiTK;
+    private LocalDate ngayMo;
+    private String accountStatus; // Trạng thái TK: HOAT_DONG, DA_KHOA
 
     public CustomerDto() {}
 
@@ -44,6 +55,16 @@ public class CustomerDto {
             this.branchAddress = c.getBranch().getBranchAddress();
             this.maChiNhanh = c.getBranch().getMaChiNhanh();
         }
+        // Gộp thông tin tài khoản — mỗi KH chỉ có 1 TK duy nhất
+        if (c.getAccounts() != null && !c.getAccounts().isEmpty()) {
+            Account acc = c.getAccounts().get(0);
+            this.accountId     = acc.getId();
+            this.accountNumber = acc.getAccountNumber();
+            this.balance       = acc.getBalance();
+            this.loaiTK        = acc.getLoaiTK();
+            this.ngayMo        = acc.getNgayMo();
+            this.accountStatus = acc.getStatus();
+        }
     }
 
     // Getters
@@ -63,6 +84,13 @@ public class CustomerDto {
     public String getBranchAddress() { return branchAddress; }
     public String getMaChiNhanh() { return maChiNhanh; }
 
+    public Long getAccountId()        { return accountId; }
+    public String getAccountNumber()  { return accountNumber; }
+    public BigDecimal getBalance()    { return balance; }
+    public String getLoaiTK()         { return loaiTK; }
+    public LocalDate getNgayMo()      { return ngayMo; }
+    public String getAccountStatus()  { return accountStatus; }
+
     // Setters
     public void setId(Long v)            { this.id = v; }
     public void setUsername(String v)    { this.username = v; }
@@ -79,4 +107,11 @@ public class CustomerDto {
     public void setBranchName(String v)  { this.branchName = v; }
     public void setBranchAddress(String v) { this.branchAddress = v; }
     public void setMaChiNhanh(String v)  { this.maChiNhanh = v; }
+
+    public void setAccountId(Long v)        { this.accountId = v; }
+    public void setAccountNumber(String v)  { this.accountNumber = v; }
+    public void setBalance(BigDecimal v)    { this.balance = v; }
+    public void setLoaiTK(String v)         { this.loaiTK = v; }
+    public void setNgayMo(LocalDate v)      { this.ngayMo = v; }
+    public void setAccountStatus(String v)  { this.accountStatus = v; }
 }

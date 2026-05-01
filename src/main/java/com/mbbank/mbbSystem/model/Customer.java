@@ -28,7 +28,7 @@ public class Customer extends User {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "employees"})
     private Branch branch;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Account> accounts;
 
