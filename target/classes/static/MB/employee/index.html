@@ -262,6 +262,7 @@
       <a href="customers.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Khách hàng & Tài khoản</a>
       <a href="counter-services.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Giao dịch tại quầy</a>
       <a href="registration-requests.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Duyệt tài khoản mới</a>
+      <a href="branch-employees.html" class="nav-item" id="nav-branch-emp" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Quản lý nhân viên</a>
       <div class="sidebar-footer">
         <button class="logout-btn" style="width:100%;justify-content:center;display:flex;gap:8px"
           onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Đăng xuất</button>
@@ -352,12 +353,17 @@
     const role = localStorage.getItem('userRole');
 
     document.addEventListener('DOMContentLoaded', async () => {
-      if (!token || (role !== 'ROLE_EMPLOYEE' && role !== 'ROLE_SYSADMIN')) {
+      if (!token || (role !== 'ROLE_EMPLOYEE' && role !== 'ROLE_SYSADMIN' && role !== 'ROLE_BRANCH_MANAGER')) {
         localStorage.clear();
         location.replace('login.html'); return;
       }
       document.getElementById('greeting').textContent = 'Xin chào, ' + (fullName || username) + '!';
       document.getElementById('subgreet').textContent = new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      // Hiện menu Quản lý nhân viên nếu là Branch Manager
+      if (role === 'ROLE_BRANCH_MANAGER') {
+        const navEmp = document.getElementById('nav-branch-emp');
+        if (navEmp) navEmp.style.display = 'flex';
+      }
 
       await Promise.all([loadProfile(), loadStats()]);
     });
@@ -366,7 +372,8 @@
       // Hiển thị từ localStorage trước
       document.getElementById('d-name').textContent = fullName || '—';
       document.getElementById('d-email').textContent = localStorage.getItem('email') || '—';
-      document.getElementById('d-role').textContent = role === 'ROLE_SYSADMIN' ? 'Quản trị hệ thống' : 'Nhân viên';
+      document.getElementById('d-role').textContent = role === 'ROLE_SYSADMIN' ? 'Quản trị hệ thống'
+        : role === 'ROLE_BRANCH_MANAGER' ? 'Quản lý chi nhánh' : 'Nhân viên';
 
       // Gọi API lấy chi tiết nhân viên
       try {

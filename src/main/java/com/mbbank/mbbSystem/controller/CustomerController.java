@@ -32,7 +32,7 @@ public class CustomerController {
 
     /** Thêm khách hàng (KHÔNG dùng password — dùng /api/auth/register-customer để tạo user+account) */
     @PostMapping("/add")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> addCustomer(@RequestBody CustomerDto req) {
         try {
             Customer customer = new Customer();
@@ -48,7 +48,7 @@ public class CustomerController {
             
             // Nếu là EMPLOYEE, ép chi nhánh của khách hàng là chi nhánh của nhân viên
             UserDetailsImpl userDetails = getCurrentUser();
-            if (hasRole(userDetails, "ROLE_EMPLOYEE")) {
+            if (hasRole(userDetails, "ROLE_EMPLOYEE") || hasRole(userDetails, "ROLE_BRANCH_MANAGER")) {
                 Employee employee = getEmployee(userDetails.getId());
                 customer.setBranch(employee.getBranch());
             }
@@ -62,7 +62,7 @@ public class CustomerController {
 
     /** Cập nhật thông tin khách hàng */
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody CustomerDto req) {
         try {
             Customer patch = new Customer();
@@ -90,7 +90,7 @@ public class CustomerController {
      * Thay vào đó, sử dụng khóa khách hàng (đồng thời khóa tài khoản).
      */
     @PutMapping("/lock/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> lockCustomer(@PathVariable Long id) {
         try {
             checkBranchPermission(id);
@@ -102,7 +102,7 @@ public class CustomerController {
     }
 
     @PutMapping("/unlock/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> unlockCustomer(@PathVariable Long id) {
         try {
             checkBranchPermission(id);
@@ -115,7 +115,7 @@ public class CustomerController {
 
     /** Tìm theo id */
     @GetMapping("/search/{id}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getCustomer(@PathVariable Long id) {
         return customerService.getCustomer(id)
                 .map(c -> ResponseEntity.ok(new CustomerDto(c)))
@@ -124,7 +124,7 @@ public class CustomerController {
 
     /** Tìm theo mã KH */
     @GetMapping("/search")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> searchByMaKH(@RequestParam String maKH) {
         return customerService.getCustomerByMaKH(maKH)
                 .map(c -> {
@@ -145,7 +145,7 @@ public class CustomerController {
      * - EMPLOYEE: chỉ xem KH thuộc chi nhánh mình
      */
     @GetMapping("/list")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getCustomerList() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String role = userDetails.getAuthorities().iterator().next().getAuthority();
@@ -213,6 +213,16 @@ public class CustomerController {
     private void checkBranchPermission(Long customerId) {
         UserDetailsImpl userDetails = getCurrentUser();
         if (hasRole(userDetails, "ROLE_SYSADMIN")) return; // Admin có toàn quyền
+        if (hasRole(userDetails, "ROLE_BRANCH_MANAGER")) {
+            Employee employee = getEmployee(userDetails.getId());
+            if (employee.getBranch() == null) throw new RuntimeException("Nhân viên chưa được gán chi nhánh!");
+            Customer customer = customerService.getCustomer(customerId)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng!"));
+            if (customer.getBranch() == null || !customer.getBranch().getId().equals(employee.getBranch().getId())) {
+                throw new RuntimeException("Bạn không có quyền quản lý khách hàng của chi nhánh khác!");
+            }
+            return;
+        }
 
         Employee employee = getEmployee(userDetails.getId());
         if (employee.getBranch() == null) throw new RuntimeException("Nhân viên chưa được gán chi nhánh!");

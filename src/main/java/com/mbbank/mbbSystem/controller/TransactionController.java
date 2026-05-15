@@ -45,7 +45,7 @@ public class TransactionController {
     }
 
     @PostMapping("/deposit")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> deposit(@RequestBody TransferRequest request) {
         String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
@@ -57,7 +57,7 @@ public class TransactionController {
     }
 
     @PostMapping("/withdraw")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> withdraw(@RequestBody TransferRequest request) {
         String employeeName = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
@@ -69,21 +69,21 @@ public class TransactionController {
     }
 
     @GetMapping("/history/{accountNumber}")
-    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getTransactionHistory(@PathVariable String accountNumber) {
         List<Transaction> transactions = transactionService.getHistory(accountNumber);
         return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getAllTransactions() {
         List<Transaction> transactions = transactionService.getAllTransactions();
         return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> findByMaGD(@RequestParam String maGD) {
         return transactionService.findByMaGD(maGD)
                 .map(ResponseEntity::ok)

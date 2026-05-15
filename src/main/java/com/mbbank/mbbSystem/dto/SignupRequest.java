@@ -20,6 +20,7 @@ public class SignupRequest {
     private String maNV;
     private String boPhan;
     private Double luong;
+    private String position;
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
@@ -47,4 +48,6 @@ public class SignupRequest {
     public void setBoPhan(String boPhan) { this.boPhan = boPhan; }
     public Double getLuong() { return luong; }
     public void setLuong(Double luong) { this.luong = luong; }
+    public String getPosition() { return position; }
+    public void setPosition(String position) { this.position = position; }
 }

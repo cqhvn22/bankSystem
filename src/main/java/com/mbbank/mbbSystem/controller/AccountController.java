@@ -28,7 +28,7 @@ public class AccountController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping("/my-accounts")
-    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getMyAccounts() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<com.mbbank.mbbSystem.dto.AccountDto> dtos = accountService.getCustomerAccounts(userDetails.getId()).stream()
@@ -38,7 +38,7 @@ public class AccountController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> createAccount(@RequestBody Map<String, Object> request) {
         String accountNumber = (String) request.get("accountNumber");
         BigDecimal initialBalance = new BigDecimal(request.get("initialBalance").toString());
@@ -57,7 +57,7 @@ public class AccountController {
     }
 
     @PutMapping("/lock/{accountId}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> lockAccount(@PathVariable Long accountId) {
         try {
             checkBranchPermission(accountId);
@@ -69,7 +69,7 @@ public class AccountController {
     }
 
     @PutMapping("/unlock/{accountId}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> unlockAccount(@PathVariable Long accountId) {
         try {
             checkBranchPermission(accountId);
@@ -81,7 +81,7 @@ public class AccountController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> findAccount(@RequestParam String accountNumber) {
         return accountService.findAccount(accountNumber)
                 .map(acc -> {
@@ -96,7 +96,7 @@ public class AccountController {
     }
 
     @GetMapping("/check")
-    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> checkAccountName(@RequestParam String accountNumber) {
         return accountService.searchCounterAccount(accountNumber)
                 .map(acc -> {
@@ -113,7 +113,7 @@ public class AccountController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getAllAccounts() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String role = userDetails.getAuthorities().iterator().next().getAuthority();
@@ -139,6 +139,17 @@ public class AccountController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String role = userDetails.getAuthorities().iterator().next().getAuthority();
         if ("ROLE_SYSADMIN".equals(role)) return;
+        if ("ROLE_BRANCH_MANAGER".equals(role)) {
+            Employee employee = employeeRepo.findById(userDetails.getId())
+                    .orElseThrow(() -> new RuntimeException("Nhân viên không tồn tại!"));
+            Account account = accountService.getAccountById(accountId)
+                    .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại!"));
+            if (account.getCustomer() == null || account.getCustomer().getBranch() == null ||
+                !account.getCustomer().getBranch().getId().equals(employee.getBranch().getId())) {
+                throw new RuntimeException("Bạn không có quyền quản lý tài khoản của chi nhánh khác!");
+            }
+            return;
+        }
 
         Employee employee = employeeRepo.findById(userDetails.getId())
                 .orElseThrow(() -> new RuntimeException("Nhân viên không tồn tại!"));

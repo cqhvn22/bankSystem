@@ -48,7 +48,7 @@ public class RegistrationRequestController {
      * Query param ?status=PENDING|APPROVED|REJECTED (tùy chọn)
      */
     @GetMapping("/branch/list")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getRequestsForMyBranch(@RequestParam(required = false) String status) {
         try {
             UserDetailsImpl userDetails = getCurrentUser();
@@ -84,7 +84,7 @@ public class RegistrationRequestController {
      * Nhân viên DUYỆT yêu cầu (chỉ được duyệt yêu cầu của chi nhánh mình).
      */
     @PostMapping("/{id}/approve")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> approveRequest(@PathVariable Long id) {
         try {
             UserDetailsImpl userDetails = getCurrentUser();
@@ -101,7 +101,7 @@ public class RegistrationRequestController {
      * Body: { "reason": "..." }
      */
     @PostMapping("/{id}/reject")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> rejectRequest(@PathVariable Long id, @RequestBody Map<String, String> body) {
         try {
             UserDetailsImpl userDetails = getCurrentUser();

@@ -21,6 +21,7 @@ public class EmployeeDto {
     private Long branchId;
     private String branchName;
     private String branchAddress;
+    private BigDecimal branchCashFund;
 
     public EmployeeDto() {}
 
@@ -39,6 +40,7 @@ public class EmployeeDto {
             this.branchId      = e.getBranch().getId();
             this.branchName    = e.getBranch().getBranchName();
             this.branchAddress = e.getBranch().getBranchAddress();
+            this.branchCashFund = e.getBranch().getCashFund();
         }
     }
 
@@ -56,6 +58,7 @@ public class EmployeeDto {
     public Long getBranchId()   { return branchId; }
     public String getBranchName()    { return branchName; }
     public String getBranchAddress() { return branchAddress; }
+    public BigDecimal getBranchCashFund() { return branchCashFund; }
 
     // Setters (needed for Jackson deserialization from request body)
     public void setId(Long id)              { this.id = id; }
@@ -71,4 +74,5 @@ public class EmployeeDto {
     public void setBranchId(Long v)          { this.branchId = v; }
     public void setBranchName(String v)      { this.branchName = v; }
     public void setBranchAddress(String v)   { this.branchAddress = v; }
+    public void setBranchCashFund(BigDecimal v) { this.branchCashFund = v; }
 }

@@ -13,7 +13,7 @@
         .login-form-container { flex: 1; padding: 50px; display: flex; flex-direction: column; justify-content: center; }
         .input-group { margin-bottom: 20px; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 14px; }
-        .input-group input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #eee; font-size: 15px; transition: 0.3s; }
+        .input-group input { width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #eee; font-size: 15px; transition: 0.3s; box-sizing: border-box; }
         .input-group input:focus { border-color: var(--mb-red); outline: none; box-shadow: 0 0 0 3px rgba(227, 27, 35, 0.1); }
         .btn-login { width: 100%; padding: 15px; font-size: 16px; background: var(--mb-red); border: none; color: white; border-radius: 12px; font-weight: 700; cursor: pointer; }
     </style>
@@ -48,18 +48,16 @@
     </div>
 
     <script>
-        console.log("Employee login script loaded");
         // Auto-redirect if already logged in
         const role = localStorage.getItem('userRole');
         const token = localStorage.getItem('token');
         if (token && role) {
-            if (role === 'ROLE_EMPLOYEE') { window.location.replace('index.html'); }
+            if (role === 'ROLE_EMPLOYEE' || role === 'ROLE_BRANCH_MANAGER') { window.location.replace('index.html'); }
             else if (role === 'ROLE_CUSTOMER') { window.location.replace('../customer/index.html'); }
             else if (role === 'ROLE_SYSADMIN') { window.location.replace('../sysadmin/index.html'); }
         }
 
         async function doLogin() {
-            console.log("Employee doLogin called");
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
             const errorEl = document.getElementById('error-msg');
@@ -74,8 +72,7 @@
             try {
                 btn.disabled = true;
                 btn.textContent = 'Đang xác thực...';
-                console.log("Sending employee login request...");
-                
+
                 const res = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -83,7 +80,6 @@
                 });
 
                 const data = await res.json();
-                console.log("Employee response received:", res.status);
 
                 if (res.ok) {
                     if (data.role === 'ROLE_CUSTOMER') {
@@ -98,13 +94,13 @@
                     localStorage.setItem('username', data.username);
                     localStorage.setItem('fullName', data.fullName);
                     localStorage.setItem('userRole', data.role);
+                    if (data.id) localStorage.setItem('userId', data.id);
                     window.location.replace('index.html');
                 } else {
                     errorEl.textContent = data.message || 'Mã nhân viên hoặc mật khẩu nghiệp vụ không chính xác';
                     errorEl.style.display = 'block';
                 }
             } catch (err) {
-                console.error("Employee login error:", err);
                 errorEl.textContent = 'Không thể kết nối đến máy chủ nội bộ';
                 errorEl.style.display = 'block';
             } finally {

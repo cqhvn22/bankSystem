@@ -78,4 +78,15 @@ public class EmployeeService {
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
     }
+
+    public List<Employee> getEmployeesByBranch(Long branchId) {
+        return employeeRepository.findByBranchId(branchId);
+    }
+
+    /**
+     * Kiểm tra chi nhánh đã có quản lý chưa (dùng khi thêm nhân viên ROLE_BRANCH_MANAGER)
+     */
+    public boolean branchAlreadyHasManager(Long branchId) {
+        return employeeRepository.existsByBranchIdAndRole(branchId, "ROLE_BRANCH_MANAGER");
+    }
 }

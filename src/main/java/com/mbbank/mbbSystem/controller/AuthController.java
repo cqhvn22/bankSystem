@@ -5,10 +5,13 @@ import com.mbbank.mbbSystem.dto.LoginRequest;
 import com.mbbank.mbbSystem.dto.MessageResponse;
 import com.mbbank.mbbSystem.dto.SignupRequest;
 import com.mbbank.mbbSystem.model.Account;
+import com.mbbank.mbbSystem.model.Branch;
 import com.mbbank.mbbSystem.model.Customer;
 import com.mbbank.mbbSystem.model.Employee;
 import com.mbbank.mbbSystem.model.User;
 import com.mbbank.mbbSystem.repository.AccountRepository;
+import com.mbbank.mbbSystem.repository.BranchRepository;
+import com.mbbank.mbbSystem.repository.EmployeeRepository;
 import com.mbbank.mbbSystem.repository.UserRepository;
 import com.mbbank.mbbSystem.security.JwtUtils;
 import com.mbbank.mbbSystem.security.UserDetailsImpl;
@@ -37,6 +40,12 @@ public class AuthController {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    BranchRepository branchRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -166,6 +175,47 @@ public class AuthController {
         userRepository.save(employee);
 
         return ResponseEntity.ok(new MessageResponse("Tạo nhân viên thành công!"));
+    }
+
+    /**
+     * Tạo nhân viên mới trong chi nhánh bởi Quản lý chi nhánh.
+     * Tự động gán vào chi nhánh của người tạo.
+     */
+    @PostMapping("/register-employee-branch")
+    @PreAuthorize("hasRole('BRANCH_MANAGER')")
+    public ResponseEntity<?> registerEmployeeByBranchManager(@RequestBody SignupRequest req) {
+        if (req.getUsername() == null || req.getUsername().isBlank())
+            return ResponseEntity.badRequest().body(new MessageResponse("Thiếu username"));
+        if (req.getPassword() == null || req.getPassword().isBlank())
+            return ResponseEntity.badRequest().body(new MessageResponse("Thiếu password"));
+        if (userRepository.existsByUsername(req.getUsername()))
+            return ResponseEntity.badRequest().body(new MessageResponse("Username đã tồn tại!"));
+
+        // Lấy chi nhánh của branch manager hiện tại
+        UserDetailsImpl me = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee manager = employeeRepository.findById(me.getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy quản lý"));
+        Branch myBranch = manager.getBranch();
+        if (myBranch == null)
+            return ResponseEntity.badRequest().body(new MessageResponse("Bạn chưa được phân công chi nhánh"));
+
+        // Role chỉ được là ROLE_EMPLOYEE (Quản lý không thể tạo quản lý khác)
+        String role = "ROLE_EMPLOYEE";
+
+        Employee employee = new Employee();
+        employee.setUsername(req.getUsername());
+        employee.setPassword(encoder.encode(req.getPassword()));
+        employee.setFullName(req.getFullName());
+        employee.setEmail(req.getEmail());
+        employee.setRole(role);
+        employee.setMaNV(req.getMaNV() != null ? req.getMaNV() : generateMaNV());
+        if (req.getBoPhan() != null) employee.setBoPhan(req.getBoPhan());
+        if (req.getPosition() != null) employee.setPosition(req.getPosition());
+        if (req.getLuong() != null) employee.setLuong(new BigDecimal(req.getLuong().toString()));
+        employee.setBranch(myBranch);
+        userRepository.save(employee);
+
+        return ResponseEntity.ok(new MessageResponse("Tạo nhân viên thành công tại chi nhánh " + myBranch.getBranchName() + "!"));
     }
 
     private String generateAccountNumber() {

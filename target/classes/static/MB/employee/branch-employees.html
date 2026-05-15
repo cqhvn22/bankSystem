@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Quản lý Nhân viên Chi nhánh - MB Bank</title>
+<link rel="stylesheet" href="../assets/theme.css">
+<style>
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#fff;border-right:1px solid #eee;padding:28px 0;flex-shrink:0;display:flex;flex-direction:column}
+.nav-item{display:flex;align-items:center;gap:12px;padding:13px 24px;color:#666;text-decoration:none;font-weight:500;font-size:14px;transition:.2s}
+.nav-item:hover{background:#f5f7ff;color:var(--mb-blue)}
+.nav-item.active{background:var(--mb-blue);color:#fff}
+.sidebar-footer{margin-top:auto;padding:0 16px 24px}
+.logout-btn{background:none;border:1px solid #ddd;padding:8px 14px;border-radius:8px;cursor:pointer;color:#666;font-size:13px;width:100%;display:flex;justify-content:center;gap:8px}
+.logout-btn:hover{background:#fff0f0;color:#ef4444;border-color:#ef4444}
+.content{flex:1;padding:36px;background:#f8f9fc;overflow-y:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.topbar h2{margin:0;font-size:22px}
+.topbar p{margin:4px 0 0;color:#888;font-size:13px}
+.search-row{display:flex;gap:10px;margin-bottom:16px}
+.search-row input{flex:1;padding:11px 14px;border-radius:10px;border:1px solid #ddd;font-size:14px;outline:none}
+.search-row input:focus{border-color:var(--mb-blue)}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 14px;text-align:left;color:#888;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #eef0f4}
+td{padding:13px 14px;font-size:13px;border-bottom:1px solid #f0f2f5;vertical-align:middle}
+tr:hover td{background:#fafbff}
+.ab{border:none;background:none;cursor:pointer;font-weight:600;font-size:12px;padding:4px 8px;border-radius:6px;transition:.18s}
+.ab-edit{color:var(--mb-blue)}.ab-edit:hover{background:#eef2ff}
+.ab-del{color:var(--mb-red)}.ab-del:hover{background:#fff0f0}
+.ab-lock{color:#f59e0b}.ab-lock:hover{background:#fffbeb}
+.ab-unlock{color:#10b981}.ab-unlock:hover{background:#ecfdf5}
+.badge-nv{background:#dcfce7;color:#166534;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-locked{background:#fee2e2;color:#991b1b;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-me{background:#ede9fe;color:#5b21b6;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center}
+.modal.open{display:flex}
+.mbox{background:#fff;border-radius:18px;padding:32px;width:500px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto}
+.mbox h3{margin:0 0 22px;font-size:19px}
+.fg{margin-bottom:13px}
+.fg label{display:block;font-size:12px;font-weight:700;color:#555;margin-bottom:5px}
+.fg input,.fg select{width:100%;padding:10px 13px;border-radius:9px;border:1px solid #ddd;font-size:13px;box-sizing:border-box;outline:none}
+.fg input:focus,.fg select:focus{border-color:var(--mb-blue)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mactions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.btn-c{background:#f0f2f5;color:#555;border:none;padding:9px 18px;border-radius:9px;cursor:pointer;font-weight:600}
+.btn-s{background:var(--mb-blue);color:#fff;border:none;padding:9px 22px;border-radius:9px;cursor:pointer;font-weight:600}
+.toast{position:fixed;bottom:28px;right:28px;padding:13px 20px;border-radius:11px;font-size:13px;font-weight:500;z-index:9999;display:none;color:#fff}
+.toast.show{display:block}
+.toast.ok{background:#10b981}
+.toast.err{background:#ef4444}
+.branch-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0891b2,#0284c7);color:#fff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo-container" style="padding:0 24px 36px">
+    <div class="mb-star"></div>
+    <div class="logo-text-group"><div class="logo-main">MB</div><div class="logo-sub">MANAGER</div></div>
+  </div>
+  <a href="index.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Tổng quan</a>
+  <a href="customers.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Khách hàng &amp; Tài khoản</a>
+  <a href="counter-services.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Giao dịch tại quầy</a>
+  <a href="registration-requests.html" class="nav-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Duyệt tài khoản mới</a>
+  <a href="branch-employees.html" class="nav-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Quản lý nhân viên</a>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Đăng xuất</button>
+  </div>
+</aside>
+
+<main class="content">
+  <div class="topbar">
+    <div>
+      <h2>Quản lý Nhân viên Chi nhánh</h2>
+      <p>Xin chào, <strong id="wname">Quản lý</strong> &mdash; 
+        <span id="branch-label" class="branch-badge" style="font-size:12px;padding:3px 10px"></span>
+        <span id="cash-fund-label" class="branch-badge" style="background:linear-gradient(135deg,#10b981,#059669);margin-left:10px;font-size:12px;padding:3px 10px;display:none"></span>
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn-primary" style="background:#10b981;border-color:#10b981" onclick="openAddFund()">💰 Nạp quỹ</button>
+      <button class="btn-primary" onclick="openAdd()">+ Thêm nhân viên</button>
+    </div>
+  </div>
+
+  <div class="card fade-in">
+    <div class="search-row">
+      <input id="kw" placeholder="Tìm theo Mã NV, Họ tên, Chức vụ, Bộ phận..." oninput="filter()">
+      <button class="btn-primary" onclick="filter()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Tìm</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Mã NV</th><th>Họ tên / Username</th><th>Chức vụ / Bộ phận</th>
+          <th>Lương</th><th>Vai trò / Trạng thái</th><th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"><tr><td colspan="6" style="text-align:center;padding:30px;color:#aaa">Đang tải...</td></tr></tbody>
+    </table>
+  </div>
+</main>
+</div>
+
+<!-- Modal thêm/sửa nhân viên -->
+<div class="modal" id="emp-modal">
+  <div class="mbox">
+    <h3 id="m-title">👤 Thêm nhân viên mới</h3>
+    <input type="hidden" id="f-id">
+    <div class="frow">
+      <div class="fg"><label>Mã NV</label><input id="f-manv" placeholder="NV001 (tự sinh)"></div>
+      <div class="fg"><label>Tên đăng nhập *</label><input id="f-user" placeholder="username"></div>
+    </div>
+    <div class="fg"><label>Mật khẩu <span id="pwd-note" style="color:#aaa;font-weight:400"></span></label><input type="password" id="f-pwd" placeholder="Mật khẩu"></div>
+    <div class="frow">
+      <div class="fg"><label>Họ và tên *</label><input id="f-name" placeholder="Nguyễn Văn A"></div>
+      <div class="fg"><label>Email</label><input id="f-email" placeholder="nv@mbbank.vn"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Chức vụ</label><input id="f-pos" placeholder="Giao dịch viên"></div>
+      <div class="fg"><label>Bộ phận</label><input id="f-bp" placeholder="Phòng GD"></div>
+    </div>
+    <div class="fg"><label>Lương (VND)</label><input type="number" id="f-luong" placeholder="10000000"></div>
+    <div class="mactions">
+      <button class="btn-c" onclick="closeM('emp-modal')">Hủy</button>
+      <button class="btn-s" onclick="saveEmp()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg> Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nạp quỹ -->
+<div class="modal" id="fund-modal">
+  <div class="mbox" style="width:400px">
+    <h3>💰 Bổ sung quỹ tiền mặt</h3>
+    <div class="fg">
+      <label>Số tiền nạp (VND)</label>
+      <input type="number" id="f-amount" placeholder="VD: 500000000">
+    </div>
+    <div class="mactions">
+      <button class="btn-c" onclick="closeM('fund-modal')">Hủy</button>
+      <button class="btn-s" style="background:#10b981" onclick="submitFund()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Nạp quỹ</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem('token');
+const myId = parseInt(localStorage.getItem('userId') || '0');
+let emps = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const role = localStorage.getItem('userRole');
+  if (!token || role !== 'ROLE_BRANCH_MANAGER') {
+    localStorage.clear(); location.replace('login.html'); return;
+  }
+  document.getElementById('wname').textContent = localStorage.getItem('fullName') || 'Quản lý';
+  await loadMyInfo();
+  await loadEmps();
+});
+
+async function loadMyInfo() {
+  try {
+    const r = await fetch('/api/employee/me', {headers:{Authorization:'Bearer '+token}});
+    if (!r.ok) return;
+    const me = await r.json();
+    if (me && me.branchName) {
+      document.getElementById('branch-label').textContent = '🏢 ' + me.branchName;
+      if (me.branchCashFund !== undefined) {
+        const lbl = document.getElementById('cash-fund-label');
+        lbl.textContent = '💰 Quỹ: ' + new Intl.NumberFormat('vi-VN').format(me.branchCashFund) + ' ₫';
+        lbl.style.display = 'inline-flex';
+      }
+    }
+  } catch(e) {}
+}
+
+async function loadEmps() {
+  try {
+    const r = await fetch('/api/employee/branch/list', {headers:{Authorization:'Bearer '+token}});
+    if (r.status === 401) { doLogout(); return; }
+    if (!r.ok) { showTd('⚠ ' + (await r.text()), 'err'); return; }
+    emps = await r.json();
+    render(emps);
+  } catch(e) { showTd('⚠ ' + e.message, 'err'); }
+}
+
+function render(list) {
+  const tb = document.getElementById('tbody');
+  if (!list.length) {
+    tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px;color:#aaa">Chưa có nhân viên nào trong chi nhánh.</td></tr>';return;
+  }
+  tb.innerHTML = list.map(e => {
+    const isMe = e.id === myId;
+    const locked = e.status === 'LOCKED' || e.status === 'DA_KHOA';
+    const roleBadge = e.role === 'ROLE_BRANCH_MANAGER'
+      ? '<span class="badge-me">⭐ Quản lý CN</span>'
+      : '<span class="badge-nv">Nhân viên</span>';
+    const lockBtn = isMe ? '' : locked
+      ? `<button class="ab ab-unlock" onclick="toggleLock(${e.id},false)" title="Mở khóa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg></button>`
+      : `<button class="ab ab-lock" onclick="toggleLock(${e.id},true)" title="Khóa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></button>`;
+    const delBtn = isMe ? '' : `<button class="ab ab-del" onclick="delEmp(${e.id},'${(e.fullName||e.username).replace(/'/g,"\\'")}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>`;
+    const luong = e.luong ? new Intl.NumberFormat('vi-VN').format(e.luong)+' ₫' : '<span style="color:#aaa">—</span>';
+    return `<tr>
+      <td style="font-weight:700;color:var(--mb-blue)">${e.maNV||e.id}</td>
+      <td><div style="font-weight:600">${e.fullName||e.username}${isMe?' <span style="color:#7c3aed;font-size:11px">(bạn)</span>':''}</div><div style="font-size:11px;color:#aaa">@${e.username}</div></td>
+      <td><div>${e.position||'—'}</div><div style="font-size:11px;color:#aaa">${e.boPhan||''}</div></td>
+      <td>${luong}</td>
+      <td>${roleBadge}${locked?'<br><span class="badge-locked" style="margin-top:4px">Đã khóa</span>':''}</td>
+      <td>
+        ${isMe ? '' : `<button class="ab ab-edit" onclick="openEdit(${e.id})" title="Sửa"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>`}
+        ${lockBtn}
+        ${delBtn}
+      </td></tr>`;
+  }).join('');
+}
+
+function filter() {
+  const kw = document.getElementById('kw').value.toLowerCase();
+  if (!kw) { render(emps); return; }
+  render(emps.filter(e =>
+    [e.maNV, e.fullName, e.username, e.position, e.boPhan].some(v => (v||'').toLowerCase().includes(kw))
+  ));
+}
+
+function openAdd() {
+  document.getElementById('m-title').textContent = '👤 Thêm nhân viên mới';
+  ['f-id','f-manv','f-user','f-pwd','f-name','f-email','f-pos','f-bp','f-luong'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-user').disabled = false;
+  document.getElementById('pwd-note').textContent = '';
+  document.getElementById('emp-modal').classList.add('open');
+}
+
+function openEdit(id) {
+  const e = emps.find(x => x.id === id); if (!e) return;
+  document.getElementById('m-title').textContent = '✏ Cập nhật nhân viên';
+  document.getElementById('f-id').value = e.id;
+  document.getElementById('f-manv').value = e.maNV||'';
+  document.getElementById('f-user').value = e.username||''; document.getElementById('f-user').disabled = true;
+  document.getElementById('f-pwd').value = ''; document.getElementById('pwd-note').textContent = '(để trống = giữ nguyên)';
+  document.getElementById('f-name').value = e.fullName||'';
+  document.getElementById('f-email').value = e.email||'';
+  document.getElementById('f-pos').value = e.position||'';
+  document.getElementById('f-bp').value = e.boPhan||'';
+  document.getElementById('f-luong').value = e.luong||'';
+  document.getElementById('emp-modal').classList.add('open');
+}
+
+async function saveEmp() {
+  const id = document.getElementById('f-id').value;
+  const body = {
+    maNV: document.getElementById('f-manv').value.trim()||undefined,
+    username: document.getElementById('f-user').value.trim(),
+    password: document.getElementById('f-pwd').value||undefined,
+    fullName: document.getElementById('f-name').value.trim(),
+    email: document.getElementById('f-email').value.trim()||undefined,
+    position: document.getElementById('f-pos').value.trim()||undefined,
+    boPhan: document.getElementById('f-bp').value.trim()||undefined,
+    luong: parseFloat(document.getElementById('f-luong').value)||undefined
+  };
+  if (!body.fullName) { toast('Vui lòng nhập họ tên','err'); return; }
+  try {
+    let r;
+    if (id) {
+      r = await fetch(`/api/employee/branch/update/${id}`,{method:'PUT',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    } else {
+      if (!body.password) { toast('Vui lòng nhập mật khẩu','err'); return; }
+      if (!body.username) { toast('Vui lòng nhập tên đăng nhập','err'); return; }
+      r = await fetch('/api/auth/register-employee-branch',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    }
+    if (!r.ok) { const t = await r.text(); throw new Error(t); }
+    toast(id ? '✅ Cập nhật thành công!' : '✅ Thêm nhân viên thành công!', 'ok');
+    closeM('emp-modal'); await loadEmps();
+  } catch(e) { toast('⚠ '+e.message,'err'); }
+}
+
+async function toggleLock(id, lock) {
+  const action = lock ? 'lock' : 'unlock';
+  try {
+    const r = await fetch(`/api/employee/branch/${action}/${id}`,{method:'PUT',headers:{Authorization:'Bearer '+token}});
+    if (!r.ok) throw new Error(await r.text());
+    toast(lock ? '🔒 Đã khóa tài khoản' : '🔓 Đã mở khóa', 'ok'); await loadEmps();
+  } catch(e) { toast('⚠ '+e.message,'err'); }
+}
+
+async function delEmp(id, name) {
+  if (!confirm(`Xóa nhân viên "${name}"?\nLưu ý: thao tác này không thể hoàn tác.`)) return;
+  try {
+    const r = await fetch(`/api/employee/branch/delete/${id}`,{method:'DELETE',headers:{Authorization:'Bearer '+token}});
+    if (!r.ok) throw new Error(await r.text());
+    toast('🗑 Đã xóa nhân viên','ok'); await loadEmps();
+  } catch(e) { toast('⚠ '+e.message,'err'); }
+}
+
+function closeM(id) { document.getElementById(id).classList.remove('open'); }
+
+function openAddFund() {
+  document.getElementById('f-amount').value = '';
+  document.getElementById('fund-modal').classList.add('open');
+}
+
+async function submitFund() {
+  const amount = parseFloat(document.getElementById('f-amount').value);
+  if (!amount || amount <= 0) { toast('Số tiền không hợp lệ', 'err'); return; }
+  try {
+    const r = await fetch('/api/branch/add-fund', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount })
+    });
+    const res = await r.json();
+    if (!r.ok) throw new Error(res.message || res);
+    toast('✅ Nạp quỹ thành công!', 'ok');
+    closeM('fund-modal');
+    await loadMyInfo();
+  } catch(e) {
+    toast('⚠ ' + e.message, 'err');
+  }
+}
+
+function doLogout() { localStorage.clear(); location.replace('login.html'); }
+function showTd(msg,t) { document.getElementById('tbody').innerHTML=`<tr><td colspan="6" style="text-align:center;padding:30px;color:${t==='err'?'red':'#aaa'}">${msg}</td></tr>`; }
+function toast(msg,type) { const el=document.getElementById('toast');el.textContent=msg;el.className='toast show '+type;setTimeout(()=>el.className='toast',3200); }
+</script>
+</body>
+</html>

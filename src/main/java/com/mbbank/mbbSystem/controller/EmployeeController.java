@@ -2,6 +2,7 @@ package com.mbbank.mbbSystem.controller;
 
 import com.mbbank.mbbSystem.dto.EmployeeDto;
 import com.mbbank.mbbSystem.model.Employee;
+import com.mbbank.mbbSystem.repository.BranchRepository;
 import com.mbbank.mbbSystem.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import com.mbbank.mbbSystem.security.UserDetailsImpl;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,6 +24,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private BranchRepository branchRepository;
 
     /** Thêm nhân viên — dùng EmployeeDto */
     @PostMapping("/add")
@@ -145,11 +150,126 @@ public class EmployeeController {
 
     /** Lấy thông tin cá nhân của nhân viên đang đăng nhập */
     @GetMapping("/me")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('SYSADMIN') or hasRole('BRANCH_MANAGER')")
     public ResponseEntity<?> getMyProfile() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return employeeService.getEmployee(userDetails.getId())
                 .map(e -> ResponseEntity.ok(new EmployeeDto(e)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // =====================================================================
+    // BRANCH MANAGER ENDPOINTS — chỉ thao tác trên nhân viên cùng chi nhánh
+    // =====================================================================
+
+    /** Danh sách nhân viên trong chi nhánh mình (Branch Manager) */
+    @GetMapping("/branch/list")
+    @PreAuthorize("hasRole('BRANCH_MANAGER')")
+    public ResponseEntity<?> listMyBranchEmployees() {
+        try {
+            Long myBranchId = getMyBranchId();
+            if (myBranchId == null) return ResponseEntity.badRequest().body("Bạn chưa được phân công chi nhánh");
+            List<EmployeeDto> list = employeeService.getEmployeesByBranch(myBranchId).stream()
+                    .map(EmployeeDto::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /** Cập nhật thông tin nhân viên trong chi nhánh mình */
+    @PutMapping("/branch/update/{id}")
+    @PreAuthorize("hasRole('BRANCH_MANAGER')")
+    public ResponseEntity<?> updateBranchEmployee(@PathVariable Long id, @RequestBody EmployeeDto req) {
+        try {
+            Long myBranchId = getMyBranchId();
+            if (myBranchId == null) return ResponseEntity.badRequest().body("Bạn chưa được phân công chi nhánh");
+            // Kiểm tra nhân viên này có thuộc chi nhánh mình không
+            Optional<Employee> target = employeeService.getEmployee(id);
+            if (target.isEmpty()) return ResponseEntity.notFound().build();
+            if (target.get().getBranch() == null || !myBranchId.equals(target.get().getBranch().getId()))
+                return ResponseEntity.status(403).body("Nhân viên này không thuộc chi nhánh của bạn");
+            // Không cho phép đổi role thành BRANCH_MANAGER ở đây
+            Employee patch = new Employee();
+            patch.setFullName(req.getFullName());
+            patch.setPosition(req.getPosition());
+            patch.setMaNV(req.getMaNV());
+            patch.setBoPhan(req.getBoPhan());
+            patch.setLuong(req.getLuong());
+            patch.setEmail(req.getEmail());
+            patch.setRole(req.getRole() != null ? req.getRole() : target.get().getRole());
+            Employee updated = employeeService.updateEmployee(id, patch);
+            return ResponseEntity.ok(new EmployeeDto(updated));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /** Xóa nhân viên trong chi nhánh mình */
+    @DeleteMapping("/branch/delete/{id}")
+    @PreAuthorize("hasRole('BRANCH_MANAGER')")
+    public ResponseEntity<?> deleteBranchEmployee(@PathVariable Long id) {
+        try {
+            Long myBranchId = getMyBranchId();
+            if (myBranchId == null) return ResponseEntity.badRequest().body("Bạn chưa được phân công chi nhánh");
+            Optional<Employee> target = employeeService.getEmployee(id);
+            if (target.isEmpty()) return ResponseEntity.notFound().build();
+            if (target.get().getBranch() == null || !myBranchId.equals(target.get().getBranch().getId()))
+                return ResponseEntity.status(403).body("Nhân viên này không thuộc chi nhánh của bạn");
+            // Không cho phép xóa chính mình
+            UserDetailsImpl me = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (me.getId().equals(id)) return ResponseEntity.badRequest().body("Không thể xóa chính mình");
+            employeeService.deleteEmployee(id);
+            return ResponseEntity.ok("Xóa nhân viên thành công");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /** Khóa tài khoản nhân viên trong chi nhánh mình */
+    @PutMapping("/branch/lock/{id}")
+    @PreAuthorize("hasRole('BRANCH_MANAGER')")
+    public ResponseEntity<?> lockBranchEmployee(@PathVariable Long id) {
+        try {
+            Long myBranchId = getMyBranchId();
+            if (myBranchId == null) return ResponseEntity.badRequest().body("Bạn chưa được phân công chi nhánh");
+            Optional<Employee> target = employeeService.getEmployee(id);
+            if (target.isEmpty()) return ResponseEntity.notFound().build();
+            if (target.get().getBranch() == null || !myBranchId.equals(target.get().getBranch().getId()))
+                return ResponseEntity.status(403).body("Nhân viên này không thuộc chi nhánh của bạn");
+            UserDetailsImpl me = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (me.getId().equals(id)) return ResponseEntity.badRequest().body("Không thể khóa chính mình");
+            employeeService.lockEmployeeAccount(id);
+            return ResponseEntity.ok("Đã khóa tài khoản nhân viên");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /** Mở khóa tài khoản nhân viên trong chi nhánh mình */
+    @PutMapping("/branch/unlock/{id}")
+    @PreAuthorize("hasRole('BRANCH_MANAGER')")
+    public ResponseEntity<?> unlockBranchEmployee(@PathVariable Long id) {
+        try {
+            Long myBranchId = getMyBranchId();
+            if (myBranchId == null) return ResponseEntity.badRequest().body("Bạn chưa được phân công chi nhánh");
+            Optional<Employee> target = employeeService.getEmployee(id);
+            if (target.isEmpty()) return ResponseEntity.notFound().build();
+            if (target.get().getBranch() == null || !myBranchId.equals(target.get().getBranch().getId()))
+                return ResponseEntity.status(403).body("Nhân viên này không thuộc chi nhánh của bạn");
+            employeeService.unlockEmployeeAccount(id);
+            return ResponseEntity.ok("Đã mở khóa tài khoản nhân viên");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    /** Helper: lấy branchId của người đang đăng nhập */
+    private Long getMyBranchId() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return employeeService.getEmployee(userDetails.getId())
+                .map(e -> e.getBranch() != null ? e.getBranch().getId() : null)
+                .orElse(null);
     }
 }

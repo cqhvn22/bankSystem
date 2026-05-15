@@ -41,6 +41,7 @@
             <a href="index.html" class="sidebar-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Giao diện Giao dịch</a>
             <a href="customers.html" class="sidebar-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Khách hàng & Tài khoản</a>
             <a href="registration-requests.html" class="sidebar-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Duyệt tài khoản mới</a>
+            <a href="branch-employees.html" class="sidebar-item" id="nav-branch-emp" style="display:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Quản lý nhân viên</a>
         </aside>
 
         <main class="content">
@@ -76,9 +77,20 @@
         const API_BASE = '/api';
         const token = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const userRole = localStorage.getItem('userRole');
         let currentRequests = [];
-        
-        if (!token) window.location.href = 'login.html';
+
+        // Auth check — cho phép cả BRANCH_MANAGER
+        if (!token || !['ROLE_EMPLOYEE','ROLE_SYSADMIN','ROLE_BRANCH_MANAGER'].includes(userRole)) {
+            localStorage.clear(); window.location.href = 'login.html';
+        }
+        // Hiện menu quản lý nhân viên nếu là Branch Manager
+        document.addEventListener('DOMContentLoaded', () => {
+            if (userRole === 'ROLE_BRANCH_MANAGER') {
+                const n = document.getElementById('nav-branch-emp');
+                if (n) n.style.display = 'flex';
+            }
+        });
 
         async function fetchWithAuth(url, options = {}) {
             const res = await fetch(url, {
@@ -98,7 +110,7 @@
 
         async function loadRequests() {
             try {
-                const endpoint = user.role === 'ROLE_SYSADMIN' ? '/registration/all' : '/registration/branch/list';
+                const endpoint = userRole === 'ROLE_SYSADMIN' ? '/registration/all' : '/registration/branch/list';
                 const res = await fetchWithAuth(`${API_BASE}${endpoint}?status=PENDING`);
                 currentRequests = await res.json();
                 const container = document.getElementById('requests-list');

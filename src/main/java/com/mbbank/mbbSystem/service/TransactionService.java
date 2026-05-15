@@ -3,7 +3,11 @@ package com.mbbank.mbbSystem.service;
 import com.mbbank.mbbSystem.model.Account;
 import com.mbbank.mbbSystem.model.Transaction;
 import com.mbbank.mbbSystem.repository.AccountRepository;
+import com.mbbank.mbbSystem.repository.BranchRepository;
+import com.mbbank.mbbSystem.repository.EmployeeRepository;
 import com.mbbank.mbbSystem.repository.TransactionRepository;
+import com.mbbank.mbbSystem.model.Branch;
+import com.mbbank.mbbSystem.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +30,25 @@ public class TransactionService {
     @Autowired
     private SavedRecipientService savedRecipientService;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private BranchRepository branchRepository;
+
     @Transactional
     public Transaction deposit(String accountNumber, BigDecimal amount, String performedBy) {
         Account account = accountRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new RuntimeException("Account not found"));
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
+
+        // Tăng quỹ tiền mặt chi nhánh
+        Employee employee = employeeRepository.findByUsername(performedBy).orElse(null);
+        if (employee != null && employee.getBranch() != null) {
+            Branch branch = employee.getBranch();
+            branch.setCashFund(branch.getCashFund().add(amount));
+            branchRepository.save(branch);
+        }
 
         String maGD = generateMaGD("NAP");
         Transaction transaction = new Transaction(maGD, null, account, amount, LocalDateTime.now(), "DEPOSIT", "DEPOSIT", performedBy);
@@ -44,6 +62,17 @@ public class TransactionService {
         
         if (!account.kiemTraSoDu(amount)) {
             throw new RuntimeException("Khong du so du");
+        }
+
+        // Kiểm tra và giảm quỹ tiền mặt chi nhánh
+        Employee employee = employeeRepository.findByUsername(performedBy).orElse(null);
+        if (employee != null && employee.getBranch() != null) {
+            Branch branch = employee.getBranch();
+            if (branch.getCashFund().compareTo(amount) < 0) {
+                throw new RuntimeException("Quỹ tiền mặt của chi nhánh không đủ (" + branch.getCashFund() + " VNĐ)");
+            }
+            branch.setCashFund(branch.getCashFund().subtract(amount));
+            branchRepository.save(branch);
         }
 
         account.setBalance(account.getBalance().subtract(amount));
