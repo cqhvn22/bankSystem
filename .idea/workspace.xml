@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8f92da71-3718-4e29-9d83-cac3154a3a07" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/BranchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/BranchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/CustomerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/RegistrationRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/RegistrationRequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/TransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/controller/TransactionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/dto/EmployeeDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/dto/EmployeeDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/dto/SignupRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/dto/SignupRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/model/Branch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/model/Branch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/repository/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/repository/EmployeeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/service/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/service/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mbbank/mbbSystem/service/TransactionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/MB/employee/counter-services.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/MB/employee/counter-services.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/MB/employee/customers.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/MB/employee/customers.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/MB/employee/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/MB/employee/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/MB/employee/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/MB/employee/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/MB/employee/registration-requests.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/MB/employee/registration-requests.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/MB/sysadmin/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/MB/sysadmin/employees.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/customer/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/employee/counter-services.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/MB/employee/counter-services.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/employee/customers.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/MB/employee/customers.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/employee/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/employee/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/MB/employee/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/employee/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/MB/employee/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/employee/registration-requests.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/MB/employee/registration-requests.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/sysadmin/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/MB/sysadmin/employees.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/MB/sysadmin/employees.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="106" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3Dg3pJ0fY1ta3ifWfFDlWt9t6PB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;branch2&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ADMIN/Downloads/mbbSystem/bankSystem&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f92da71-3718-4e29-9d83-cac3154a3a07" name="Changes" comment="" />
+      <created>1778690069640</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778690069640</updated>
+      <workItem from="1778690108596" duration="65000" />
+      <workItem from="1778751999072" duration="911000" />
+      <workItem from="1778832255122" duration="770000" />
+      <workItem from="1778852715773" duration="93000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
